@@ -4,6 +4,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    openssh
     git
     home-manager
     zsh
