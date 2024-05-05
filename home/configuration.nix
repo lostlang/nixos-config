@@ -1,0 +1,11 @@
+{ config, pkgs, ... }: {
+  imports = [
+    ./modules/bundle.nix
+  ];
+
+  home = {
+    username = "nixos";
+    homeDirectory = /home/nixos;
+    stateVersion = "23.11";
+  };
+}
