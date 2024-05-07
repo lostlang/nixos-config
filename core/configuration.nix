@@ -4,7 +4,7 @@
     ./modules/bundle.nix
   ];
 
-  networking.hostName = "lostpc";
+  networking.hostName = "lostwsl";
 
   wsl.enable = true;
   wsl.defaultUser = "nixos";

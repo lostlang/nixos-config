@@ -21,13 +21,13 @@
     let
       system = "x86_64-linux";
     in {
-    nixosConfigurations.lostpc = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.lostwsl = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = args;
       modules = [
         # nixvim.nixosModules.nixvim
         nixos-wsl.nixosModules.default
-	      ./core/configuration.nix
+        ./core/configuration.nix
       ];
     };
 
