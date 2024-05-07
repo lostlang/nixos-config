@@ -1,18 +1,17 @@
 { config, lib, pkgs, ... }: {
-  
-  imports = [
-    ./modules/bundle.nix
-  ];
+imports = [
+	./modules/bundle.nix
+];
 
-  networking.hostName = "lostwsl";
+networking.hostName = "lostwsl";
 
-  wsl.enable = true;
-  wsl.defaultUser = "nixos";
+wsl.enable = true;
+wsl.defaultUser = "nixos";
 
-  system.stateVersion = "23.11";
+system.stateVersion = "23.11";
 
-  nix.settings.experimental-features = [
-    "flakes"
-    "nix-command"
-  ];
+nix.settings.experimental-features = [
+	"flakes"
+	"nix-command"
+];
 }

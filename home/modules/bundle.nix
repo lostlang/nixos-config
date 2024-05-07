@@ -1,8 +1,7 @@
 {
-  imports = [
-    ./git.nix
-    # ./openssh.nix
-    ./packages.nix
-    ./zsh.nix
-  ];
+imports = [
+	./git.nix
+	./packages.nix
+	./zsh.nix
+];
 }

@@ -1,10 +1,10 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [
-    # neovim
-    neofetch
-    degit
+home.packages = with pkgs; [
+	# neovim
+	neofetch
+	degit
 
-    go
-    rustup
-  ];
+	go
+	rustup
+];
 }

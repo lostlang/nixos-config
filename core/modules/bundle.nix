@@ -1,7 +1,7 @@
 {
-  imports = [
-    ./openssh.nix
-    ./packages.nix
-    ./zsh.nix
-  ];
+imports = [
+	./openssh.nix
+	./packages.nix
+	./zsh.nix
+];
 }
