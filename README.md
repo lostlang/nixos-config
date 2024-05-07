@@ -1,10 +1,13 @@
 # Instalation
 
 1. Install NixOS WLS (in Windows PowerShell) [(link)](https://github.com/nix-community/NixOS-WSL)
-1. Install dots (in WSL)
+1. Pre configuation (in WSL)
 ```bash
 sudo nix-channel --update
 nix-shell -p git
+```
+1. Install dots (in WSL)
+```bash
 git clone https://github.com/lostlang/nixos-wsl-config $HOME/.config/nixos
 cd $HOME/.config/nixos
 sudo nixos-rebuild switch --flake .#lostwsl
