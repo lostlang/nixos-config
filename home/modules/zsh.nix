@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ ... }: {
 programs.zsh = {
 	enable = true;
 	enableCompletion = true;
@@ -16,10 +16,9 @@ programs.zsh = {
 	oh-my-zsh = {
 		enable = true;
 		plugins = [
-			"git"
 			"sudo"
 		];
-		theme = "jonathan";
+		theme = "bira";
 	};
 };
 }
