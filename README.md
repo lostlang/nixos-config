@@ -23,3 +23,6 @@
     ```bash
     ssh-keygen
     ```
+
+# Windows addition
+1. Install win32yank (use Scoop [(link)](https://scoop.sh/#/apps?q=win32yank))

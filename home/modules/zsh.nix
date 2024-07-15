@@ -11,6 +11,7 @@ programs.zsh = {
 	in {
 		rebuild-home = "home-manager switch --flake ${flakeDir}";
 		rebuild-os = "sudo nixos-rebuild switch --flake ${flakeDir}";
+		v = "zellij --layout=code";
 	};
 
 	oh-my-zsh = {
