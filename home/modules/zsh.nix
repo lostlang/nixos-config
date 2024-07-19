@@ -12,6 +12,7 @@ programs.zsh = {
 		rebuild-home = "home-manager switch --flake ${flakeDir}";
 		rebuild-os = "sudo nixos-rebuild switch --flake ${flakeDir}";
 		v = "zellij --layout=code";
+		rust-shell = "nix-shell ${flakeDir}/home/modules/langs/rust/shell.nix";
 	};
 
 	oh-my-zsh = {

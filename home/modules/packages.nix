@@ -6,16 +6,10 @@ home.packages = with pkgs; [
 	zellij
 	# degit
 
-	wget
-	zip
-	unzip
-
 	go
-	rustup
+
 	python313
-	zig
-	# gcc
-	gnumake
+	# zig
 	bun
 	nodejs_22
 ];

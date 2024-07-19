@@ -2,21 +2,24 @@
 xdg.configFile."zellij/layouts/code.kdl" = lib.mkIf (true) {
 	text = ''
 layout {
-	floating_panes {
+	tab name="nvim" focus=true{
 		pane {
-			name "terminal"
-			x "10%"
-			y 2
-			width "80%"
-			height "80%"
+			command "nvim"
+		}
+		pane size=1 borderless=true {
+			plugin location="zellij:status-bar"
 		}
 	}
-	pane {
-		name "nvim"
-		command "nvim"
-	}
-	pane size=1 borderless=true {
-		plugin location="zellij:status-bar"
+	tab name="terminal"{
+		pane split_direction="vertical"{
+			pane {
+			}
+			pane {
+			}
+		}
+		pane size=1 borderless=true {
+			plugin location="zellij:status-bar"
+		}
 	}
 }
 '';
@@ -44,7 +47,7 @@ programs.zellij = {
 		keybinds = {
 			locked = {
 				"bind \"Alt f\"" = {
-					ToggleFloatingPanes = {};
+					GoToNextTab = {};
 				};
 			};
 		};

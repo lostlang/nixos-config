@@ -8,5 +8,12 @@ environment.systemPackages = with pkgs; [
 	git
 	home-manager
 	zsh
+	wget
+	zip
+	unzip
+
+	zig
+	gnumake
+	cmake
 ];
 }
