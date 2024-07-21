@@ -15,7 +15,7 @@ inputs = {
 	};
 };
 
-outputs = 
+outputs =
 args@{ self, nixpkgs, nixos-wsl, home-manager, nixvim, ... }:
 let
 	system = "x86_64-linux";
@@ -24,7 +24,6 @@ in {
 		inherit system;
 		specialArgs = args;
 		modules = [
-			nixvim.nixosModules.nixvim
 			nixos-wsl.nixosModules.default
 			./core/configuration.nix
 		];
@@ -32,7 +31,11 @@ in {
 
 	homeConfigurations.nixos = home-manager.lib.homeManagerConfiguration {
 		pkgs = nixpkgs.legacyPackages.${system};
-		modules = [ ./home/configuration.nix ];
+		modules = [
+			nixvim.homeManagerModules.nixvim
+			./home/configuration.nix
+		];
+
 	};
 };
 }

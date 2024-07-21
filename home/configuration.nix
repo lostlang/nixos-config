@@ -6,6 +6,6 @@
 	home = {
 		username = "nixos";
 		homeDirectory = /home/nixos;
-		stateVersion = "23.11";
+		stateVersion = "24.05";
 	};
 }

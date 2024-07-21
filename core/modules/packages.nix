@@ -15,5 +15,7 @@ environment.systemPackages = with pkgs; [
 	zig
 	gnumake
 	cmake
+
+	ollama
 ];
 }
