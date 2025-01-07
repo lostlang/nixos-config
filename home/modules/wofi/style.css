@@ -1,0 +1,30 @@
+window {
+	border: 5px solid #a8460b;
+	border-radius: 5px;
+	background-color: #eddfbf;
+	font-family: "JetBrains Mono";
+	font-weight: bold;
+	font-size: 14px;
+	color: #10072b;
+}
+
+window > * {
+	margin: 5px;
+}
+
+#input {
+	background-color: #eddfbf;
+	color: #10072b;
+}
+
+#entry:nth-child(odd) {
+	background-color: #dab97c;
+}
+
+#entry:selected {
+	background-color: #25373a;
+}
+
+#text:selected {
+	color: #dab97c;
+}

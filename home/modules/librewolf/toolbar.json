@@ -1,0 +1,57 @@
+{
+  "placements": {
+    "widget-overflow-fixed-list": [],
+    "unified-extensions-area": [
+      "sponsorblocker_ajay_app-browser-action",
+      "_3c078156-979c-498b-8990-85f7987dd929_-browser-action",
+      "skipredirect_sblask-browser-action",
+      "_74145f27-f039-47ce-a470-a662b129930a_-browser-action",
+      "_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action"
+    ],
+    "nav-bar": [
+      "userchrome-toggle-extended_n2ezr_ru-browser-action",
+      "back-button",
+      "forward-button",
+      "stop-reload-button",
+      "customizableui-special-spring1",
+      "urlbar-container",
+      "customizableui-special-spring2",
+      "_3579f63b-d8ee-424f-bbb6-6d0ce3285e6a_-browser-action",
+      "_testpilot-containers-browser-action",
+      "ublock0_raymondhill_net-browser-action",
+      "unified-extensions-button",
+      "downloads-button"
+    ],
+    "toolbar-menubar": ["menubar-items"],
+    "TabsToolbar": [
+      "_c607c8df-14a7-4f28-894f-29e8722976af_-browser-action",
+      "tabbrowser-tabs"
+    ],
+    "vertical-tabs": [],
+    "PersonalToolbar": []
+  },
+  "seen": [
+    "userchrome-toggle-extended_n2ezr_ru-browser-action",
+    "_testpilot-containers-browser-action",
+    "skipredirect_sblask-browser-action",
+    "_3579f63b-d8ee-424f-bbb6-6d0ce3285e6a_-browser-action",
+    "_3c078156-979c-498b-8990-85f7987dd929_-browser-action",
+    "_74145f27-f039-47ce-a470-a662b129930a_-browser-action",
+    "_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action",
+    "_c607c8df-14a7-4f28-894f-29e8722976af_-browser-action",
+    "sponsorblocker_ajay_app-browser-action",
+    "developer-button",
+    "ublock0_raymondhill_net-browser-action"
+  ],
+  "dirtyAreaCache": [
+    "widget-overflow-fixed-list",
+    "unified-extensions-area",
+    "nav-bar",
+    "toolbar-menubar",
+    "TabsToolbar",
+    "PersonalToolbar",
+    "vertical-tabs"
+  ],
+  "currentVersion": 20,
+  "newElementCount": 6
+}
