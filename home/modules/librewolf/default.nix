@@ -1,119 +1,119 @@
 { inputs, ... }:
 let
-    folder = "default";
-in {
-programs.librewolf = {
+  folder = "default";
+in
+{
+  programs.librewolf = {
     enable = true;
 
     profiles = {
-        default = {
-          isDefault = true;
-          path = "${folder}";
-          id = 0;
+      default = {
+        isDefault = true;
+        path = "${folder}";
+        id = 0;
         settings = {
-            "privacy.clearOnShutdown.cache" = false;
-            "privacy.clearOnShutdown.cookies" = false;
-            "privacy.clearOnShutdown_v2.cache" = false;
-            "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+          "privacy.clearOnShutdown.cache" = false;
+          "privacy.clearOnShutdown.cookies" = false;
+          "privacy.clearOnShutdown_v2.cache" = false;
+          "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
 
-            "browser.startup.page" = 3;
-            "browser.toolbars.bookmarks.visibility" = "never";
-            "browser.uiCustomization.state" = builtins.readFile ./toolbar.json;
-            "extensions.activeThemeID" = "{21c3f603-d43d-4a58-bf53-5190e4352324}";
+          "browser.startup.page" = 3;
+          "browser.toolbars.bookmarks.visibility" = "never";
+          "browser.uiCustomization.state" = builtins.readFile ./toolbar.json;
+          "extensions.activeThemeID" = "{21c3f603-d43d-4a58-bf53-5190e4352324}";
 
-            "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
-            # potato tweaks
-            "uc.tweak.borderless" = true;
-            "uc.tweak.urlbar.not-floating" = true;
-            "uc.tweak.sidebar.wide" = true;
+          # potato tweaks
+          "uc.tweak.borderless" = true;
+          "uc.tweak.urlbar.not-floating" = true;
+          "uc.tweak.sidebar.wide" = true;
         };
-        };
+      };
     };
 
     policies = {
-        ExtensionSettings = {
-            # uBlock Origin
-            "uBlock0@raymondhill.net" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Chameleon
-            "{3579f63b-d8ee-424f-bbb6-6d0ce3285e6a}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/chameleon-ext/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # ClearURLs
-            "{74145f27-f039-47ce-a470-a662b129930a}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Skip Redirect
-            "skipredirect@sblask" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/skip-redirect/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Firefox Multi-Account Containers
-            "@testpilot-containers" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Temporary Containers
-            "{c607c8df-14a7-4f28-894f-29e8722976af}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/temporary-containers/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # SponsorBlock
-            "sponsorBlocker@ajay.app" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Sidebery
-            "{3c078156-979c-498b-8990-85f7987dd929}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # nightTab
-            "{47bf427e-c83d-457d-9b3d-3db4118574bd}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/nighttab/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Userchrome Toggle Extended
-            "userchrome-toggle-extended@n2ezr.ru" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/userchrome-toggle-extended/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Stylus
-            "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/styl-us/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Lostsand
-            "{21c3f603-d43d-4a58-bf53-5190e4352324}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/lostsand/latest.xpi";
-                installation_mode = "force_installed";
-            };
-
-            # Hide Youtube Shorts
-            "{88ebde3a-4581-4c6b-8019-2a05a9e3e938}" = {
-                install_url = "https://addons.mozilla.org/firefox/downloads/latest/hide-youtube-shorts/latest.xpi";
-                installation_mode = "force_installed";
-            };
+      ExtensionSettings = {
+        # uBlock Origin
+        "uBlock0@raymondhill.net" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+          installation_mode = "force_installed";
         };
+
+        # Chameleon
+        "{3579f63b-d8ee-424f-bbb6-6d0ce3285e6a}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/chameleon-ext/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # ClearURLs
+        "{74145f27-f039-47ce-a470-a662b129930a}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Skip Redirect
+        "skipredirect@sblask" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/skip-redirect/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Firefox Multi-Account Containers
+        "@testpilot-containers" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Temporary Containers
+        "{c607c8df-14a7-4f28-894f-29e8722976af}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/temporary-containers/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # SponsorBlock
+        "sponsorBlocker@ajay.app" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Sidebery
+        "{3c078156-979c-498b-8990-85f7987dd929}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # nightTab
+        "{47bf427e-c83d-457d-9b3d-3db4118574bd}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/nighttab/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Userchrome Toggle Extended
+        "userchrome-toggle-extended@n2ezr.ru" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/userchrome-toggle-extended/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Stylus
+        "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/styl-us/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Lostsand
+        "{21c3f603-d43d-4a58-bf53-5190e4352324}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/lostsand/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Hide Youtube Shorts
+        "{88ebde3a-4581-4c6b-8019-2a05a9e3e938}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/hide-youtube-shorts/latest.xpi";
+          installation_mode = "force_installed";
+        };
+      };
     };
-};
+  };
 
-
-home.file.".librewolf/${folder}/chrome".source = "${inputs.potatofox}/chrome";
+  home.file.".librewolf/${folder}/chrome".source = "${inputs.potatofox}/chrome";
 }

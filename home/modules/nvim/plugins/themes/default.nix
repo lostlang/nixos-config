@@ -1,7 +1,7 @@
 {
-imports = [
-	./lostsand.nix
-];
+  imports = [
+    ./lostsand.nix
+  ];
 
-programs.nixvim.colorscheme = "lostsand";
+  programs.nixvim.colorscheme = "lostsand";
 }

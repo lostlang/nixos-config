@@ -1,17 +1,17 @@
 {
-imports = [
-	./bat
-	./btop
-	./kitty
-	./librewolf
-	./nvim
-	./steam
-	./wofi
-	./zellij
+  imports = [
+    ./bat
+    ./btop
+    ./kitty
+    ./librewolf
+    ./nvim
+    ./steam
+    ./wofi
+    ./zellij
 
-	./fonts.nix
-	./git.nix
-	./packages.nix
-	./zsh.nix
-];
+    ./fonts.nix
+    ./git.nix
+    ./packages.nix
+    ./zsh.nix
+  ];
 }

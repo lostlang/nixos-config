@@ -1,5 +1,5 @@
 {
-imports = [
-	./themes
-];
+  imports = [
+    ./themes
+  ];
 }

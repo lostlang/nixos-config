@@ -1,5 +1,5 @@
 {
-imports = [
-	./modules
-];
+  imports = [
+    ./modules
+  ];
 }

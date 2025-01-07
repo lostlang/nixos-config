@@ -1,11 +1,11 @@
 {
-imports = [
-	./plugins
-	./core.nix
-	./key.nix
-];
+  imports = [
+    ./plugins
+    ./core.nix
+    ./key.nix
+  ];
 
-programs.nixvim = {
-	enable = true;
-};
+  programs.nixvim = {
+    enable = true;
+  };
 }

@@ -1,14 +1,18 @@
-{ pkgs, user, ... }: {
-programs.zsh.enable = true;
+{ pkgs, user, ... }:
+{
+  programs.zsh.enable = true;
 
-users = {
+  users = {
     defaultUserShell = pkgs.zsh;
     users.${user} = {
-        isNormalUser = true;
-        extraGroups = [ "networkmanager" "wheel" ];
-        openssh.authorizedKeys.keyFiles = [ "$HOME/.ssh/id_ed25519" ];
+      isNormalUser = true;
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
+      openssh.authorizedKeys.keyFiles = [ "$HOME/.ssh/id_ed25519" ];
     };
-};
+  };
 
-services.getty.autologinUser = user;
+  services.getty.autologinUser = user;
 }

@@ -1,11 +1,11 @@
 {
-programs.bat = {
+  programs.bat = {
     enable = true;
 
     config = {
-        theme = "TwoDark";
+      theme = "TwoDark";
     };
-};
+  };
 
-home.file.".config/bat/themes".source = ./themes;
+  home.file.".config/bat/themes".source = ./themes;
 }
