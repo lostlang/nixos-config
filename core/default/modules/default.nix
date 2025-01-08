@@ -6,5 +6,6 @@
     ./packages.nix
     ./timezone.nix
     ./user.nix
+    ./ssh.nix
   ];
 }

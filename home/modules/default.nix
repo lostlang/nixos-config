@@ -9,6 +9,7 @@
     ./wofi
     ./zellij
 
+    ./ssh.nix
     ./fonts.nix
     ./git.nix
     ./packages.nix
