@@ -6,6 +6,7 @@
     ./librewolf
     ./nvim
     ./steam
+    ./stylix
     ./wofi
     ./zellij
 

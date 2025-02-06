@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 let
   folder = "default";
 in
@@ -10,6 +10,32 @@ in
       default = {
         isDefault = true;
         path = "${folder}";
+        search = {
+          force = true;
+          default = "DuckDuckGo";
+          privateDefault = "DuckDuckGo";
+          engines = {
+            "YouTube" = {
+              urls = [ { template = "https://www.youtube.com/results?search_query={searchTerms}"; } ];
+              iconUpdateURL = "https://www.youtube.com/favicon.ico";
+              definedAliases = [ "!yt" ];
+            };
+            "Github" = {
+              urls = [ { template = "https://github.com/search?q={searchTerms}"; } ];
+              iconUpdateUrl = "https://github.githubassets.com/favicons/favicon-dark.png";
+              definedAliases = [ "!gh" ];
+            };
+            "NixOS Package" = {
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages?channel=24.11&from=0&size=50&sort=relevance&type=packages&query={searchTerms}";
+                }
+              ];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = [ "!np" ];
+            };
+          };
+        };
         id = 0;
         settings = {
           "privacy.clearOnShutdown.cache" = false;

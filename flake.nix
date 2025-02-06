@@ -11,6 +11,8 @@
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
+    stylix.url = "github:danth/stylix/release-24.11";
+
     potatofox = {
       url = "git+https://codeberg.org/awwpotato/PotatoFox";
       flake = false;
@@ -25,6 +27,7 @@
       nixvim,
       systems,
       treefmt-nix,
+      stylix,
       ...
     }@inputs:
     let
@@ -60,6 +63,7 @@
           };
 
           modules = [
+            stylix.nixosModules.stylix
             ./hosts/${hostname}
             ./core/default
             ./core/${core}
