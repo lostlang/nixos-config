@@ -37,27 +37,26 @@
       hosts = [
         {
           hostname = "wsl";
-          core = "workstation";
+          modules = "workstation";
         }
         {
           hostname = "h56";
-          core = "workstation";
+          modules = "workstation";
         }
       ];
 
       makeSystem =
         {
           hostname,
-          core,
-          stateVersion,
+          modules,
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit
               inputs
-              hostname
               stateVersion
+              hostname
               user
               ;
           };
@@ -66,7 +65,7 @@
             stylix.nixosModules.stylix
             ./hosts/${hostname}
             ./core/default
-            ./core/${core}
+            ./core/${modules}
           ];
         };
 
@@ -84,17 +83,21 @@
         configs
         // {
           "${host.hostname}" = makeSystem {
-            inherit (host) hostname core;
-            inherit stateVersion;
+            inherit (host) hostname modules;
           };
         }
       ) { } hosts;
 
       homeConfigurations.${user} = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
-        extraSpecialArgs = {
-          inherit inputs stateVersion user;
-        };
+        extraSpecialArgs = nixpkgs.lib.foldl' (
+          configs: host:
+          configs
+          // {
+            inherit (host) modules;
+            inherit inputs stateVersion user;
+          }
+        ) { } hosts;
 
         modules = [
           nixvim.homeManagerModules.nixvim

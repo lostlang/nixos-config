@@ -1,7 +1,13 @@
-{ stateVersion, user, ... }:
+{
+  stateVersion,
+  user,
+  modules,
+  ...
+}:
 {
   imports = [
-    ./modules
+    ./default
+    ./${modules}
   ];
 
   home = {
