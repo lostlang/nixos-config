@@ -3,7 +3,10 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    neofetch
-    microfetch
+    zed-editor
+    steam
+    telegram-desktop
+    transmission_4-qt
+    kdenlive
   ];
 }

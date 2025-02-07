@@ -6,5 +6,6 @@
     ./wofi
 
     ./fonts.nix
+    ./packages.nix
   ];
 }

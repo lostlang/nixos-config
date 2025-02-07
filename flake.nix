@@ -55,17 +55,18 @@
           specialArgs = {
             inherit
               inputs
+              system
               stateVersion
               hostname
               user
+              modules
               ;
           };
 
           modules = [
             stylix.nixosModules.stylix
             ./hosts/${hostname}
-            ./core/default
-            ./core/${modules}
+            ./core
           ];
         };
 
