@@ -1,7 +1,9 @@
 {
   imports = [
+    ./window_managers
+
     ./stylix
-    ./display_manager.nix
+
     ./packages.nix
   ];
 }

@@ -8,5 +8,7 @@
     telegram-desktop
     transmission_4-qt
     kdenlive
+
+    godot_4
   ];
 }

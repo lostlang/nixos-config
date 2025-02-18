@@ -42,6 +42,7 @@
         {
           hostname = "h56";
           modules = "workstation";
+          window_manager = "gnome";
         }
       ];
 
@@ -49,6 +50,7 @@
         {
           hostname,
           modules,
+          window_manager,
         }:
         nixpkgs.lib.nixosSystem {
           inherit system;
@@ -60,6 +62,7 @@
               hostname
               user
               modules
+              window_manager
               ;
           };
 
@@ -84,7 +87,7 @@
         configs
         // {
           "${host.hostname}" = makeSystem {
-            inherit (host) hostname modules;
+            inherit (host) hostname modules window_manager;
           };
         }
       ) { } hosts;
