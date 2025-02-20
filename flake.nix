@@ -2,16 +2,15 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
 
     nixvim.url = "github:nix-community/nixvim";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
     stylix.url = "github:danth/stylix/release-24.11";
+
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     potatofox = {
       url = "git+https://codeberg.org/awwpotato/PotatoFox";
@@ -28,6 +27,7 @@
       systems,
       treefmt-nix,
       stylix,
+      nixos-wsl,
       ...
     }@inputs:
     let
@@ -37,7 +37,8 @@
       hosts = [
         {
           hostname = "wsl";
-          modules = "workstation";
+          modules = "server";
+          window_manager = "none";
         }
         {
           hostname = "h56";
@@ -68,6 +69,7 @@
 
           modules = [
             stylix.nixosModules.stylix
+            nixos-wsl.nixosModules.default
             ./hosts/${hostname}
             ./core
           ];
