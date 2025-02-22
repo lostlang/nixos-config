@@ -1,10 +1,10 @@
 {
-  modules,
+  system_type,
   ...
 }:
 {
   imports = [
     ./default
-    ./${modules}
+    ./${system_type}
   ];
 }

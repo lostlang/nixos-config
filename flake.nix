@@ -37,12 +37,12 @@
       hosts = [
         {
           hostname = "wsl";
-          modules = "server";
+          system_type = "server";
           window_manager = "none";
         }
         {
           hostname = "h56";
-          modules = "workstation";
+          system_type = "workstation";
           window_manager = "gnome";
         }
       ];
@@ -50,7 +50,7 @@
       makeSystem =
         {
           hostname,
-          modules,
+          system_type,
           window_manager,
         }:
         nixpkgs.lib.nixosSystem {
@@ -62,7 +62,7 @@
               stateVersion
               hostname
               user
-              modules
+              system_type
               window_manager
               ;
           };
@@ -89,7 +89,7 @@
         configs
         // {
           "${host.hostname}" = makeSystem {
-            inherit (host) hostname modules window_manager;
+            inherit (host) hostname system_type window_manager;
           };
         }
       ) { } hosts;
@@ -100,7 +100,7 @@
           configs: host:
           configs
           // {
-            inherit (host) modules;
+            inherit (host) system_type;
             inherit inputs stateVersion user;
           }
         ) { } hosts;
