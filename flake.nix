@@ -94,21 +94,26 @@
         }
       ) { } hosts;
 
-      homeConfigurations.${user} = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
-        extraSpecialArgs = nixpkgs.lib.foldl' (
+      homeConfigurations =
+	nixpkgs.lib.foldl' (
           configs: host:
           configs
           // {
+		  "${user}@${host.hostname}" =  home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = 
+
+ 		{
             inherit (host) system_type;
             inherit inputs stateVersion user;
           }
-        ) { } hosts;
+        ;
 
         modules = [
           nixvim.homeManagerModules.nixvim
           ./home
         ];
-      };
+      };}
+	  ) { } hosts;
     };
 }
