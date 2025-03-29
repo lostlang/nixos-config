@@ -47,34 +47,6 @@
         }
       ];
 
-      makeSystem =
-        {
-          hostname,
-          system_type,
-          window_manager,
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit
-              inputs
-              system
-              stateVersion
-              hostname
-              user
-              system_type
-              window_manager
-              ;
-          };
-
-          modules = [
-            stylix.nixosModules.stylix
-            nixos-wsl.nixosModules.default
-            ./hosts/${hostname}
-            ./core
-          ];
-        };
-
       eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./pre_config/treefmt.nix);
     in
@@ -88,32 +60,37 @@
         configs: host:
         configs
         // {
-          "${host.hostname}" = makeSystem {
+          "${host.hostname}" = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit inputs system stateVersion user;
             inherit (host) hostname system_type window_manager;
           };
-        }
-      ) { } hosts;
+        modules = [
+	    if host.system_type = "workstation" then stylix.nixosModules.stylix
+	    if host.hostname = "wsl" then nixos-wsl.nixosModules.default
+            ./hosts/${host.hostname}
+            ./core
+          ];
+          };
+        }) { } hosts;
 
-      homeConfigurations =
-	nixpkgs.lib.foldl' (
+      homeConfigurations = nixpkgs.lib.foldl' (
           configs: host:
           configs
           // {
 		  "${user}@${host.hostname}" =  home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
-        extraSpecialArgs = 
-
- 		{
+        extraSpecialArgs =  {
             inherit (host) system_type;
             inherit inputs stateVersion user;
-          }
-        ;
+          };
 
         modules = [
           nixvim.homeManagerModules.nixvim
           ./home
         ];
-      };}
-	  ) { } hosts;
+      };
+      }) { } hosts;
     };
 }
