@@ -67,11 +67,11 @@
             inherit (host) hostname system_type window_manager;
           };
         modules = [
-	    if host.system_type = "workstation" then stylix.nixosModules.stylix
-	    if host.hostname = "wsl" then nixos-wsl.nixosModules.default
             ./hosts/${host.hostname}
             ./core
-          ];
+          ]
+	  ++   nixpkgs.lib.optionals (host.system_type == "workstation") [ stylix.nixosModules.stylix ]
+	++ nixpkgs.lib.optionals (host.hostname == "wsl") [ nixos-wsl.nixosModules.default ];
           };
         }) { } hosts;
 
