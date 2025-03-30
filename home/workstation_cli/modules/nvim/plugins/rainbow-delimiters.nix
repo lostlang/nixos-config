@@ -3,13 +3,13 @@
 		enable = true;
 	
 		highlight = [
-		"RainbowDelimiterRed"
-		"RainbowDelimiterOrange"
-		"RainbowDelimiterYellow"
-		"RainbowDelimiterGreen"
-		"RainbowDelimiterCyan"
-		"RainbowDelimiterBlue"
-		"RainbowDelimiterViolet"
+			"RainbowDelimiterRed"
+			"RainbowDelimiterOrange"
+			"RainbowDelimiterYellow"
+			"RainbowDelimiterGreen"
+			"RainbowDelimiterCyan"
+			"RainbowDelimiterBlue"
+			"RainbowDelimiterViolet"
 		];
 	};
 }

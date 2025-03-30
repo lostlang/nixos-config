@@ -4,12 +4,12 @@
     extraPlugins = with pkgs.vimUtils; [
       (buildVimPlugin {
         pname = "lostsand.nvim";
-        version = "2024-01-07";
+	version = "latest";
         src = pkgs.fetchFromGitHub {
           owner = "lostlang";
           repo = "lostsand.nvim";
-          tag = "v0.2.1";
-          hash = "sha256-lcgRZgrUScsa5pm/6/MmIVPU/21nE6EvczYwPCF4YXQ=";
+	  rev = "4f6ef28589042f186e0f589b6134370883f1cc75";
+          hash = "sha256-7PZRWYPww/CqBztfrUfBdPAyaPGQKqLTqSWyMeHxNMY=";
         };
       })
     ];
