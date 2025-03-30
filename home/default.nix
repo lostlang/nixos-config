@@ -1,4 +1,5 @@
 {
+	lib,
   stateVersion,
   user,
   system_type,
@@ -9,7 +10,7 @@
     ./default
     ./${system_type}
   ]
-	++ nixpkgs.lib.optionals (system_type == "workstation") [ ./workstation_cli ];
+	++ lib.optionals (system_type == "workstation") [ ./workstation_cli ];
 
   home = {
     username = user;
