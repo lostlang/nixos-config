@@ -61,36 +61,44 @@
         configs
         // {
           "${host.hostname}" = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs system stateVersion user;
-            inherit (host) hostname system_type window_manager;
+            inherit system;
+            specialArgs = {
+              inherit
+                inputs
+                system
+                stateVersion
+                user
+                ;
+              inherit (host) hostname system_type window_manager;
+            };
+            modules =
+              [
+                ./hosts/${host.hostname}
+                ./core
+              ]
+              ++ nixpkgs.lib.optionals (host.system_type == "workstation") [ stylix.nixosModules.stylix ]
+              ++ nixpkgs.lib.optionals (host.hostname == "wsl") [ nixos-wsl.nixosModules.default ];
           };
-        modules = [
-            ./hosts/${host.hostname}
-            ./core
-          ]
-	  ++   nixpkgs.lib.optionals (host.system_type == "workstation") [ stylix.nixosModules.stylix ]
-	++ nixpkgs.lib.optionals (host.hostname == "wsl") [ nixos-wsl.nixosModules.default ];
-          };
-        }) { } hosts;
+        }
+      ) { } hosts;
 
       homeConfigurations = nixpkgs.lib.foldl' (
-          configs: host:
-          configs
-          // {
-		  "${user}@${host.hostname}" =  home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
-        extraSpecialArgs =  {
-            inherit (host) system_type;
-            inherit inputs stateVersion user;
-          };
+        configs: host:
+        configs
+        // {
+          "${user}@${host.hostname}" = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${system};
+            extraSpecialArgs = {
+              inherit (host) system_type;
+              inherit inputs stateVersion user;
+            };
 
-        modules = [
-          nixvim.homeManagerModules.nixvim
-          ./home
-        ];
-      };
-      }) { } hosts;
+            modules = [
+              nixvim.homeManagerModules.nixvim
+              ./home
+            ];
+          };
+        }
+      ) { } hosts;
     };
 }

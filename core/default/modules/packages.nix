@@ -11,5 +11,6 @@
     zip
     unzip
     pre-commit
+    # nixfmt
   ];
 }
