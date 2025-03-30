@@ -2,7 +2,6 @@
   imports = [
     ./bat
     ./btop
-    ./nvim
     ./zellij
 
     ./git.nix

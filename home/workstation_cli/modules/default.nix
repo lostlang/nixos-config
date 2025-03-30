@@ -1,5 +1,7 @@
 {
   imports = [
+  	./nvim
+
     ./packages.nix
   ];
 }
