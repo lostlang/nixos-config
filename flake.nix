@@ -37,7 +37,7 @@
       hosts = [
         {
           hostname = "wsl";
-          system_type = "server";
+          system_type = "workstation_cli";
           window_manager = "none";
         }
         {
