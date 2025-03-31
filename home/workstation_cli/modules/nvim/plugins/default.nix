@@ -14,6 +14,7 @@
     ./telescope.nix
     ./cmp.nix
     ./lsp.nix
+    ./smear-cursor.nix
   ];
 
   programs.nixvim.plugins = {

@@ -8,7 +8,7 @@
         src = pkgs.fetchFromGitHub {
           owner = "lostlang";
           repo = "lostsand.nvim";
-          rev = "4f6ef28589042f186e0f589b6134370883f1cc75";
+          rev = "938e669412590b95f05225bdcd730a3f8fb15564";
           hash = "sha256-7PZRWYPww/CqBztfrUfBdPAyaPGQKqLTqSWyMeHxNMY=";
         };
       })
