@@ -17,5 +17,6 @@
 
     illuminate.enable = true;
     barbecue.enable = true;
+    lazygit.enable = true;
   };
 }
