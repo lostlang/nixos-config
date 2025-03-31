@@ -2,12 +2,14 @@
   programs.nixvim.diagnostics = {
     virtual_text = false;
     signs = {
-      text = {
-        DiagnosticSignError = "󰃤 ";
-        DiagnosticSignWarn = " ";
-        DiagnosticSignHint = "󱠂 ";
-        DiagnosticSignInfo = " ";
-      };
+      text.__raw = ''
+        {
+        [vim.diagnostic.severity.ERROR] = "󰃤 ",
+        [vim.diagnostic.severity.WARN] = " ",
+        [vim.diagnostic.severity.INFO] = " ",
+        [vim.diagnostic.severity.HINT] = "󱠂 ",
+        },
+      '';
     };
   };
 }

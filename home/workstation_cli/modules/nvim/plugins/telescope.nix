@@ -99,5 +99,14 @@
         silent = true;
       };
     }
+    {
+      mode = "n";
+      key = "fc";
+      action = ":Telescope current_buffer_fuzzy_find<CR>";
+      options = {
+        desc = "Telescope live grep in current buffer";
+        silent = true;
+      };
+    }
   ];
 }

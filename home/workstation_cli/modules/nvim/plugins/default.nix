@@ -1,6 +1,7 @@
 {
   imports = [
     ./themes
+    ./lang_support
 
     ./rainbow-delimiters.nix
     ./treesitter.nix
@@ -11,13 +12,18 @@
     ./lualine.nix
     ./lazygit.nix
     ./telescope.nix
+    ./cmp.nix
+    ./lsp.nix
   ];
 
   programs.nixvim.plugins = {
     web-devicons.enable = true;
+    luasnip.enable = true;
 
     illuminate.enable = true;
+    markdown-preview.enable = true;
     gitsigns.enable = true;
-    barbecue.enable = true;
+    dropbar.enable = true;
+    # barbecue.enable = true;
   };
 }

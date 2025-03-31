@@ -36,5 +36,14 @@
         silent = true;
       };
     }
+    {
+      mode = "n";
+      key = "<SPACE><SPACE>";
+      action = ":nohlsearch<CR>";
+      options = {
+        desc = "Salect all file";
+        silent = true;
+      };
+    }
   ];
 }

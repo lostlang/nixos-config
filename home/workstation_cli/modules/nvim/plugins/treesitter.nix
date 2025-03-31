@@ -3,8 +3,10 @@
   programs.nixvim.plugins.treesitter = {
     enable = true;
 
-    grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-      nix
-    ];
+    grammarPackages = pkgs.vimPlugins.nvim-treesitter.allGrammars;
+    settings = {
+      indent.enable = true;
+      highlight.enable = true;
+    };
   };
 }
