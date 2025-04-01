@@ -22,5 +22,9 @@
       tab = "▎-";
       eol = "↵";
     };
+    foldmethod = "expr";
+    foldexpr = "nvim_treesitter#foldexpr()";
+    foldlevel = 99;
   };
+
 }

@@ -45,5 +45,14 @@
         silent = true;
       };
     }
+    {
+      mode = "n";
+      key = "<CR>";
+      action = "za";
+      options = {
+        desc = "Toggle current fold";
+        silent = true;
+      };
+    }
   ];
 }
