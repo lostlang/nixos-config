@@ -15,16 +15,19 @@
     ./cmp.nix
     ./lsp.nix
     ./smear-cursor.nix
+    ./twilight.nix
   ];
 
   programs.nixvim.plugins = {
     web-devicons.enable = true;
     luasnip.enable = true;
+    notify.enable = true;
 
     illuminate.enable = true;
+    neoscroll.enable = true;
+    noice.enable = true;
     markdown-preview.enable = true;
     gitsigns.enable = true;
     dropbar.enable = true;
-    # barbecue.enable = true;
   };
 }
