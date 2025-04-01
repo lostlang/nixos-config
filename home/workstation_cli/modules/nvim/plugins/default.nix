@@ -16,6 +16,7 @@
     ./lsp.nix
     ./smear-cursor.nix
     ./twilight.nix
+    ./none-ls.nix
   ];
 
   programs.nixvim.plugins = {
