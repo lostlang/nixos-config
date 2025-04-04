@@ -12,6 +12,7 @@
 
     settings = {
       sources = [
+        { name = "minuet"; }
         { name = "nvim_lsp"; }
         { name = "path"; }
         { name = "luasnip"; }
@@ -20,50 +21,53 @@
       snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
       formatting.format.__raw = ''
         function(entry, vim_item)
-        local kind_icons = {
-        Text = "",
-        Method = "",
-        Function = "󰡱",
-        Constructor = "",
-        Field = "󰂡",
-        Variable = "",
-        Class = "󰠱",
-        Interface = "",
-        Module = "󰅱",
-        Property = "󱈤",
-        Unit = "",
-        Value = "󰎠",
-        Enum = "",
-        Keyword = "󰌋",
-        Snippet = "",
-        Color = "",
-        File = "󰈙",
-        Reference = "",
-        Folder = "",
-        EnumMember = "",
-        Constant = "󰐀",
-        Struct = "",
-        Event = "",
-        Operator = "󰆖",
-        TypeParameter = "󰅲",
-        Codeium = "",
-        }
+          local kind_icons = {
+            Text = "",
+            Method = "",
+            Function = "󰡱",
+            Constructor = "",
+            Field = "󰂡",
+            Variable = "",
+            Class = "󰠱",
+            Interface = "",
+            Module = "󰅱",
+            Property = "󱈤",
+            Unit = "",
+            Value = "󰎠",
+            Enum = "",
+            Keyword = "󰌋",
+            Snippet = "",
+            Color = "",
+            File = "󰈙",
+            Reference = "",
+            Folder = "",
+            EnumMember = "",
+            Constant = "󰐀",
+            Struct = "",
+            Event = "",
+            Operator = "󰆖",
+            TypeParameter = "󰅲",
+            Codeium = "",
+            Ollama = "",
+          }
 
-        local menus = {
-        cmdline = "[Cmd]";
-        nvim_lsp = "[LSP]",
-        buffer = "[Buffer]",
-        luasnip = "[Snip]",
-        nvim_lua = "[Lua]",
-        treesitter = "[Treesitter]",
-        path = "[Path]",
-        nvim_lsp_signature_help = "[Signature]",
-        codeium = "[AI]",
-        }
+          local menus = {
+            cmdline = "[Cmd]";
+            nvim_lsp = "[LSP]",
+            buffer = "[Buffer]",
+            luasnip = "[Snip]",
+            nvim_lua = "[Lua]",
+            treesitter = "[Treesitter]",
+            path = "[Path]",
+            nvim_lsp_signature_help = "[Signature]",
+            codeium = "[AI]",
+            cmp_ai = "[AI]",
+            minuet = "[AI]",
+          }
 
-        vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
-        vim_item.menu = menus[entry.source.name]
-        return vim_item
+          vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+          vim_item.menu = menus[entry.source.name]
+          return vim_item
         end,
       '';
       mapping = {

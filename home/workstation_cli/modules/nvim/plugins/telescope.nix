@@ -44,8 +44,8 @@
       key = "fb";
       action.__raw = ''
         function()
-        local builtin = require('telescope.builtin')
-        local action_state = require('telescope.actions.state')
+          local builtin = require('telescope.builtin')
+          local action_state = require('telescope.actions.state')
           builtin.buffers({
             initial_mode = "normal",
             attach_mappings = function(prompt_bufnr, map)

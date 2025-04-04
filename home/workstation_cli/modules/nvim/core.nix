@@ -27,5 +27,4 @@
     foldexpr = "nvim_treesitter#foldexpr()";
     foldlevel = 99;
   };
-
 }

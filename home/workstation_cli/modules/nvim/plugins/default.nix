@@ -17,6 +17,8 @@
     ./smear-cursor.nix
     ./twilight.nix
     ./none-ls.nix
+    ./minuet-ai.nix
+    ./gen.nix
   ];
 
   programs.nixvim.plugins = {
