@@ -8,7 +8,7 @@
     local notify = require("notify")
     local last_notify_id = nil
 
-    vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
+    vim.api.nvim_create_autocmd({"CursorHold"}, {
     pattern = "*",
     callback = function()
     local diagnostics = vim.diagnostic.get(0, {lnum = vim.api.nvim_win_get_cursor(0)[1] - 1})

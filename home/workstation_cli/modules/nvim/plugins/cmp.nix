@@ -17,11 +17,7 @@
         { name = "luasnip"; }
         { name = "buffer"; }
       ];
-      snippet.expand.__raw = ''
-        function(args)
-        require("luasnip").lsp_expand(args.body)
-        end
-      '';
+      snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
       formatting.format.__raw = ''
         function(entry, vim_item)
         local kind_icons = {
