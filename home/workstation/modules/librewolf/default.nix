@@ -16,7 +16,11 @@ in
           privateDefault = "DuckDuckGo";
           engines = {
             "YouTube" = {
-              urls = [ { template = "https://www.youtube.com/results?search_query={searchTerms}"; } ];
+              urls = [
+                {
+                  template = "https://www.youtube.com/results?search_query={searchTerms}";
+                }
+              ];
               iconUpdateURL = "https://www.youtube.com/favicon.ico";
               definedAliases = [ "!yt" ];
             };
@@ -45,6 +49,7 @@ in
 
           "browser.startup.page" = 3;
           "browser.toolbars.bookmarks.visibility" = "never";
+          # about:config
           "browser.uiCustomization.state" = builtins.readFile ./toolbar.json;
           "extensions.activeThemeID" = "{21c3f603-d43d-4a58-bf53-5190e4352324}";
 
@@ -63,6 +68,12 @@ in
         # uBlock Origin
         "uBlock0@raymondhill.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+          installation_mode = "force_installed";
+        };
+
+        # Bitwarden
+        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
           installation_mode = "force_installed";
         };
 

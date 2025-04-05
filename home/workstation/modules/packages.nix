@@ -3,7 +3,7 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    zed-editor
+    xclip
     steam
     telegram-desktop
     transmission_4-qt
