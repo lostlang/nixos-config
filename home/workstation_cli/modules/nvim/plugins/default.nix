@@ -7,7 +7,6 @@
     ./treesitter.nix
     ./indent-blankline.nix
     ./todo-comments.nix
-    ./render-markdown.nix
     ./neo-tree.nix
     ./lualine.nix
     ./lazygit.nix
@@ -19,6 +18,8 @@
     ./none-ls.nix
     ./minuet-ai.nix
     ./gen.nix
+    ./noice.nix
+    ./inc-rename.nix
   ];
 
   programs.nixvim.plugins = {
@@ -28,8 +29,8 @@
 
     illuminate.enable = true;
     neoscroll.enable = true;
-    noice.enable = true;
-    markdown-preview.enable = true;
+    which-key.enable = true;
+    highlight-colors.enable = true;
     gitsigns.enable = true;
     dropbar.enable = true;
   };

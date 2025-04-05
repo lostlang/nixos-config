@@ -1,4 +1,6 @@
 {
+  programs.nixvim.plugins.markdown-preview.enable = true;
+
   programs.nixvim.plugins.render-markdown = {
     enable = true;
 
