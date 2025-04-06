@@ -43,7 +43,7 @@
         {
           hostname = "h56";
           system_type = "workstation";
-          window_manager = "gnome";
+          window_manager = "hyprland";
         }
       ];
 
