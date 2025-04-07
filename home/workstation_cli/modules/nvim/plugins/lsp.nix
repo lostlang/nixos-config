@@ -18,9 +18,30 @@
             [vim.diagnostic.severity.ERROR] = { level = vim.log.levels.ERROR, title = "ERROR" },
             [vim.diagnostic.severity.WARN]  = { level = vim.log.levels.WARN, title = "WARN" },
             [vim.diagnostic.severity.INFO]  = { level = vim.log.levels.INFO, title = "INFO" },
-            [vim.diagnostic.severity.HINT]  = { level = vim.log.levels.DEBUG, title = "HINT" },
+            [vim.diagnostic.severity.HINT]  = { level = vim.log.levels.HINT, title = "HINT" },
           }
-          last_notify_id = notify(diagnostics[1].message, level_map[severity].level or vim.log.levels.INFO, {title = level_map[severity].title, timeout = false })
+          local function split_message(text, max_len)
+            local result = {}
+            local line = ""
+            for word in text:gmatch("%S+") do
+              if #line + #word + 1 > max_len then
+                table.insert(result, line)
+                line = word
+              else
+                if line == "" then
+                  line = word
+                else
+                  line = line .. " " .. word
+                end
+              end
+            end
+            if line ~= "" then
+              table.insert(result, line)
+            end
+            return table.concat(result, "\n")
+          end
+          local message = split_message(diagnostics[1].message, 80)
+          last_notify_id = notify(message, level_map[severity].level or vim.log.levels.DEBUG, {title = level_map[severity].title, timeout = false })
         else
           if last_notify_id then
             notify.dismiss(last_notify_id)

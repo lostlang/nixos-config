@@ -12,7 +12,8 @@
 
     settings = {
       sources = [
-        { name = "minuet"; }
+        # { name = "minuet"; }
+        { name = "codeium"; }
         { name = "nvim_lsp"; }
         { name = "path"; }
         { name = "luasnip"; }

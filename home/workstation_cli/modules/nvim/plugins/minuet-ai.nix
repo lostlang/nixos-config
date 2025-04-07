@@ -18,11 +18,11 @@
   programs.nixvim.extraConfigLua = ''
     require('minuet').setup {
       provider = 'openai_fim_compatible',
-      n_completions = 2,
-      context_window = 1024,
-      throttle = 100,
-      debounce = 100,
-      -- notify = 'debug',
+      n_completions = 1,
+      -- context_window = 1024,
+      throttle = 1000,
+      debounce = 1000,
+      notify = 'debug',
       cmp = { enable_auto_complete = true },
       virtualtext = {
         show_on_completion_menu = true,
@@ -44,8 +44,8 @@
           model = "qwen2.5-coder:3b",
           stream  = true,
           optional = {
-            max_tokens = 128,
-            top_p = 0.9,
+            max_tokens = 1024,
+            top_p = 0.5,
           },
         },
       },

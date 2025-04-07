@@ -16,16 +16,16 @@
     ./smear-cursor.nix
     ./twilight.nix
     ./none-ls.nix
-    ./minuet-ai.nix
+    # ./minuet-ai.nix
     ./gen.nix
     ./noice.nix
     ./inc-rename.nix
+    ./notify.nix
   ];
 
   programs.nixvim.plugins = {
     web-devicons.enable = true;
     luasnip.enable = true;
-    notify.enable = true;
 
     illuminate.enable = true;
     neoscroll.enable = true;
@@ -33,5 +33,6 @@
     highlight-colors.enable = true;
     gitsigns.enable = true;
     dropbar.enable = true;
+    codeium-nvim.enable = true;
   };
 }

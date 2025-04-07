@@ -23,8 +23,5 @@
       eol = "↵";
     };
     updatetime = 500;
-    foldmethod = "expr";
-    foldexpr = "nvim_treesitter#foldexpr()";
-    foldlevel = 99;
   };
 }
