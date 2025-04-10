@@ -20,7 +20,7 @@
     ```
 1. Post configuration (in WSL)
     ```bash
-    ssh-keygen -t ed25519 -a 100 -f ~/.ssh/codeberg_ed25519
+    ssh-keygen -t ed25519 -a 100 -f ~/.ssh/default_ed25519
     ```
 
     ```bash
