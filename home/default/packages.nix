@@ -3,7 +3,7 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    neofetch
     microfetch
+    neofetch
   ];
 }
