@@ -1,11 +1,9 @@
-{
-  lib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   stylix = {
     enable = true;
+
+    image = ./wallpaper.jpg;
 
     polarity = "light";
 
