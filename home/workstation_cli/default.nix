@@ -1,5 +1,9 @@
 {
   imports = [
-    ./modules
+    ./nvim
+    ./lang
+    ./script
+
+    ./packages.nix
   ];
 }

@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  hostname,
-  stateVersion,
-  ...
-}:
+{ hostname, stateVersion, ... }:
 {
   imports = [ ./hardware-configuration.nix ];
 

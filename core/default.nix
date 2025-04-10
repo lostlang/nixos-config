@@ -1,8 +1,4 @@
-{
-  lib,
-  system_type,
-  ...
-}:
+{ lib, system_type, ... }:
 {
   imports = [
     ./default
