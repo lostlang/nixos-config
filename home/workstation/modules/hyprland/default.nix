@@ -1,5 +1,11 @@
 { pkgs, ... }:
 {
+
+  imports = [
+    ./binds.nix
+    ./autoload.nix
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     # The hyprland package to use
@@ -12,7 +18,10 @@
     systemd.enable = true;
 
     settings = {
-      monitor = "preferred,auto,1";
+      "$mainMod" = "SUPER";
+      "$term" = "kitty";
+      "$menu" = "wofi --show drun";
+      monitor = ",preferred,auto,1";
     };
   };
 }

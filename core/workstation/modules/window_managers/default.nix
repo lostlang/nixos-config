@@ -1,9 +1,8 @@
+{ window_manager, user, ... }:
 {
-  window_manager,
-  ...
-}:
-{
-  imports = [
-    ./${window_manager}.nix
-  ];
+  imports = [ ./${window_manager}.nix ];
+
+  services.xserver.enable = true;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = user;
 }
