@@ -1,38 +1,38 @@
 {
   imports = [
-    ./themes
     ./lang_support
+    ./themes
 
-    ./rainbow-delimiters.nix
-    ./treesitter.nix
-    ./indent-blankline.nix
-    ./todo-comments.nix
-    ./neo-tree.nix
-    ./lualine.nix
-    ./lazygit.nix
-    ./telescope.nix
     ./cmp.nix
-    ./lsp.nix
-    ./smear-cursor.nix
-    ./twilight.nix
-    ./none-ls.nix
-    # ./minuet-ai.nix
     ./gen.nix
-    ./noice.nix
     ./inc-rename.nix
+    ./indent-blankline.nix
+    ./lazygit.nix
+    ./lsp.nix
+    ./lualine.nix
+    # ./minuet-ai.nix
+    ./neo-tree.nix
+    ./noice.nix
+    ./none-ls.nix
     ./notify.nix
+    ./rainbow-delimiters.nix
+    ./smear-cursor.nix
+    ./telescope.nix
+    ./todo-comments.nix
+    ./treesitter.nix
+    ./twilight.nix
   ];
 
   programs.nixvim.plugins = {
-    web-devicons.enable = true;
     luasnip.enable = true;
+    web-devicons.enable = true;
 
+    codeium-nvim.enable = true;
+    dropbar.enable = true;
+    gitsigns.enable = true;
+    highlight-colors.enable = true;
     illuminate.enable = true;
     neoscroll.enable = true;
     which-key.enable = true;
-    highlight-colors.enable = true;
-    gitsigns.enable = true;
-    dropbar.enable = true;
-    codeium-nvim.enable = true;
   };
 }

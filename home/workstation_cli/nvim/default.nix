@@ -3,9 +3,9 @@
     ./plugins
 
     ./core.nix
+    ./diagnostics.nix
     ./fold.nix
     ./keymap.nix
-    ./diagnostics.nix
   ];
 
   programs.nixvim = {

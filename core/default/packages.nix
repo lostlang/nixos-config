@@ -3,14 +3,14 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    openssh
+    docker
     git
     home-manager
-    zsh
+    openssh
+    pre-commit
+    unzip
     wget
     zip
-    unzip
-    pre-commit
-    docker
+    zsh
   ];
 }

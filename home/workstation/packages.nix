@@ -3,12 +3,11 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    wl-clipboard
+    godot_4
+    kdenlive
     steam
     telegram-desktop
     transmission_4-qt
-    kdenlive
-
-    godot_4
+    wl-clipboard
   ];
 }
