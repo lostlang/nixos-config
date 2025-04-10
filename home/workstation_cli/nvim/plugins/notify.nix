@@ -8,7 +8,7 @@
         debug = "󱠂 ";
         error = "󰃤 ";
         info = " ";
-        trace = "✎ ";
+        trace = " ";
         warn = " ";
       };
       level = "debug";
