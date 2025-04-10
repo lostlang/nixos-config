@@ -1,7 +1,6 @@
 {
   programs.nixvim.plugins.lsp = {
     enable = true;
-
   };
 
   programs.nixvim.extraConfigLua = ''
@@ -47,6 +46,16 @@
             notify.dismiss(last_notify_id)
             last_notify_id = nil
           end
+        end
+      end,
+    })
+
+    vim.api.nvim_create_autocmd({"CursorHoldI"}, {
+      pattern = "*",
+      callback = function()
+        if last_notify_id then
+          notify.dismiss(last_notify_id)
+          last_notify_id = nil
         end
       end,
     })
