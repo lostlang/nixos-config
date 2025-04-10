@@ -1,5 +1,12 @@
 {
   imports = [
-    ./modules
+    ./kitty
+    ./librewolf
+    ./stylix
+    ./wofi
+    ./hyprland
+
+    ./fonts.nix
+    ./packages.nix
   ];
 }

@@ -18,9 +18,7 @@
 
     oh-my-zsh = {
       enable = true;
-      plugins = [
-        "sudo"
-      ];
+      plugins = [ "sudo" ];
       theme = "bira";
     };
   };

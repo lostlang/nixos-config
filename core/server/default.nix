@@ -1,5 +1,1 @@
-{
-  imports = [
-    ./modules
-  ];
-}
+{ imports = [ ./packages.nix ]; }

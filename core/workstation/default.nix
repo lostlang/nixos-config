@@ -1,5 +1,9 @@
 {
   imports = [
-    ./modules
+    ./window_managers
+    ./stylix
+
+    ./packages.nix
+    ./layout.nix
   ];
 }
