@@ -1,10 +1,11 @@
 {
   imports = [
+    ./hyprland
     ./kitty
     ./librewolf
     ./stylix
+    ./waybar
     ./wofi
-    ./hyprland
 
     ./fonts.nix
     ./packages.nix

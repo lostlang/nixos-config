@@ -3,7 +3,8 @@
     ./window_managers
     ./stylix
 
-    ./packages.nix
+    ./audio.nix
     ./layout.nix
+    ./packages.nix
   ];
 }
