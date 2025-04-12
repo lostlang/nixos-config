@@ -45,4 +45,6 @@
 
   nixpkgs.hostPlatform = lib.mkDefault system;
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.bluetooth.enable = true;
+  hardware.pulseaudio.enable = false;
 }
