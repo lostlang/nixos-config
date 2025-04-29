@@ -18,6 +18,7 @@
       "move 1280 0, title:^(Picture-in-Picture)"
 
       "workspace 3, librewolf"
+      "workspace 9, obsidian"
       "workspace 10, org.telegram.desktop"
     ];
   };
