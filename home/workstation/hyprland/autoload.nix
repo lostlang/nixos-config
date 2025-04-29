@@ -1,5 +1,8 @@
 {
   wayland.windowManager.hyprland.settings = {
-    exec-once = [ "waybar" ];
+    exec-once = [
+      "waybar"
+      "udiskie"
+    ];
   };
 }

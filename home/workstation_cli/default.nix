@@ -1,6 +1,5 @@
 {
   imports = [
-    ./lang
     ./nvim
     ./script
 

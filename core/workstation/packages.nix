@@ -4,6 +4,8 @@
 
   environment.systemPackages = with pkgs; [
     hyprland
+    udiskie
     waybar
+    xfce.thunar
   ];
 }

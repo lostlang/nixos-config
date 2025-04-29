@@ -1,9 +1,9 @@
 { pkgs, ... }:
 {
-
   imports = [
-    ./binds.nix
     ./autoload.nix
+    ./binds.nix
+    ./windowrule.nix
   ];
 
   wayland.windowManager.hyprland = {
