@@ -14,6 +14,8 @@
         rebuild-os = "sudo nixos-rebuild switch --flake ${flakeDir}";
         btop = "btop -p 1";
         v = "zellij --layout=code";
+        go-shell = "nix-shell ${flakeDir}/home/default/nix-shell/go-shell.nix";
+        minecraft-shell = "nix-shell ${flakeDir}/home/default/nix-shell/minecraft-shell.nix";
       };
 
     oh-my-zsh = {

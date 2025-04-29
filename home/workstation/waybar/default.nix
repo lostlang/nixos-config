@@ -80,9 +80,10 @@
       };
       network = {
         tooltip = false;
-        format-wifi = "󰖩";
-        format-disconnected = "󰖪";
-        format-ethernet = "󰈀";
+        format-wifi = "󰖩 on";
+        format-disconnected = "󰖪 off";
+        format-ethernet = "󰈀 on";
+        on-click = "nm-connection-editor";
       };
       pulseaudio = {
         format = "{icon} {volume}%";
@@ -102,10 +103,10 @@
         };
       };
       bluetooth = {
-        format = "";
-        format-off = "󰂲";
-        format-connected = "󰂱";
-        on-click-right = "bluetoothctl disconnect";
+        format = " {status}";
+        format-off = "󰂲 {status}";
+        format-connected = "󰂱 on";
+        on-click = "blueman-manager";
       };
       memory = {
         format = ''

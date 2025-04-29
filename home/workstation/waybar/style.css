@@ -62,6 +62,7 @@ tooltip label {
 
 #workspaces button.active {
 	color: @green;
+	border-right: 3px solid @green;
 }
 
 #workspaces button:hover:not(.active) {
