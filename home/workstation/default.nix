@@ -6,6 +6,7 @@
     ./stylix
     ./waybar
     ./wofi
+    # ./steam
 
     ./fonts.nix
     ./packages.nix

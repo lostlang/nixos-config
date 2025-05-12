@@ -8,7 +8,7 @@
     kdenlive
     networkmanagerapplet
     obsidian
-    steam
+    vlc
     telegram-desktop
     transmission_4-qt
     wl-clipboard

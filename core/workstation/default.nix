@@ -7,6 +7,7 @@
     ./layout.nix
     ./packages.nix
     ./udisks2.nix
+    ./steam.nix
     # ./tlp.nix
   ];
 }
