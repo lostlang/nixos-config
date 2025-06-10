@@ -7,7 +7,7 @@
     ./gen.nix
     ./inc-rename.nix
     ./indent-blankline.nix
-    ./lazygit.nix
+    # ./lazygit.nix
     ./lsp.nix
     ./lualine.nix
     # ./minuet-ai.nix

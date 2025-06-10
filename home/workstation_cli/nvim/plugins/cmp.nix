@@ -74,6 +74,16 @@
       mapping = {
         "<UP>" = "cmp.mapping.select_prev_item()";
         "<DOWN>" = "cmp.mapping.select_next_item()";
+        "<C-a>" = ''
+          cmp.mapping({
+            i = function()
+              if cmp.visible() then
+                cmp.abort()
+              else
+                cmp.complete()
+              end
+            end,
+          })'';
         "<ESC>" = "cmp.mapping.abort()";
         "<CR>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })";
       };

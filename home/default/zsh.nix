@@ -16,6 +16,8 @@
         v = "zellij --layout=code";
         go-shell = "nix-shell ${flakeDir}/home/default/nix-shell/go-shell.nix";
         minecraft-shell = "nix-shell ${flakeDir}/home/default/nix-shell/minecraft-shell.nix";
+
+        nix-shell = "nix-shell --run $SHELL";
       };
 
     oh-my-zsh = {

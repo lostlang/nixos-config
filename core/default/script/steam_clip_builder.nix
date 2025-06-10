@@ -2,6 +2,7 @@
 pkgs.writeShellScriptBin "steam-clip-builder" ''
   #! /usr/bin/env nix-shell
   #! nix-shell -i bash -p bash
+  mkdir -p ~/Videos
 
   folder=$(pwd)
   echo "Working directory: $folder"
