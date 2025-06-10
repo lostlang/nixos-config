@@ -5,5 +5,6 @@
   home.packages = with pkgs; [
     microfetch
     neofetch
+    lazygit
   ];
 }

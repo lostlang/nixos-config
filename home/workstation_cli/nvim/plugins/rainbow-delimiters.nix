@@ -5,7 +5,6 @@
     highlight = [
       "RainbowDelimiterRed"
       "RainbowDelimiterOrange"
-      "RainbowDelimiterYellow"
       "RainbowDelimiterGreen"
       "RainbowDelimiterCyan"
       "RainbowDelimiterBlue"

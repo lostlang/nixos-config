@@ -6,7 +6,6 @@
       indent.highlight = [
         "IblRed"
         "IblOrange"
-        "IblYellow"
         "IblGreen"
         "IblCyan"
         "IblBlue"

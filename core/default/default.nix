@@ -1,5 +1,7 @@
 {
   imports = [
+    ./script
+
     ./formatter.nix
     ./localization.nix
     ./nix.nix
