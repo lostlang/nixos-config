@@ -4,6 +4,7 @@
 
     ./formatter.nix
     ./localization.nix
+    ./networking.nix
     ./nix.nix
     ./packages.nix
     ./ssh.nix
