@@ -32,7 +32,7 @@ in
             "NixOS Package" = {
               urls = [
                 {
-                  template = "https://search.nixos.org/packages?channel=24.11&from=0&size=50&sort=relevance&type=packages&query={searchTerms}";
+                  template = "https://search.nixos.org/packages?channel=25.05&from=0&size=50&sort=relevance&type=packages&query={searchTerms}";
                 }
               ];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
