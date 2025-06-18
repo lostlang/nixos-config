@@ -27,7 +27,7 @@
     luasnip.enable = true;
     web-devicons.enable = true;
 
-    codeium-nvim.enable = true;
+    windsurf-nvim.enable = true;
     dropbar.enable = true;
     gitsigns.enable = true;
     highlight-colors.enable = true;

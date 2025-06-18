@@ -3,7 +3,7 @@
     ./plugins
 
     ./core.nix
-    ./diagnostics.nix
+    ./diagnostic.nix
     ./fold.nix
     ./keymap.nix
   ];
