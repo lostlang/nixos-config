@@ -12,8 +12,8 @@ in
         path = "${folder}";
         search = {
           force = true;
-          default = "DuckDuckGo";
-          privateDefault = "DuckDuckGo";
+          default = "ddg";
+          privateDefault = "ddg";
           engines = {
             "YouTube" = {
               urls = [
@@ -113,21 +113,9 @@ in
           installation_mode = "force_installed";
         };
 
-        # Sidebery
-        "{3c078156-979c-498b-8990-85f7987dd929}" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
-          installation_mode = "force_installed";
-        };
-
         # nightTab
         "{47bf427e-c83d-457d-9b3d-3db4118574bd}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/nighttab/latest.xpi";
-          installation_mode = "force_installed";
-        };
-
-        # Userchrome Toggle Extended
-        "userchrome-toggle-extended@n2ezr.ru" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/userchrome-toggle-extended/latest.xpi";
           installation_mode = "force_installed";
         };
 
