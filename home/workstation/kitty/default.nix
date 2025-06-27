@@ -4,7 +4,7 @@
     enable = true;
     settings = {
       confirm_os_window_close = 0;
-      font_family = "JetBrainsMono";
+      font_family = "JetBrainsMono Nerd Fonts";
       font_size = 14.0;
       include = "lostsand.conf";
     };

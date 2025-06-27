@@ -6,8 +6,9 @@
     ./audio.nix
     ./layout.nix
     ./packages.nix
-    ./udisks2.nix
     ./steam.nix
+    ./sunshine.nix
+    ./udisks2.nix
     # ./tlp.nix
   ];
 }

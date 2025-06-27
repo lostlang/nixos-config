@@ -5,7 +5,7 @@
   home.packages = with pkgs; [
     blueman
     godot_4
-    kdenlive
+    kdePackages.kdenlive
     networkmanagerapplet
     obsidian
     vlc
