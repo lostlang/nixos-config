@@ -10,5 +10,6 @@
 
     ./fonts.nix
     ./packages.nix
+    ./syncthing.nix
   ];
 }

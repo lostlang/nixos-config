@@ -3,6 +3,7 @@
     exec-once = [
       "waybar"
       "udiskie"
+      "telegram-desctop"
     ];
   };
 }
