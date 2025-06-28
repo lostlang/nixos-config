@@ -2,15 +2,6 @@
 {
   networking.firewall = {
     enable = true;
-
-    # extraCommands = ''
-    #   LOCAL_IP=$(ip route get 1 | awk '{print $7; exit}')
-    #   SUBNET=$(ip -o -f inet addr show | grep "$LOCAL_IP" | awk '{print $4}')
-    #
-    #   iptables -A INPUT -s $SUBNET -j ACCEPT
-    #
-    #   iptables -A nixos-fw -s "$SUBNET" -j nixos-fw-accept
-    # '';
   };
 
   systemd.services.firewall = {
