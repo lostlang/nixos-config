@@ -11,9 +11,6 @@
         glxinfo
       ];
     };
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
   };
 
   home.packages = with pkgs; [

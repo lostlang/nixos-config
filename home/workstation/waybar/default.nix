@@ -52,9 +52,8 @@
       clock = {
         format = ''
           {:%a
-           %I
-           %M
-           %p}'';
+          %H
+          %M}'';
         tooltip-format = "<tt><small>{calendar}</small></tt>";
         calendar = {
           mode = "month";
@@ -87,7 +86,7 @@
       };
       pulseaudio = {
         format = "{icon} {volume}%";
-        format-muted = "󰖁 {volume}%";
+        format-muted = "󰖁  {volume}%";
         on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         format-icons = {
           headphone = "󰋋";
@@ -97,26 +96,26 @@
           portable = "";
           car = "";
           default = [
-            ""
-            ""
+            "  "
+            "  "
           ];
         };
       };
       bluetooth = {
-        format = " {status}";
-        format-off = "󰂲 {status}";
-        format-connected = "󰂱 on";
+        format = "  {status}";
+        format-off = "󰂲  {status}";
+        format-connected = "󰂱  on";
         on-click = "blueman-manager";
       };
       memory = {
         format = ''
-           R {percentage:02d}%
-           S {swapPercentage:02d}%'';
+            R {percentage:02d}%
+            S {swapPercentage:02d}%'';
       };
       cpu = {
         format = ''
-           {usage}%
-          󰓅 {avg_frequency:0.1f}'';
+            {usage}%
+          󰓅  {avg_frequency:0.1f}'';
       };
       power-profiles-daemon = {
         format = "{icon}";
