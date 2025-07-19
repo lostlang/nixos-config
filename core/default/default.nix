@@ -2,6 +2,7 @@
   imports = [
     ./script
 
+    ./direnv.nix
     ./docker.nix
     ./formatter.nix
     ./localization.nix
