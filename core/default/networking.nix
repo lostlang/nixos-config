@@ -1,11 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
-  networking.firewall = {
-    enable = true;
-  };
+  networking.firewall.enable = true;
 
   systemd.services.firewall = {
-    enable = true;
+    enable = lib.mkForce true;
+
     path = with pkgs; [
       gawk
       iproute2
@@ -13,11 +12,12 @@
   };
 
   systemd.services.local-fw = {
+    wantedBy = [ "multi-user.target" ];
     after = [
       "network-online.target"
       "firewall.service"
     ];
-    wantedBy = [ "multi-user.target" ];
+
     path = with pkgs; [
       iproute2
       gawk
