@@ -1,6 +1,9 @@
 { pkgs, lib, ... }:
 {
-  networking.firewall.enable = true;
+  networking = {
+    firewall.enable = true;
+    extraHosts = "192.168.8.132 server1";
+  };
 
   systemd.services.firewall = {
     enable = lib.mkForce true;

@@ -1,5 +1,7 @@
 { pkgs, ... }:
 pkgs.writeShellScriptBin "clean" ''
+  #!/usr/bin/env bash
+
   case "$1" in
     os)
       sudo nix-collect-garbage -d

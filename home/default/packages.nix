@@ -6,5 +6,7 @@
     microfetch
     neofetch
     lazygit
+    aider-chat
+    aichat
   ];
 }

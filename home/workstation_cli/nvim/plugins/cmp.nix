@@ -13,6 +13,7 @@
     settings = {
       sources = [
         # { name = "minuet"; }
+        { name = "copilot"; }
         { name = "codeium"; }
         { name = "nvim_lsp"; }
         { name = "path"; }
@@ -48,6 +49,7 @@
             Event = "",
             Operator = "󰆖",
             TypeParameter = "󰅲",
+            Copilot = "",
             Codeium = "",
             Ollama = "",
           }
@@ -62,6 +64,7 @@
             path = "[Path]",
             nvim_lsp_signature_help = "[Signature]",
             codeium = "[AI]",
+            copilot = "[AI]",
             cmp_ai = "[AI]",
             minuet = "[AI]",
           }

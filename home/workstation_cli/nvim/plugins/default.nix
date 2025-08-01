@@ -3,11 +3,11 @@
     ./lang_support
     ./themes
 
+    ./avante.nix
     ./cmp.nix
     ./gen.nix
     ./inc-rename.nix
     ./indent-blankline.nix
-    # ./lazygit.nix
     ./lsp.nix
     ./lualine.nix
     # ./minuet-ai.nix
@@ -28,6 +28,7 @@
     web-devicons.enable = true;
 
     windsurf-nvim.enable = true;
+    copilot-lua.enable = true;
     dropbar.enable = true;
     gitsigns.enable = true;
     highlight-colors.enable = true;
