@@ -14,5 +14,11 @@
     };
   };
 
+  security.sudo = {
+    enable = true;
+
+    wheelNeedsPassword = true;
+  };
+
   services.getty.autologinUser = user;
 }
