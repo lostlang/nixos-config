@@ -7,6 +7,5 @@
     neofetch
     lazygit
     aider-chat
-    aichat
   ];
 }

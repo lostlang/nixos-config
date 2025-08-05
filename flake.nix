@@ -1,14 +1,14 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/master";
 
     nixvim.url = "github:nix-community/nixvim";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
-    stylix.url = "github:danth/stylix/release-25.05";
+    stylix.url = "github:danth/stylix/master";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
@@ -71,13 +71,12 @@
                 ;
               inherit (host) hostname system_type window_manager;
             };
-            modules =
-              [
-                ./hosts/${host.hostname}
-                ./core
-              ]
-              ++ nixpkgs.lib.optionals (host.system_type == "workstation") [ stylix.nixosModules.stylix ]
-              ++ nixpkgs.lib.optionals (host.hostname == "wsl") [ nixos-wsl.nixosModules.default ];
+            modules = [
+              ./hosts/${host.hostname}
+              ./system
+            ]
+            ++ nixpkgs.lib.optionals (host.system_type == "workstation") [ stylix.nixosModules.stylix ]
+            ++ nixpkgs.lib.optionals (host.hostname == "wsl") [ nixos-wsl.nixosModules.default ];
           };
         }
       ) { } hosts;
