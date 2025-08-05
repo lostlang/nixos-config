@@ -4,6 +4,7 @@
     ./btop
     ./zellij
 
+    ./aichat.nix
     ./git.nix
     ./packages.nix
     ./ssh.nix
