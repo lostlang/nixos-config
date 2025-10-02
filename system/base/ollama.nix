@@ -33,5 +33,11 @@
       WEBUI_SECRET_KEY = "";
       PORT = "11435";
     };
+
+    # HACK: open-webui has a dependency conflict with ollama
+    package = pkgs.open-webui.overridePythonAttrs (_: {
+      pythonCatchConflicts = false;
+      pythonCatchConflictsPhase = "true";
+    });
   };
 }
