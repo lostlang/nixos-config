@@ -4,6 +4,9 @@
 
     userName = "Alec Lang";
     userEmail = "lostlang@icloud.com";
-    ignores = [ ".envrc" ];
+    ignores = [
+      ".envrc"
+      ".direnv"
+    ];
   };
 }
