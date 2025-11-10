@@ -2,8 +2,11 @@
   programs.git = {
     enable = true;
 
-    userName = "Alec Lang";
-    userEmail = "lostlang@icloud.com";
+    settings.user = {
+      name = "Alec Lang";
+      email = "lostlang@icloud.com";
+    };
+
     ignores = [
       ".envrc"
       ".direnv"
