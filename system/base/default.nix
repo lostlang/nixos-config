@@ -5,6 +5,7 @@
     ./direnv.nix
     ./docker.nix
     ./formatter.nix
+    ./keyd.nix
     ./localization.nix
     ./networking.nix
     ./nix.nix
