@@ -2,11 +2,14 @@
   programs.nixvim.plugins.neo-tree = {
     enable = true;
 
-    window.position = "float";
-    defaultComponentConfigs.gitStatus.symbols = {
-      untracked = "";
-      unstaged = "";
-      staged = "󰸞";
+    settings = {
+      window.position = "float";
+
+      defaultComponentConfigs.gitStatus.symbols = {
+        untracked = "";
+        unstaged = "";
+        staged = "󰸞";
+      };
     };
   };
 

@@ -16,6 +16,7 @@
 
   systemd.services.local-fw = {
     wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
     after = [
       "network-online.target"
       "firewall.service"
