@@ -4,7 +4,6 @@
 
     ./core.nix
     ./diagnostic.nix
-    ./fold.nix
     ./keymap.nix
   ];
 
