@@ -15,6 +15,7 @@
     ./noice.nix
     ./none-ls.nix
     ./notify.nix
+    ./nvim-origami.nix
     ./rainbow-delimiters.nix
     ./smear-cursor.nix
     ./telescope.nix
