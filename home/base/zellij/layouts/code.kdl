@@ -24,7 +24,7 @@ layout {
 			size 1
 			borderless true
 			plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
-				format_left   "#[bg=#437F06,fg=#EDDFBF]{mode}#[bg=#A78A5E,fg=#437F06]#[bg=#A78A5E,fg=#EDDFBF,bold] {session} #[fg=#A78A5E]{command_git_branch}"
+				format_left   "#[bg=#437F06,fg=#EDDFBF,bold]{mode}#[bg=#A78A5E,fg=#437F06] #[bg=#A78A5E,fg=#EDDFBF,bold] {session} #[fg=#A78A5E] {command_git_branch}"
 				format_center " {tabs} "
 				format_right  "{datetime}"
 
@@ -51,7 +51,7 @@ layout {
 				command_git_branch_interval    "10"
 				command_git_branch_rendermode  "static"
 
-				datetime "#[bg=#EDDFBF,fg=#437F06]#[bg=#437F06,fg=#EDDFBF] {format} "
+				datetime "#[bg=#EDDFBF,fg=#437F06] #[bg=#437F06,fg=#EDDFBF] {format} "
 				datetime_format "%A, %H:%M"
 				datetime_timezone "Asia/Almaty"
 			}
