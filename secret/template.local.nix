@@ -1,0 +1,6 @@
+{
+  openWebui = {
+    webuiSecretKey = "";
+    oauthSessionTokenEncryptionKey = "";
+  };
+}

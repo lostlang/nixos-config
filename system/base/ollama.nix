@@ -1,5 +1,16 @@
-{ pkgs, ... }:
+{ secret, ... }:
 {
+  assertions = [
+    {
+      assertion = secret.openWebui.webuiSecretKey != "";
+      message = "open-webui: WEBUI_SECRET_KEY пуст — заполни secret/local.nix";
+    }
+    {
+      assertion = secret.openWebui.oauthSessionTokenEncryptionKey != "";
+      message = "open-webui: OAUTH_SESSION_TOKEN_ENCRYPTION_KEY пуст — заполни secret/local.nix";
+    }
+  ];
+
   services.ollama = {
     enable = true;
 
@@ -29,8 +40,8 @@
       ANONYMIZED_TELEMETRY = "False";
       DO_NOT_TRACK = "True";
       SCARF_NO_ANALYTICS = "True";
-      WEBUI_AUTH = "False";
-      WEBUI_SECRET_KEY = "";
+      WEBUI_SECRET_KEY = secret.openWebui.webuiSecretKey;
+      OAUTH_SESSION_TOKEN_ENCRYPTION_KEY = secret.openWebui.oauthSessionTokenEncryptionKey;
       PORT = "11435";
     };
   };
