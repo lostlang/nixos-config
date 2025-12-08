@@ -15,24 +15,24 @@ in
           default = "ddg";
           privateDefault = "ddg";
           engines = {
-            "YouTube" = {
+            "youtube" = {
               urls = [
                 {
                   template = "https://www.youtube.com/results?search_query={searchTerms}";
                 }
               ];
-              iconUpdateURL = "https://www.youtube.com/favicon.ico";
+              icon = "https://www.youtube.com/favicon.ico";
               definedAliases = [ "!yt" ];
             };
             "Github" = {
               urls = [ { template = "https://github.com/search?q={searchTerms}"; } ];
-              iconUpdateUrl = "https://github.githubassets.com/favicons/favicon-dark.png";
+              icon = "https://github.githubassets.com/favicons/favicon-dark.png";
               definedAliases = [ "!gh" ];
             };
             "NixOS Package" = {
               urls = [
                 {
-                  template = "https://search.nixos.org/packages?channel=25.05&from=0&size=50&sort=relevance&type=packages&query={searchTerms}";
+                  template = "https://search.nixos.org/packages?channel=25.11&from=0&size=50&sort=relevance&type=packages&query={searchTerms}";
                 }
               ];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
