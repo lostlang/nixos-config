@@ -13,7 +13,7 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     potatofox = {
-      url = "git+https://codeberg.org/awwpotato/PotatoFox";
+      url = "git+https://codeberg.org/da157/PotatoFox";
       flake = false;
     };
   };
@@ -32,7 +32,7 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      stateVersion = "25.05";
+      stateVersion = "25.11";
       user = "lostlang";
       hosts = [
         {
