@@ -34,6 +34,7 @@
       system = "x86_64-linux";
       stateVersion = "25.11";
       user = "lostlang";
+      secret = import ./secret;
       hosts = [
         {
           hostname = "wsl";
@@ -68,6 +69,7 @@
                 system
                 stateVersion
                 user
+                secret
                 ;
               inherit (host) hostname system_type window_manager;
             };

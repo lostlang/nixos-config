@@ -10,8 +10,8 @@
     ```bash
     git clone https://github.com/lostlang/nixos-wsl-config $HOME/.config/nixos
     cd $HOME/.config/nixos
-    sudo nixos-rebuild switch --flake .#wsl
-    home-manager switch --flake .
+    sudo nixos-rebuild switch --impure --flake .#wsl
+    home-manager switch --impure --flake .
     clean all
     ```
 1. Reboot WLS (in Windows PowerShell)

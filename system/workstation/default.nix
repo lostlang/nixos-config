@@ -4,6 +4,7 @@
     ./stylix
 
     ./audio.nix
+    ./keyd.nix
     ./layout.nix
     ./packages.nix
     ./steam.nix
