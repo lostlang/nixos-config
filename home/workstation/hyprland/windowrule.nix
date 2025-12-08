@@ -10,12 +10,18 @@
 
       "float, class:blueman-applet-wrapped"
       "pin, class:blueman-applet-wrapped"
-      "move 1600 0, class:blueman-applet-wrapped"
+      "move 800 0, class:blueman-applet-wrapped"
 
       "float, title:^(Picture-in-Picture)"
       "pin, title:^(Picture-in-Picture)"
-      "size 640 360, title:^(Picture-in-Picture)"
-      "move 1280 0, title:^(Picture-in-Picture)"
+      "size 320 180, title:^(Picture-in-Picture)"
+      "noborder, title:^(Picture-in-Picture)"
+      "move 940 20, title:^(Picture-in-Picture)"
+
+      "float, class:^(imv)$"
+      "pin, class:^(imv)$"
+      "noborder, class:^(imv)$"
+      "size 300 300, class:^(imv)$"
 
       "workspace 3, class:librewolf"
       "workspace 9, class:obsidian"

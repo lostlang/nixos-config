@@ -2,6 +2,7 @@
   imports = [
     ./plugins
 
+    ./commands.nix
     ./core.nix
     ./diagnostic.nix
     ./keymap.nix

@@ -3,6 +3,7 @@
     enable = true;
 
     style = builtins.readFile ./style.css;
+
     settings.mainBar = {
       reload_style_on_change = true;
       layer = "top";
@@ -31,17 +32,17 @@
         disable-scroll = true;
         format = "{icon}";
         format-icons = {
-          "1" = "";
-          "2" = "";
-          "3" = "";
+          "1" = " ";
+          "2" = " ";
+          "3" = " ";
           # "4" = " ";
           # "5" = " ";
           # "6" = " ";
           # "7" = " ";
           # "8" = " ";
-          "9" = "󰠮";
-          "10" = "";
-          "default" = "󰊠";
+          "9" = "󰠮 ";
+          "10" = " ";
+          "default" = "󰊠 ";
         };
       };
       "hyprland/language" = {
@@ -72,16 +73,16 @@
         title-len = 30;
         artist-len = 20;
         status-icons = {
-          paused = "󰏤";
-          playing = "󰐊";
-          stopped = "󰓛";
+          paused = "󰏤 ";
+          playing = "󰐊 ";
+          stopped = "󰓛 ";
         };
       };
       network = {
         tooltip = false;
-        format-wifi = "󰖩 on";
-        format-disconnected = "󰖪 off";
-        format-ethernet = "󰈀 on";
+        format-wifi = "󰖩  on";
+        format-disconnected = "󰖪  off";
+        format-ethernet = "󰈀  on";
         on-click = "nm-connection-editor";
       };
       pulseaudio = {
@@ -89,15 +90,15 @@
         format-muted = "󰖁  {volume}%";
         on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         format-icons = {
-          headphone = "󰋋";
-          headset = "󰋎";
-          phone = "";
-          phone-muted = "";
-          portable = "";
-          car = "";
+          headphone = "󰋋 ";
+          headset = "󰋎 ";
+          phone = " ";
+          phone-muted = " ";
+          portable = " ";
+          car = " ";
           default = [
-            "  "
-            "  "
+            " "
+            " "
           ];
         };
       };
@@ -124,14 +125,14 @@
           Power profile: {profile}
           Driver: {driver}'';
         format-icons = {
-          default = "";
-          performance = "";
-          balanced = "";
-          power-saver = "";
+          default = " ";
+          performance = " ";
+          balanced = " ";
+          power-saver = " ";
         };
       };
       "custom/power" = {
-        format = "";
+        format = " ";
         tooltip = false;
         on-click = "wlogout";
       };

@@ -5,12 +5,13 @@
   home.packages = with pkgs; [
     blueman
     godot_4
+    imv
     kdePackages.kdenlive
     networkmanagerapplet
     obsidian
-    vlc
     telegram-desktop
     transmission_4-qt
+    vlc
     wl-clipboard
   ];
 }

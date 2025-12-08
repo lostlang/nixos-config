@@ -3,7 +3,6 @@
     ./hyprland
     ./kitty
     ./librewolf
-    ./stylix
     ./waybar
     ./wofi
     # ./steam
