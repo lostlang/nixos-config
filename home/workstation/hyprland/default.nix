@@ -22,9 +22,9 @@
       "$term" = "kitty";
       "$menu" = "wofi --show drun";
       monitor = [
-        "HDMI-A-1, 1920x1080@60, 0x0, 1"
-        "HDMI-A-2, 1920x1080@60, 0x0, 1, mirror, HDMI-A-1"
-        "DP-1, 1920x1080@60, 0x0, 1, mirror, HDMI-A-1"
+        "HDMI-A-1, 1920x1080@60, 0x0, 1.5"
+        "HDMI-A-2, 1920x1080@60, 0x0, 1.5, mirror, HDMI-A-1"
+        "DP-1, 1920x1080@60, 0x0, 1.5, mirror, HDMI-A-1"
       ];
     };
   };
