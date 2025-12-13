@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./autoload.nix
@@ -8,24 +8,24 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    # The hyprland package to use
-    package = pkgs.hyprland;
-    # Whether to enable XWayland
     xwayland.enable = true;
 
-    # Optional
-    # Whether to enable hyprland-session.target on hyprland startup
     systemd.enable = true;
 
     settings = {
       "$mainMod" = "SUPER";
       "$term" = "kitty";
       "$menu" = "wofi --show drun";
-      monitor = [
-        "HDMI-A-1, 1920x1080@60, 0x0, 1.5"
-        "HDMI-A-2, 1920x1080@60, 0x0, 1.5, mirror, HDMI-A-1"
-        "DP-1, 1920x1080@60, 0x0, 1.5, mirror, HDMI-A-1"
-      ];
+      source = [ "~/.config/hypr/active-profile.conf" ];
     };
   };
+
+  home.file.".config/hypr/resolution".source = ./resolution;
+
+  home.activation.hyprSymlink = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ln -sf "$HOME/.config/hypr/resolution/monitor_16_9_1920_1080.conf" \
+      "$HOME/.config/hypr/active-profile.conf"
+  '';
+
+  home.packages = [ (import ./resolution_swich.nix { inherit pkgs; }) ];
 }

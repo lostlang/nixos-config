@@ -1,6 +1,5 @@
 {
   imports = [
-    ./window_managers
     ./stylix
 
     ./audio.nix
@@ -10,6 +9,7 @@
     ./steam.nix
     ./sunshine.nix
     ./udisks2.nix
+    ./window_manager.nix
     # ./tlp.nix
   ];
 }

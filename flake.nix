@@ -39,12 +39,10 @@
         {
           hostname = "wsl";
           system_type = "workstation_cli";
-          window_manager = "none";
         }
         {
           hostname = "h56";
           system_type = "workstation";
-          window_manager = "hyprland";
         }
       ];
 
@@ -71,7 +69,7 @@
                 user
                 secret
                 ;
-              inherit (host) hostname system_type window_manager;
+              inherit (host) hostname system_type;
             };
             modules = [
               ./hosts/${host.hostname}
