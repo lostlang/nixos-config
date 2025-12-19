@@ -89,7 +89,12 @@
             pkgs = nixpkgs.legacyPackages.${system};
             extraSpecialArgs = {
               inherit (host) system_type;
-              inherit inputs stateVersion user;
+              inherit
+                inputs
+                stateVersion
+                user
+                secret
+                ;
             };
 
             modules = [

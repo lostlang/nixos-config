@@ -3,6 +3,7 @@
     enable = true;
     settings = {
       default_mode = "locked";
+      pane_frames = false;
       theme = "lostsand";
       themes = {
         lostsand = {
