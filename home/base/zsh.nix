@@ -16,6 +16,7 @@
         btop = "btop -p 1";
         v = "zellij --layout=code";
         nix-shell = "nix-shell --run $SHELL";
+        files-for-aichat-rag = ''git ls-files --cached --others --exclude-standard | sed "s|^|$(pwd)/|" | wl-copy'';
       };
 
     oh-my-zsh = {

@@ -1,10 +1,11 @@
 {
   imports = [
+    ./aichat
     ./bat
     ./btop
     ./zellij
 
-    ./aichat.nix
+    ./env.nix
     ./git.nix
     ./packages.nix
     ./ssh.nix

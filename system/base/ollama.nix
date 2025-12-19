@@ -17,6 +17,8 @@
     host = "0.0.0.0";
 
     loadModels = [
+      "nomic-embed-text"
+
       "deepseek-r1:1.5b"
       "gemma3:1b"
       "mistral:7b"
