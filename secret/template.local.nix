@@ -3,5 +3,9 @@
     webuiSecretKey = "";
     oauthSessionTokenEncryptionKey = "";
   };
-  openrouter.api_key = "";
+  openrouter.apiKeys = {
+    free = "";
+    paid = "";
+  };
+  openai.apiKeys.paid = "";
 }
