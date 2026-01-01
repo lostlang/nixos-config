@@ -8,6 +8,7 @@
     };
 
     ignores = [
+      ".aider*"
       ".envrc"
       ".direnv"
     ];
