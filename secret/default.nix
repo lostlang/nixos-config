@@ -6,5 +6,9 @@ in
     webuiSecretKey = local.openWebui.webuiSecretKey or "";
     oauthSessionTokenEncryptionKey = local.openWebui.oauthSessionTokenEncryptionKey or "";
   };
-  openrouter.api_key = local.openrouter.api_key or "";
+  openrouter.apiKeys = {
+    free = local.openrouter.apiKeys.free or "";
+    paid = local.openrouter.apiKeys.paid or "";
+  };
+  openai.apiKeys.paid = local.openai.apiKeys.paid or "";
 }

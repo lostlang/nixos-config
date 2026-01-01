@@ -7,5 +7,6 @@
     neofetch
     lazygit
     aider-chat
+    codex
   ];
 }

@@ -8,8 +8,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "lostlang";
           repo = "lostsand.nvim";
-          rev = "68ec085a5efff0aeb222cbeafbaaa982a439744b";
-          hash = "sha256-ECd1nOMsSv4Nqv9x2wZddB/y/3nPlaNV+MOxJhfjejU=";
+          rev = "dc8ab2043837046efc19679caccf278a86b1408b";
+          hash = "sha256-UlAOFQN+CzWc46H7CWQi6ATPp9puPqeBzMbEjvWyGXY=";
         };
       })
     ];

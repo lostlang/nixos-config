@@ -14,7 +14,7 @@
         rebuild-os = "sudo nixos-rebuild switch --impure --flake ${flakeDir}";
         update-flake = ''nix flake update --impure --flake "path:${flakeDir}"'';
         btop = "btop -p 1";
-        v = "zellij --layout=code";
+        v = "nvim .";
         nix-shell = "nix-shell --run $SHELL";
         files-for-aichat-rag = ''git ls-files --cached --others --exclude-standard | sed "s|^|$(pwd)/|" | wl-copy'';
       };

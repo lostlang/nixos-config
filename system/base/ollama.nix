@@ -17,18 +17,14 @@
     host = "0.0.0.0";
 
     loadModels = [
-      "nomic-embed-text"
+      "bge-m3"
+      "qwen3-embedding:0.6b"
 
-      "deepseek-r1:1.5b"
-      "gemma3:1b"
-      "mistral:7b"
       "qwen3:0.6b"
       "qwen3:1.7b"
 
-      "deepcoder:1.5b"
       "qwen2.5-coder:0.5b"
       "qwen2.5-coder:1.5b"
-      "qwen2.5-coder:3b"
     ];
   };
 
