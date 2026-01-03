@@ -16,6 +16,7 @@
       else
         null
     )
+    (if secret.zai.apiKeys.paid != "" then (import ./aiderw-zai.nix { inherit pkgs secret; }) else null)
     (import ./clean_script.nix { inherit pkgs; })
     (import ./env_init.nix { inherit pkgs; })
     (import ./env_rm.nix { inherit pkgs; })
