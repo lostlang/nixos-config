@@ -110,6 +110,14 @@ in
                   max_batch_size = 100;
                   input_price = 1.0e-2;
                 }
+
+                {
+                  name = "qwen/qwen-turbo:free";
+                  max_input_tokens = 262143;
+                  max_output_tokens = 262143;
+                  input_price = 0;
+                  output_price = 0;
+                }
               ];
             }
           ]

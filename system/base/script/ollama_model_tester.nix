@@ -2,12 +2,14 @@
 pkgs.writeShellScriptBin "ollama-model-tester" ''
   #!/usr/bin/env bash
 
-  if [ -z "$1" ]; then
-    echo "Использование: $0 <название_модели>"
+  models=$(${pkgs.ollama}/bin/ollama list | tail -n +2 | sort -u | awk '{print $1}')
+
+  if [ -z "$models" ]; then
+    echo "Error: failed to get model list"
     exit 1
   fi
 
-  model="$1"
+  model=$(echo "$models" | ${pkgs.fzf}/bin/fzf --prompt="Select Ollama model: ")
   prompt='Write simple python script tcp client and server, use only std libs.'
 
 
@@ -21,16 +23,16 @@ pkgs.writeShellScriptBin "ollama-model-tester" ''
   eval_duration=$(echo "$response" | ${pkgs.jq}/bin/jq -r '.eval_duration')
 
   if [ "$eval_count" = "null" ] || [ "$eval_duration" = "null" ]; then
-    echo "Ошибка: ответ от Ollama некорректен или пуст"
+    echo "Error: Ollama response is invalid or empty"
     exit 1
   fi
 
   tps=$(echo "scale=2; $eval_count / ($eval_duration / 1000000000)" |  ${pkgs.bc}/bin/bc)
 
-  echo "Модель: $model"
+  echo "Model: $model"
   echo "Prompt: \"$prompt\""
-  echo "Сгенерировано токенов: $eval_count"
-  echo "Время генерации: $eval_duration наносекунд"
-  echo "Скорость: $tps токенов в секунду"
+  echo "Generated tokens: $eval_count"
+  echo "Generation time: $eval_duration nanoseconds"
+  echo "Speed: $tps tokens per second"
 
 ''

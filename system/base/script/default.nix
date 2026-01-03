@@ -10,6 +10,12 @@
   environment.systemPackages = [
     (import ./aiderw.nix { inherit pkgs; })
     (import ./aiderw-openrouter.nix { inherit pkgs secret; })
+    (
+      if secret.openai.apiKeys.paid != "" then
+        (import ./aiderw-openai.nix { inherit pkgs secret; })
+      else
+        null
+    )
     (import ./clean_script.nix { inherit pkgs; })
     (import ./env_init.nix { inherit pkgs; })
     (import ./env_rm.nix { inherit pkgs; })

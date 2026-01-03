@@ -8,9 +8,19 @@ pkgs.writeShellScriptBin "aiderw-openrouter" ''
   #!/usr/bin/env bash
   set -euo pipefail
 
-  models="xiaomi/mimo-v2-flash:free"
+  models="xiaomi/mimo-v2-flash:free
+  mistralai/devstral-2512:free
+  qwen/qwen3-coder:free
+  ${
+    if hasOpenrouterPaid then
+      ''
+        qwen/qwen-turbo
+      ''
+    else
+      ""
+  }"
 
-  selected_model=$(printf "%s\n" "$models" | sort -u | ${pkgs.fzf}/bin/fzf --prompt="Select an OpenRouter model: ")
+  selected_model=$(printf "%s\n" "$models" | ${pkgs.fzf}/bin/fzf --prompt="Select an OpenRouter model: ")
 
   exec aiderw \
     --openai-api-base "https://openrouter.ai/api/v1" \
