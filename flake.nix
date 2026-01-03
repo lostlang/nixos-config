@@ -11,11 +11,6 @@
     stylix.url = "github:danth/stylix/master";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-
-    potatofox = {
-      url = "git+https://codeberg.org/da157/PotatoFox";
-      flake = false;
-    };
   };
 
   outputs =
