@@ -6,6 +6,6 @@
     hyprland
     udiskie
     waybar
-    xfce.thunar
+    thunar
   ];
 }

@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ pkgs, ... }:
 let
   folder = "default";
 in
@@ -41,6 +41,8 @@ in
           };
         };
         id = 0;
+
+        # about:config
         settings = {
           "privacy.clearOnShutdown.cache" = false;
           "privacy.clearOnShutdown.cookies" = false;
@@ -49,16 +51,13 @@ in
 
           "browser.startup.page" = 3;
           "browser.toolbars.bookmarks.visibility" = "never";
-          # about:config
           "browser.uiCustomization.state" = builtins.readFile ./toolbar.json;
           "extensions.activeThemeID" = "{21c3f603-d43d-4a58-bf53-5190e4352324}";
 
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
-          # potato tweaks
-          "uc.tweak.borderless" = true;
-          "uc.tweak.urlbar.not-floating" = true;
-          "uc.tweak.sidebar.wide" = true;
+          # sidebar
+          "sidebar.verticalTabs" = true;
         };
       };
     };
@@ -139,6 +138,4 @@ in
       };
     };
   };
-
-  home.file.".librewolf/${folder}/chrome".source = "${inputs.potatofox}/chrome";
 }
