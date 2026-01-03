@@ -8,4 +8,5 @@
     paid = "";
   };
   openai.apiKeys.paid = "";
+  zai.apiKeys.paid = "";
 }

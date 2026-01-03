@@ -11,4 +11,5 @@ in
     paid = local.openrouter.apiKeys.paid or "";
   };
   openai.apiKeys.paid = local.openai.apiKeys.paid or "";
+  zai.apiKeys.paid = local.zai.apiKeys.paid or "";
 }

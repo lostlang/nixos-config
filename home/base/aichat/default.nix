@@ -2,6 +2,7 @@
 let
   hasOpenrouterPaid = secret.openrouter.apiKeys.paid != "";
   hasOpenaiPaid = secret.openai.apiKeys.paid != "";
+  hasZaiPaid = secret.zai.apiKeys.paid != "";
 in
 {
   assertions = [
@@ -45,6 +46,13 @@ in
               name = "qwen/qwen3-coder:free";
               max_input_tokens = 262143;
               max_output_tokens = 262143;
+              input_price = 0;
+              output_price = 0;
+            }
+            {
+              name = "z-ai/glm-4.5-air:free";
+              max_input_tokens = 127999;
+              max_output_tokens = 95999;
               input_price = 0;
               output_price = 0;
             }
@@ -112,11 +120,11 @@ in
                 }
 
                 {
-                  name = "qwen/qwen-turbo:free";
+                  name = "qwen/qwen-turbo";
                   max_input_tokens = 262143;
                   max_output_tokens = 262143;
-                  input_price = 0;
-                  output_price = 0;
+                  input_price = 5.0e-2;
+                  output_price = 0.2;
                 }
               ];
             }
@@ -139,6 +147,56 @@ in
                   max_output_tokens = 127999;
                   input_price = 5.0e-2;
                   output_price = 0.4;
+                }
+              ];
+            }
+          ]
+        else
+          [ ]
+      )
+      ++ (
+        if hasZaiPaid then
+          [
+            {
+              name = "zai-paid";
+              type = "openai-compatible";
+              api_base = "https://api.z.ai/api/coding/paas/v4";
+              api_key = secret.zai.apiKeys.paid;
+              models = [
+                {
+                  name = "glm-4.7";
+                  max_input_tokens = 199999;
+                  max_output_tokens = 127999;
+                  input_price = 0.6;
+                  output_price = 2.2;
+                }
+                {
+                  name = "glm-4.6";
+                  max_input_tokens = 199999;
+                  max_output_tokens = 127999;
+                  input_price = 0.6;
+                  output_price = 2.2;
+                }
+                {
+                  name = "glm-4.5";
+                  max_input_tokens = 199999;
+                  max_output_tokens = 127999;
+                  input_price = 0.6;
+                  output_price = 2.2;
+                }
+                {
+                  name = "glm-4.5-air";
+                  max_input_tokens = 127999;
+                  max_output_tokens = 95999;
+                  input_price = 0.2;
+                  output_price = 1.1;
+                }
+                {
+                  name = "glm-4.5-flash";
+                  max_input_tokens = 127999;
+                  max_output_tokens = 95999;
+                  input_price = 0;
+                  output_price = 0;
                 }
               ];
             }
