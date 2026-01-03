@@ -1,8 +1,18 @@
 { pkgs, ... }:
 pkgs.writeShellScriptBin "clean" ''
   #!/usr/bin/env bash
+  set -euo pipefail
 
-  case "$1" in
+  params="os
+  home
+  zellij
+  nvim
+  all
+  "
+
+  selected_param=$(printf "%s\n" "$params" | ${pkgs.fzf}/bin/fzf --prompt="Select what to clean: ")
+
+  case "$selected_param" in
     os)
       sudo nix-collect-garbage -d
       ;;
@@ -20,10 +30,6 @@ pkgs.writeShellScriptBin "clean" ''
       nix-collect-garbage -d
       zellij delete-all-sessions -y
       rm $HOME/.local/state/nvim/swap/*
-      ;;
-    *)
-      echo "Valid param: {all|os|home|zellij|nvim}"
-      exit 1
       ;;
   esac
 ''
