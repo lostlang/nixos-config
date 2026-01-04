@@ -2,30 +2,17 @@
   wayland.windowManager.hyprland.settings = {
     # hyprctl clients
     windowrule = [
-      "float, class:nm-connection-editor"
-      "pin, class:nm-connection-editor"
+      "match:class nm-connection-editor, float on, pin on"
 
-      "float, class:blueman-manager-wrapped"
-      "pin, class:blueman-manager-wrapped"
+      "match:class blueman-applet-wrapped, float on, pin on, move 800 0"
 
-      "float, class:blueman-applet-wrapped"
-      "pin, class:blueman-applet-wrapped"
-      "move 800 0, class:blueman-applet-wrapped"
+      "match:title ^(Picture-in-Picture), float on, pin on, size 320 180, move 940 20"
 
-      "float, title:^(Picture-in-Picture)"
-      "pin, title:^(Picture-in-Picture)"
-      "size 320 180, title:^(Picture-in-Picture)"
-      "noborder, title:^(Picture-in-Picture)"
-      "move 940 20, title:^(Picture-in-Picture)"
+      "match:class ^(imv)$, float on, pin on, size 300 300"
 
-      "float, class:^(imv)$"
-      "pin, class:^(imv)$"
-      "noborder, class:^(imv)$"
-      "size 300 300, class:^(imv)$"
-
-      "workspace 3, class:librewolf"
-      "workspace 9, class:obsidian"
-      "workspace 10, class:org.telegram.desktop"
+      "match:class librewolf, workspace 3"
+      "match:class obsidian, workspace 9"
+      "match:class org.telegram.desktop, workspace 10"
     ];
   };
 }
