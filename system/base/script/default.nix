@@ -11,13 +11,6 @@
     (import ./aiderw.nix { inherit pkgs; })
     (import ./aider-ollama.nix { inherit pkgs; })
     (import ./aiderw-openrouter.nix { inherit pkgs secret; })
-    (
-      if secret.openai.apiKeys.paid != "" then
-        (import ./aiderw-openai.nix { inherit pkgs secret; })
-      else
-        null
-    )
-    (if secret.zai.apiKeys.paid != "" then (import ./aiderw-zai.nix { inherit pkgs secret; }) else null)
     (import ./aider-ollama.nix { inherit pkgs secret; })
     (import ./clean_script.nix { inherit pkgs; })
     (import ./env_init.nix { inherit pkgs; })
@@ -25,5 +18,20 @@
     (import ./minecraft_data_copy.nix { inherit pkgs; })
     (import ./ollama_model_tester.nix { inherit pkgs; })
     (import ./steam_clip_builder.nix { inherit pkgs; })
-  ];
+  ]
+  ++ (
+    if secret.openai.apiKeys.paid != "" then
+      [ (import ./aiderw-openai.nix { inherit pkgs secret; }) ]
+    else
+      [ ]
+  )
+  ++ (
+    if secret.zai.apiKeys.paid != "" then
+      [
+        (import ./aiderw-zai.nix { inherit pkgs secret; })
+        (import ./aiderw-zai-temp.nix { inherit pkgs; })
+      ]
+    else
+      [ ]
+  );
 }
