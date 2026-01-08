@@ -6,8 +6,7 @@ pkgs.writeShellScriptBin "aiderw-ollama" ''
   models="qwen3:0.6b
   qwen3:1.7b
   qwen2.5-coder:0.5b
-  qwen2.5-coder:1.5b
-  "
+  qwen2.5-coder:1.5b"
 
   selected_model=$(printf "%s\n" "$models" | ${pkgs.fzf}/bin/fzf --prompt="Select an Ollama model: ")
 

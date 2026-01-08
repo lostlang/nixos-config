@@ -1,15 +1,34 @@
 layout {
-	with_bars name="nvim"{
-		pane {
-			borderless true
-			command "nvim"
-			args "."
+	// with_bars name="nvim"{
+	// 	pane {
+	// 		borderless true
+	// 		command "nvim"
+	// 		args "."
+	// 	}
+	// }
+	with_bars name="ai"{
+		pane split_direction="vertical"{
+			pane {
+				command "codex"
+			}
+			pane {
+				command "aiderw-zai"
+			}
+		}
+	}
+	with_bars name="lazygit"{
+		pane split_direction="vertical"{
+			pane {
+				command "lazygit"
+			}
 		}
 	}
 	with_bars name="terminal"{
 		pane split_direction="vertical"{
-			pane
-			pane
+			pane {
+				command "nix"
+				args "develop"
+			}
 		}
 	}
 

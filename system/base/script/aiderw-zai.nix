@@ -7,11 +7,8 @@ pkgs.writeShellScriptBin "aiderw-zai" ''
   glm-4.6
   glm-4.5
   glm-4.5-air
-  glm-4.5-x
-  glm-4.5-airx
-  glm-4.5-flash
-  glm-4-32b-0414-128k
-  "
+  glm-4.5-flash"
+
   selected_model=$(printf "%s\n" "$models" | ${pkgs.fzf}/bin/fzf --prompt="Select a ZAI model: ")
 
   exec aiderw \

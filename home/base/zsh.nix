@@ -15,6 +15,7 @@
         update-flake = ''nix flake update --impure --flake "path:${flakeDir}"'';
         btop = "btop -p 1";
         v = "nvim .";
+        ai = "zellij --layout=code";
         nix-shell = "nix-shell --run $SHELL";
         files-for-aichat-rag = ''git ls-files --cached --others --exclude-standard | sed "s|^|$(pwd)/|" | wl-copy'';
       };

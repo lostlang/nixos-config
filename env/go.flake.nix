@@ -11,19 +11,103 @@
   outputs =
     { nixpkgs, go-nixpkgs, ... }:
     let
-      system = builtins.currentSystem;
-      pkgs = import nixpkgs { inherit system; };
-      goPkgs = import go-nixpkgs { inherit system; };
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
-        name = "go-dev";
-        buildInputs = with goPkgs; [ go ];
+      devShells = forAllSystems (
+        system:
+        let
+          bwrapEnv = {
+            CGO_ENABLED = 1;
+            GOPRIVATE = "";
+          };
 
-        shellHook = ''
-          export GOTOOLCHAIN=local
-          echo "🐹 Go env: $(go version)"
-        '';
-      };
+          extraInputs = (with fixPkgs; [ gcc ]) ++ (with pkgs; [ ]);
+
+          pkgs = import nixpkgs { inherit system; };
+          fixPkgs = import go-nixpkgs { inherit system; };
+
+          baseInputs =
+            (with fixPkgs; [ go ])
+            ++ (with pkgs; [
+              bash
+              bubblewrap
+              ncurses
+              cacert
+              coreutils
+              direnv
+              procps
+            ]);
+
+          buildInputs = baseInputs ++ extraInputs;
+
+          bwrapEnvArgs = pkgs.lib.concatStringsSep " " (
+            pkgs.lib.mapAttrsToList (name: value: ''--setenv ${name} "${toString value}"'') bwrapEnv
+          );
+        in
+        {
+          default = pkgs.mkShell {
+            inherit buildInputs;
+
+            shellHook = ''
+              bwrap-go() {
+                local host_gopath
+                local host_gocache
+                host_gopath="''${GOPATH:-$HOME/go}"
+                host_gocache="''${GOCACHE:-$HOME/.cache/go-build}"
+                mkdir -p "$host_gopath" "$host_gocache"
+                if [ ! -f "$PWD/go.mod" ]; then
+                  touch "$PWD/go.mod"
+                fi
+                if [ ! -f "$PWD/go.sum" ]; then
+                  touch "$PWD/go.sum"
+                fi
+
+                exec bwrap \
+                  --clearenv \
+                  --unshare-all \
+                  --share-net \
+                  --die-with-parent \
+                  --proc /proc \
+                  --dev /dev \
+                  --tmpfs /tmp \
+                  --tmpfs /home \
+                  --ro-bind /nix /nix \
+                  --ro-bind /etc/resolv.conf /etc/resolv.conf \
+                  --ro-bind "$PWD" /home/user/project \
+                  --bind "$PWD/go.mod" /home/user/project/go.mod \
+                  --bind "$PWD/go.sum" /home/user/project/go.sum \
+                  --chdir /home/user/project \
+                  --bind "$host_gopath" /go \
+                  --bind "$host_gocache" /gocache \
+                  --setenv PATH "${pkgs.lib.makeBinPath buildInputs}" \
+                  --setenv TERM "xterm-256color" \
+                  --setenv TERMINFO "${pkgs.ncurses}/share/terminfo" \
+                  --setenv HOME /home/user \
+                  --setenv SSL_CERT_FILE "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" \
+                  --setenv SSL_CERT_DIR "${pkgs.cacert}/etc/ssl/certs" \
+                  --setenv GOTOOLCHAIN local \
+                  --setenv GOPATH /go \
+                  --setenv GOMODCACHE /go/pkg/mod \
+                  --setenv GOCACHE /gocache \
+                  --setenv BWRAP_GO_ACTIVE 1 \
+                  ${bwrapEnvArgs} \
+                  bash -lc 'eval "$(direnv allow)"; eval "$(direnv export bash)"; echo "🔒 Run bwrap for an isolated shell"; echo "🐹 Go env: $(go version)"; exec bash -i'
+              }
+
+              export -f bwrap-go
+              if [ -z "$BWRAP_GO_ACTIVE" ]; then
+                bwrap-go
+              fi
+            '';
+          };
+        }
+      );
     };
 }
