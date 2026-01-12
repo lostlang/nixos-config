@@ -1,12 +1,31 @@
-{ pkgs, lib, ... }:
+{
+  lib,
+  pkgs,
+  secret,
+  ...
+}:
+let
+  hasZerotier = secret.zerotier.join_networks != [ ];
+  minecraftInterface = secret.zerotier.minecraft_interface;
+in
 {
   networking = {
-    firewall.enable = true;
-    extraHosts = "192.168.8.132 server1";
+    firewall = {
+      enable = true;
+      allowedUDPPorts = lib.optionals hasZerotier [ 9993 ];
+      interfaces = lib.optionalAttrs (minecraftInterface != "") {
+        "${minecraftInterface}".allowedTCPPorts = [ 25565 ];
+      };
+    };
+  };
+
+  services.zerotierone = lib.mkIf hasZerotier {
+    enable = true;
+    joinNetworks = secret.zerotier.join_networks;
   };
 
   systemd.services.firewall = {
-    enable = lib.mkForce true;
+    enable = true;
 
     path = with pkgs; [
       gawk

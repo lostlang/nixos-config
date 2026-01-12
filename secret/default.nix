@@ -12,4 +12,8 @@ in
   };
   openai.apiKeys.paid = local.openai.apiKeys.paid or "";
   zai.apiKeys.paid = local.zai.apiKeys.paid or "";
+  zerotier = {
+    join_networks = local.zerotier.join_networks or [ ];
+    minecraft_interface = local.zerotier.minecraft_interface or "";
+  };
 }

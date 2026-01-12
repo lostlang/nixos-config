@@ -16,4 +16,12 @@
 
   # https://z.ai/manage-apikey/apikey-list
   zai.apiKeys.paid = "";
+
+  zerotier = {
+    # https://central.zerotier.com
+    join_networks = [ ];
+
+    # sudo zerotier-cli listnetworks
+    minecraft_interface = "";
+  };
 }
