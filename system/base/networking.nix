@@ -25,7 +25,7 @@ in
   };
 
   systemd.services.firewall = {
-    enable = true;
+    enable = lib.mkForce true;
 
     path = with pkgs; [
       gawk
