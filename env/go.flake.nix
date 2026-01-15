@@ -30,7 +30,7 @@
 
           hostEnvPassthrough = [ ];
 
-          extraInputs = (with fixPkgs; [ gcc ]) ++ (with pkgs; [ yt-dlp ]);
+          extraInputs = (with fixPkgs; [ gcc ]) ++ (with pkgs; [ ]);
 
           pkgs = import nixpkgs { inherit system; };
           fixPkgs = import go-nixpkgs { inherit system; };
