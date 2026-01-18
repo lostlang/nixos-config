@@ -5,4 +5,3 @@ repos:
         name: Run nix fmt
         entry: nix fmt
         language: system
-        files: \.nix$

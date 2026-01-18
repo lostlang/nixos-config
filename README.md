@@ -9,7 +9,7 @@
 1. Install dots (in WSL)
     ```bash
     git clone https://github.com/lostlang/nixos-wsl-config $HOME/.config/nixos
-    cd $HOME/.config/nixos
+    cd $HOME/.config/nixos/config
     sudo nixos-rebuild switch --impure --flake .#wsl
     home-manager switch --impure --flake .
     clean all

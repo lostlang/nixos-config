@@ -1,7 +1,0 @@
-{
-  imports = [
-    ./nvim
-
-    ./packages.nix
-  ];
-}
