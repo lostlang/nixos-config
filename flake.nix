@@ -1,103 +1,37 @@
 {
+  description = "Formatter tools for this repo";
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    home-manager.url = "github:nix-community/home-manager/master";
-
-    nixvim.url = "github:nix-community/nixvim";
-
     treefmt-nix.url = "github:numtide/treefmt-nix";
-
-    stylix.url = "github:danth/stylix/master";
-
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      home-manager,
-      nixvim,
       systems,
       treefmt-nix,
-      stylix,
-      nixos-wsl,
       ...
-    }@inputs:
+    }:
     let
-      system = "x86_64-linux";
-      stateVersion = "25.11";
-      user = "lostlang";
-      secret = import ./secret;
-      hosts = [
-        {
-          hostname = "wsl";
-          system_type = "workstation_cli";
-        }
-        {
-          hostname = "h56";
-          system_type = "workstation";
-        }
-      ];
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
 
-      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./pre_config/treefmt.nix);
+      treefmt_config = {
+        projectRootFile = ".git/config";
+        programs.nixfmt.enable = true;
+        programs.yamlfmt.enable = true;
+      };
+      treefmtEval = eachSystem (
+        system: treefmt-nix.lib.evalModule (import nixpkgs { inherit system; }) treefmt_config
+      );
     in
     {
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-      checks = eachSystem (pkgs: {
-        formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      formatter = eachSystem (system: treefmtEval.${system}.config.build.wrapper);
+
+      checks = eachSystem (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
       });
-
-      nixosConfigurations = nixpkgs.lib.foldl' (
-        configs: host:
-        configs
-        // {
-          "${host.hostname}" = nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = {
-              inherit
-                inputs
-                system
-                stateVersion
-                user
-                secret
-                ;
-              inherit (host) hostname system_type;
-            };
-            modules = [
-              ./hosts/${host.hostname}
-              ./system
-            ]
-            ++ nixpkgs.lib.optionals (host.system_type == "workstation") [ stylix.nixosModules.stylix ]
-            ++ nixpkgs.lib.optionals (host.hostname == "wsl") [ nixos-wsl.nixosModules.default ];
-          };
-        }
-      ) { } hosts;
-
-      homeConfigurations = nixpkgs.lib.foldl' (
-        configs: host:
-        configs
-        // {
-          "${user}@${host.hostname}" = home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.${system};
-            extraSpecialArgs = {
-              inherit (host) system_type;
-              inherit
-                inputs
-                stateVersion
-                user
-                secret
-                ;
-            };
-
-            modules = [
-              nixvim.homeModules.nixvim
-              ./home
-            ];
-          };
-        }
-      ) { } hosts;
     };
 }
