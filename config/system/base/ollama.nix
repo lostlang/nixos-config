@@ -2,18 +2,11 @@
   secret,
   ...
 }:
+let
+  openWebuiEnabled =
+    secret.openWebui.webuiSecretKey != "" && secret.openWebui.oauthSessionTokenEncryptionKey != "";
+in
 {
-  assertions = [
-    {
-      assertion = secret.openWebui.webuiSecretKey != "";
-      message = "open-webui: WEBUI_SECRET_KEY пуст — заполни secret/local.nix";
-    }
-    {
-      assertion = secret.openWebui.oauthSessionTokenEncryptionKey != "";
-      message = "open-webui: OAUTH_SESSION_TOKEN_ENCRYPTION_KEY пуст — заполни secret/local.nix";
-    }
-  ];
-
   services.ollama = {
     enable = true;
 
@@ -32,7 +25,7 @@
   };
 
   services.open-webui = {
-    enable = true;
+    enable = openWebuiEnabled;
 
     host = "0.0.0.0";
     port = 11435;

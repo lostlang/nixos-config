@@ -44,7 +44,7 @@
           hostname = "wsl";
           system = "x86_64-linux";
           extraExternalModules = [ nixos-wsl.nixosModules.default ];
-          extraLocalModules = [ "wsl" ];
+          extraLocalModules = [ ];
         }
         {
           hostname = "h56";
@@ -78,7 +78,7 @@
                 ;
             };
             modules = [
-              ./hosts/${host.hostname}
+              ./host/${host.hostname}/system
               ./system
             ]
             ++ (host.extraExternalModules or [ ]);
@@ -108,6 +108,7 @@
             };
             modules = [
               nixvim.homeModules.nixvim
+              ./host/${host.hostname}/home
               ./home
             ];
           };
