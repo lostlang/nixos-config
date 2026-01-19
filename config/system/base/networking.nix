@@ -12,6 +12,7 @@ in
   networking = {
     firewall = {
       enable = true;
+
       allowedUDPPorts = lib.optionals hasZerotier [ 9993 ];
       interfaces = lib.optionalAttrs (minecraftInterface != "") {
         "${minecraftInterface}".allowedTCPPorts = [ 25565 ];
@@ -21,6 +22,7 @@ in
 
   services.zerotierone = lib.mkIf hasZerotier {
     enable = true;
+
     joinNetworks = secret.zerotier.joinNetworks;
   };
 

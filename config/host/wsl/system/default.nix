@@ -5,6 +5,10 @@
   ...
 }:
 {
+  imports = [
+    ./keyd.nix
+  ];
+
   wsl.enable = true;
   wsl.defaultUser = user;
 
