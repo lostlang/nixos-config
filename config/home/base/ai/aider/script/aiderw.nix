@@ -18,7 +18,6 @@ pkgs.writeShellScriptBin "aiderw" ''
     --completion-menu-color "${palette.black}" \
     --completion-menu-current-bg-color "${palette.green}" \
     --completion-menu-current-color "${palette.black}" \
-    --code-theme "autumn" \
     --no-gitignore \
     --notifications \
     --no-show-model-warnings \

@@ -43,13 +43,21 @@
         {
           hostname = "wsl";
           system = "x86_64-linux";
-          extraExternalModules = [ nixos-wsl.nixosModules.default ];
+          extraExternalModules = {
+            system = [
+              nixos-wsl.nixosModules.default
+            ];
+            home = [ ];
+          };
           extraLocalModules = [ ];
         }
         {
           hostname = "h56";
           system = "x86_64-linux";
-          extraExternalModules = [ stylix.nixosModules.stylix ];
+          extraExternalModules = {
+            system = [ ];
+            home = [ ];
+          };
           extraLocalModules = [ "gui" ];
         }
       ];
@@ -78,39 +86,38 @@
                 ;
             };
             modules = [
+              stylix.nixosModules.stylix
               ./host/${host.hostname}/system
               ./system
+              home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  extraSpecialArgs = {
+                    inherit (host)
+                      extraLocalModules
+                      system
+                      ;
+                    inherit
+                      colorScheme
+                      inputs
+                      secret
+                      stateVersion
+                      timezone
+                      user
+                      ;
+                  };
+                  users.${user}.imports = [
+                    nixvim.homeModules.nixvim
+                    ./host/${host.hostname}/home
+                    ./home
+                  ]
+                  ++ (host.extraExternalModules.home or [ ]);
+                };
+              }
             ]
-            ++ (host.extraExternalModules or [ ]);
-          };
-        }
-      ) { } hosts;
-
-      homeConfigurations = nixpkgs.lib.foldl' (
-        configs: host:
-        configs
-        // {
-          "${user}@${host.hostname}" = home-manager.lib.homeManagerConfiguration {
-            pkgs = import nixpkgs { system = host.system; };
-            extraSpecialArgs = {
-              inherit (host)
-                extraLocalModules
-                system
-                ;
-              inherit
-                colorScheme
-                inputs
-                secret
-                stateVersion
-                timezone
-                user
-                ;
-            };
-            modules = [
-              nixvim.homeModules.nixvim
-              ./host/${host.hostname}/home
-              ./home
-            ];
+            ++ (host.extraExternalModules.system or [ ]);
           };
         }
       ) { } hosts;

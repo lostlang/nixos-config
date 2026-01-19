@@ -7,6 +7,8 @@ let
   theme = import ./theme.nix { inherit colorScheme; };
 in
 {
+  stylix.targets.btop.enable = false;
+
   programs.btop = {
     enable = true;
 

@@ -1,6 +1,7 @@
 {
   services.tlp = {
     enable = true;
+
     settings = {
       PLATFORM_PROFILE_ON_AC = "balanced";
       CPU_SCALING_GOVERNOR_ON_AC = "powersave";

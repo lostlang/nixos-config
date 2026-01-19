@@ -3,8 +3,6 @@
   ...
 }:
 {
-  nixpkgs.config.allowUnfree = true;
-
   programs.steam = {
     enable = true;
     package = pkgs.steam.override {
