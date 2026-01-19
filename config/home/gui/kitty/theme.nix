@@ -8,8 +8,12 @@ in
 ''
   background            ${palette.light_white}
   foreground            ${palette.black}
-  cursor                ${palette.red}
+
   selection_background  ${palette.white}
+  selection_foreground  ${palette.light_black}
+
+  cursor                ${palette.light_orange}
+
   color0                ${palette.black}
   color8                ${palette.light_black}
   color1                ${palette.red}
@@ -26,5 +30,7 @@ in
   color14               ${palette.light_aqua}
   color7                ${palette.white}
   color15               ${palette.light_white}
-  selection_foreground  ${palette.light_black}
+
+  color16               ${palette.orange}
+  color17               ${palette.light_orange}
 ''

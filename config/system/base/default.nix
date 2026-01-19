@@ -11,7 +11,9 @@
     ./ollama.nix
     ./packages.nix
     ./ssh.nix
+    ./stylix.nix
     ./timezone.nix
     ./user.nix
+    ./xdg-portal.nix
   ];
 }

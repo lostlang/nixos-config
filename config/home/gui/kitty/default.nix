@@ -7,8 +7,11 @@ let
   themeText = import ./theme.nix { inherit colorScheme; };
 in
 {
+  stylix.targets.kitty.enable = false;
+
   programs.kitty = {
     enable = true;
+
     settings = {
       confirm_os_window_close = 0;
       font_family = "JetBrainsMono Nerd Fonts";

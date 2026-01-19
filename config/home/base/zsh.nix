@@ -11,7 +11,6 @@
         flakeDir = "$HOME/.config/nixos/config/";
       in
       {
-        rebuild-home = "home-manager switch --impure --flake ${flakeDir}";
         rebuild-os = "sudo nixos-rebuild switch --impure --flake ${flakeDir}";
         update-flake = ''nix flake update --flake "path:${flakeDir}"'';
         btop = "btop -p 1";
