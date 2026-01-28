@@ -1,12 +1,12 @@
 {
   colorScheme,
-  timezone,
+  osConfig,
   ...
 }:
 let
   themeName = colorScheme.default.name;
   theme = import ./theme.nix { inherit colorScheme; };
-  codeLayout = import ./layouts/code.nix { inherit colorScheme timezone; };
+  codeLayout = import ./layouts/code.nix { inherit colorScheme osConfig; };
 in
 {
   programs.zellij = {

@@ -1,6 +1,6 @@
 {
   colorScheme,
-  timezone,
+  osConfig,
   ...
 }:
 let
@@ -73,7 +73,7 @@ in
 
           datetime "#[bg=${palette.light_white},fg=${palette.green}] #[bg=${palette.green},fg=${palette.light_white}] {format} "
           datetime_format "%A, %H:%M"
-          datetime_timezone "${timezone}"
+          datetime_timezone "${osConfig.time.timeZone}"
         }
       }
     }

@@ -2,18 +2,23 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
+    stylix = {
+      url = "github:danth/stylix/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix = {
-      url = "github:danth/stylix/master";
+    nixvim = {
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -26,18 +31,18 @@
   outputs =
     {
       nixpkgs,
+      sops-nix,
       home-manager,
-      nixvim,
       stylix,
+      nixvim,
       nixos-wsl,
       ...
     }@inputs:
     let
       stateVersion = "25.11";
       user = "lostlang";
-      timezone = "Asia/Almaty";
       colorScheme = import ./colorScheme;
-      secret = import ./secret;
+      secretPath = "/home/${user}/.secret/";
 
       hosts = [
         {
@@ -79,16 +84,16 @@
               inherit
                 colorScheme
                 inputs
-                secret
+                secretPath
                 stateVersion
-                timezone
                 user
                 ;
             };
             modules = [
-              stylix.nixosModules.stylix
               ./host/${host.hostname}/system
               ./system
+              sops-nix.nixosModules.sops
+              stylix.nixosModules.stylix
               home-manager.nixosModules.home-manager
               {
                 home-manager = {
@@ -102,16 +107,15 @@
                     inherit
                       colorScheme
                       inputs
-                      secret
+                      secretPath
                       stateVersion
-                      timezone
                       user
                       ;
                   };
                   users.${user}.imports = [
-                    nixvim.homeModules.nixvim
                     ./host/${host.hostname}/home
                     ./home
+                    nixvim.homeModules.nixvim
                   ]
                   ++ (host.extraExternalModules.home or [ ]);
                 };

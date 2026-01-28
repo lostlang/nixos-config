@@ -1,10 +1,11 @@
 {
   colorScheme,
+  user,
   ...
 }:
 let
   themeName = colorScheme.default.name;
-  theme = import ./theme.nix { inherit colorScheme; };
+  theme = import ./theme.nix { inherit colorScheme user; };
 in
 {
   stylix.targets.btop.enable = false;

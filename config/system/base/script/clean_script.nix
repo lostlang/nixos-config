@@ -7,7 +7,6 @@ pkgs.writeShellScriptBin "clean" ''
   set -euo pipefail
 
   params="all
-  home
   nvim
   os
   zellij"
@@ -18,9 +17,6 @@ pkgs.writeShellScriptBin "clean" ''
     os)
       sudo nix-collect-garbage -d
       ;;
-    home)
-      nix-collect-garbage -d
-      ;;
     zellij)
       zellij delete-all-sessions -y
       ;;
@@ -29,7 +25,6 @@ pkgs.writeShellScriptBin "clean" ''
       ;;
     all)
       sudo nix-collect-garbage -d
-      nix-collect-garbage -d
       zellij delete-all-sessions -y
       rm $HOME/.local/state/nvim/swap/*
       ;;

@@ -6,6 +6,8 @@
 }:
 {
   imports = [
+    ./options.nix
+
     ./keyd.nix
   ];
 

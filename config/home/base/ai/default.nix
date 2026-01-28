@@ -1,11 +1,6 @@
-let
-  provider = import ./provider.nix;
-in
 {
   imports = [
     ./aichat
-    ./aider
+    ./opencode
   ];
-
-  _module.args.provider = provider;
 }
