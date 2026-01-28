@@ -1,7 +1,3 @@
 {
-  timezone,
-  ...
-}:
-{
-  time.timeZone = timezone;
+  time.timeZone = "Asia/Almaty";
 }

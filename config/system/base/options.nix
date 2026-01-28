@@ -1,0 +1,8 @@
+{
+  lib,
+  ...
+}:
+{
+  options.myConfig = {
+  };
+}

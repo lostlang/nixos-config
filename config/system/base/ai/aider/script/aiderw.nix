@@ -7,7 +7,7 @@ let
   palette = colorScheme.default.palette;
 in
 pkgs.writeShellScriptBin "aiderw" ''
-  exec ${pkgs.aider-chat}/bin/aider \
+  exec ${pkgs.aider-chat-full}/bin/aider \
     --watch-files \
     --user-input-color "${palette.green}" \
     --tool-output-color "${palette.black}" \

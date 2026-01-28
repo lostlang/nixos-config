@@ -1,5 +1,6 @@
 {
   colorScheme,
+  user,
   ...
 }:
 let
@@ -8,7 +9,7 @@ let
 in
 ''
   #Bashtop "${themeName}" theme
-  #by lostlang
+  #by ${user}
 
   # Colors should be in 6 or 2 character hexadecimal or single spaced rgb decimal: "#RRGGBB", "#BW" or "0-255 0-255 0-255"
   # example for white: "#FFFFFF", "#ff" or "255 255 255".

@@ -1,5 +1,6 @@
 {
   pkgs,
+  user,
   ...
 }:
 {
@@ -9,7 +10,7 @@
         pname = "lostsand.nvim";
         version = "latest";
         src = pkgs.fetchFromGitHub {
-          owner = "lostlang";
+          owner = user;
           repo = "lostsand.nvim";
           rev = "dc8ab2043837046efc19679caccf278a86b1408b";
           hash = "sha256-UlAOFQN+CzWc46H7CWQi6ATPp9puPqeBzMbEjvWyGXY=";

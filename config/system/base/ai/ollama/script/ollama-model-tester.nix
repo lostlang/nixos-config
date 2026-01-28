@@ -1,22 +1,20 @@
 {
   pkgs,
+  provider,
   ...
 }:
+let
+  models = builtins.concatStringsSep "\n" (map (model: model.name) provider.model.chat);
+in
 pkgs.writeShellScriptBin "ollama-model-tester" ''
   #!/usr/bin/env bash
 
-  models=$(${pkgs.ollama}/bin/ollama list | tail -n +2 | sort -u | awk '{print $1}')
-
-  if [ -z "$models" ]; then
-    echo "Error: failed to get model list"
-    exit 1
-  fi
+  models="${models}"
 
   model=$(echo "$models" | ${pkgs.fzf}/bin/fzf --prompt="Select Ollama model: ")
   prompt='Write simple python script tcp client and server, use only std libs.'
 
-
-  response=$(curl -s http://localhost:11434/api/generate -d "{
+  response=$(curl -s ${provider.apiBase}/api/generate -d "{
     \"model\": \"$model\",
     \"prompt\": \"$prompt\",
     \"stream\": false
@@ -30,12 +28,11 @@ pkgs.writeShellScriptBin "ollama-model-tester" ''
     exit 1
   fi
 
-  tps=$(echo "scale=2; $eval_count / ($eval_duration / 1000000000)" |  ${pkgs.bc}/bin/bc)
+  tps=$(echo "scale=2; $eval_count / ($eval_duration / 1000000000)" | ${pkgs.bc}/bin/bc)
 
   echo "Model: $model"
   echo "Prompt: \"$prompt\""
   echo "Generated tokens: $eval_count"
   echo "Generation time: $eval_duration nanoseconds"
   echo "Speed: $tps tokens per second"
-
 ''

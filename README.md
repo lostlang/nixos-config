@@ -6,11 +6,32 @@
     sudo nix-channel --update
     nix-shell -p git
     ```
-1. Install dots (in WSL)
+1. Copy dots (in WSL)
     ```bash
     git clone https://github.com/lostlang/nixos-wsl-config $HOME/.config/nixos
+    cd $HOME/.config/nixos
+    ```
+1. Generate secrets (in WSL)
+    ```bash
+    sudo mkdir $HOME/.secret
+    sudo age-keygen -o $HOME/.secret/key 
+    sudo cp template.secret.yaml $HOME/.secret/secret.yaml
+    sudo chmod 0600 $HOME/.secret/secret.yaml
+    ```
+1. Encrypt file (in WSL)
+    ```bash
+    cd $HOME/.secret
+    sudo -E SOPS_AGE_KEY_FILE=key sops -e -i -a <PUBLIC KEY> secret.yaml
+    ```
+1. Change secrets (in WSL)
+    ```bash
+    cd $HOME/.secret
+    sudo -E SOPS_AGE_KEY_FILE=key sops secret.yaml
+    ```
+1. Install dots (in WSL)
+    ```bash
     cd $HOME/.config/nixos/config
-    sudo nixos-rebuild switch --impure --flake .#wsl
+    sudo nixos-rebuild switch --flake .#wsl
     clean all
     ```
 1. Reboot WLS (in Windows PowerShell)

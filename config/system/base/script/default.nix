@@ -8,7 +8,6 @@
     (pkgs.callPackage ./env_init.nix { })
     (pkgs.callPackage ./env_rm.nix { })
     (pkgs.callPackage ./minecraft_data_copy.nix { })
-    (pkgs.callPackage ./ollama_model_tester.nix { })
     (pkgs.callPackage ./steam_clip_builder.nix { })
   ];
 }
