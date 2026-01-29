@@ -4,7 +4,7 @@
 1. Pre configuation (in WSL)
     ```bash
     sudo nix-channel --update
-    nix-shell -p git
+    nix-shell -p age git sops
     ```
 1. Copy dots (in WSL)
     ```bash
@@ -25,7 +25,6 @@
     ```
 1. Change secrets (in WSL)
     ```bash
-    cd $HOME/.secret
     sudo -E SOPS_AGE_KEY_FILE=key sops secret.yaml
     ```
 1. Install dots (in WSL)
