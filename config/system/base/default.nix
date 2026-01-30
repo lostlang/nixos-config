@@ -3,6 +3,7 @@
     ./ai
     ./networking
     ./script
+    ./ssh
 
     ./direnv.nix
     ./docker.nix
@@ -12,7 +13,6 @@
     ./options.nix
     ./packages.nix
     ./sops.nix
-    ./ssh.nix
     ./stylix.nix
     ./timezone.nix
     ./user.nix

@@ -6,5 +6,6 @@
       openrouterFree.enable = true;
       zai.enable = true;
     };
+    ssh.keys = [ "work" ];
   };
 }

@@ -1,11 +1,12 @@
 {
   imports = [
     ./bash.nix
-    ./nix.nix
+    ./csv.nix
     ./go.nix
     ./godot.nix
-    ./csv.nix
     ./md.nix
+    ./nix.nix
+    ./rust.nix
     ./zig.nix
   ];
 }
