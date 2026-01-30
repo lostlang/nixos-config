@@ -20,22 +20,4 @@
       ];
     };
   };
-
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = true;
-    extraRules = [
-      {
-        users = [ user ];
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
-  };
-
-  # services.getty.autologinUser = user;
 }

@@ -12,7 +12,6 @@
 
     settings = {
       sources = [
-        { name = "copilot"; }
         { name = "codeium"; }
         { name = "nvim_lsp"; }
         { name = "path"; }
@@ -48,7 +47,6 @@
             Event = " ",
             Operator = "󰆖 ",
             TypeParameter = "󰅲 ",
-            Copilot = " ",
             Codeium = " ",
           }
 
@@ -62,7 +60,6 @@
             path = "[Path]",
             nvim_lsp_signature_help = "[Signature]",
             codeium = "[AI]",
-            copilot = "[AI]",
           }
 
           vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)

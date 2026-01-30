@@ -12,9 +12,7 @@
       enable = true;
       tunnels = [ "test" ];
     };
-    openWebui = {
-      enable = true;
-    };
+    ssh.keys = [ "work" ];
     zerotierone = {
       enable = true;
       interfaces = [ "game" ];

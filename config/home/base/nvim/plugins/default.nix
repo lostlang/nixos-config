@@ -24,7 +24,6 @@
     web-devicons.enable = true;
 
     windsurf-nvim.enable = true;
-    copilot-lua.enable = true;
     dropbar.enable = true;
     gitsigns.enable = true;
     highlight-colors.enable = true;

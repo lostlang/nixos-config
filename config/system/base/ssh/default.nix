@@ -1,4 +1,9 @@
 {
+  imports = [
+    ./options.nix
+    ./sops.nix
+  ];
+
   services.openssh = {
     enable = true;
 
