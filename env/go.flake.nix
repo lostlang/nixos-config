@@ -5,14 +5,14 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # https://www.nixhub.io/packages/go
-    go-nixpkgs.url = "";
+    nixpkgs-go.url = "";
   };
 
   outputs =
     {
       systems,
       nixpkgs,
-      go-nixpkgs,
+      nixpkgs-go,
       ...
     }:
     let
@@ -26,30 +26,35 @@
             CGO_ENABLED = 1;
             GOPRIVATE = "";
           };
-
           hostEnvPassthrough = [ ];
 
-          extraInputs = (with fixPkgs; [ gcc ]) ++ (with pkgs; [ ]);
-
           pkgs = import nixpkgs { inherit system; };
-          fixPkgs = import go-nixpkgs { inherit system; };
+          pkgsGo = import nixpkgs-go { inherit system; };
 
-          baseInputs =
-            (with fixPkgs; [ go ])
-            ++ (with pkgs; [
-              bash
-              bubblewrap
-              ncurses
-              cacert
-              coreutils
-              direnv
-              procps
-            ]);
+          extraInputs = (with pkgsGo; [ go ]) ++ (with pkgs; [ gcc ]);
+
+          baseInputs = with pkgs; [
+            bash
+            bubblewrap
+            ncurses
+            cacert
+            coreutils
+            direnv
+            procps
+            tmux
+          ];
 
           buildInputs = baseInputs ++ extraInputs;
 
           bwrapEnvArgs = pkgs.lib.concatStringsSep " " (
-            pkgs.lib.mapAttrsToList (name: value: ''--setenv ${name} "${toString value}"'') bwrapEnv
+            pkgs.lib.mapAttrsToList (
+              name: value: "--setenv ${name} ${pkgs.lib.escapeShellArg (toString value)}"
+            ) bwrapEnv
+          );
+          bwrapEnvExports = pkgs.lib.concatStringsSep "\n" (
+            pkgs.lib.mapAttrsToList (
+              name: value: "export ${name}=${pkgs.lib.escapeShellArg (toString value)}"
+            ) bwrapEnv
           );
           hostEnvPassthroughArgs = pkgs.lib.concatStringsSep " " hostEnvPassthrough;
         in
@@ -58,7 +63,7 @@
             inherit buildInputs;
 
             shellHook = ''
-              bwrap-go() {
+              bwrap-env() {
                 local host_gopath
                 local host_gocache
                 local host_env_allowlist
@@ -74,12 +79,6 @@
                   fi
                 done
                 mkdir -p "$host_gopath" "$host_gocache"
-                if [ ! -f "$PWD/go.mod" ]; then
-                  touch "$PWD/go.mod"
-                fi
-                if [ ! -f "$PWD/go.sum" ]; then
-                  touch "$PWD/go.sum"
-                fi
 
                 bwrap_args=(
                   --clearenv
@@ -93,8 +92,6 @@
                   --ro-bind /nix /nix
                   --ro-bind /etc/resolv.conf /etc/resolv.conf
                   --ro-bind "$PWD" /home/user/project
-                  --bind "$PWD/go.mod" /home/user/project/go.mod
-                  --bind "$PWD/go.sum" /home/user/project/go.sum
                   --chdir /home/user/project
                   --bind "$host_gopath" /go
                   --bind "$host_gocache" /gocache
@@ -108,19 +105,32 @@
                   --setenv GOPATH /go
                   --setenv GOMODCACHE /go/pkg/mod
                   --setenv GOCACHE /gocache
-                  --setenv BWRAP_GO_ACTIVE 1
+                  --setenv BWRAP_ACTIVE 1
                   ${bwrapEnvArgs}
                 )
                 bwrap_args+=("''${bwrap_host_env_args[@]}")
 
                 exec bwrap "''${bwrap_args[@]}" \
-                  bash -lc 'eval "$(direnv allow)"; eval "$(direnv export bash)"; echo "🔒 Run bwrap for an isolated shell"; echo "🐹 Go env: $(go version)"; exec bash -i'
+                  bash -lc 'if [ -f "$PWD/.envrc" ]; then eval "$(direnv allow)"; eval "$(direnv export bash)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo "🐹 Go env: $(go version)"; exec bash -i'
               }
 
-              export -f bwrap-go
-              if [ -z "$BWRAP_GO_ACTIVE" ]; then
-                bwrap-go
+              export -f bwrap-env
+              if [ -z "$BWRAP_ACTIVE" ]; then
+                bwrap-env
               fi
+            '';
+          };
+
+          insecure = pkgs.mkShell {
+            inherit buildInputs;
+
+            shellHook = ''
+              ${bwrapEnvExports}
+              if [ -f "$PWD/.envrc" ]; then
+                eval "$(direnv allow)"
+                eval "$(direnv export bash)"
+              fi
+              echo "Insecure dev shell"
             '';
           };
         }
