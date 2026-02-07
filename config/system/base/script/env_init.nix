@@ -6,27 +6,27 @@ pkgs.writeShellScriptBin "env-init" ''
   #!/usr/bin/env bash
   set -euo pipefail
 
-  params="go
-  minecraft"
+  env_dir="$HOME/.config/nixos/env"
 
-  selected_param=$(printf "%s\n" "$params" | ${pkgs.fzf}/bin/fzf --prompt="Select environment: ")
+  mapfile -t env_files < <(ls -1 "$env_dir"/*.flake.nix 2>/dev/null || true)
 
-  case "$selected_param" in
-    go)
-      if [ -f "flake.nix" ]; then
-        echo "The flake.nix file already exists"
-      else
-        cp -v $HOME/.config/nixos/env/go.flake.nix ./flake.nix
-      fi
-      ;;
-    minecraft)
-      if [ -f "./flake.nix" ]; then
-        echo "The flake.nix file already exists"
-      else
-        cp -v $HOME/.config/nixos/env/minecraft.flake.nix ./flake.nix
-      fi
-      ;;
-  esac
+  env_names=$(
+    for file in "''${env_files[@]}"; do
+      basename "$file" .flake.nix
+    done
+  )
+
+  selected_param=$(printf "%s\n" "$env_names" | ${pkgs.fzf}/bin/fzf --prompt="Select environment: ")
+
+  if [ -z "$selected_param" ]; then
+    exit 0
+  fi
+
+  if [ -f "./flake.nix" ]; then
+    echo "The flake.nix file already exists"
+  else
+    cp -v "$env_dir/$selected_param.flake.nix" ./flake.nix
+  fi
 
   if [ -d ".git" ]; then
     git add flake.nix

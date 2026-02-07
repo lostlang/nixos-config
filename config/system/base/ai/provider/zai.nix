@@ -10,7 +10,7 @@ let
     model = {
       prefix = "openai";
       default = "glm-4.7";
-      weak = "glm-4.5-flash";
+      weak = "glm-4.7-flash";
       embedding = [ ];
       chat = [
         {

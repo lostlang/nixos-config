@@ -5,7 +5,6 @@
     ./script
     ./ssh
 
-    ./direnv.nix
     ./docker.nix
     ./keyd.nix
     ./localization.nix
