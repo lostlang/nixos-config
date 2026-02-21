@@ -4,7 +4,6 @@
     ./themes
 
     ./cmp.nix
-    ./inc-rename.nix
     ./indent-blankline.nix
     ./lsp.nix
     ./lualine.nix

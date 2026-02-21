@@ -28,5 +28,5 @@ in
     };
   };
 
-  home.file.".config/zellij/layouts/code.kdl".text = codeLayout;
+  xdg.configFile."zellij/layouts/code.kdl".text = codeLayout;
 }

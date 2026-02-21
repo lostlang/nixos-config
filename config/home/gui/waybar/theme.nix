@@ -19,11 +19,8 @@ in
   }
 
   window#waybar {
-    background-color: alpha(${palette.white}, .9);
+    background-color: alpha(${palette.white}, .8);
     color: ${palette.black};
-    border-radius: 5px;
-    transition-property: background-color;
-    transition-duration: .5s;
   }
 
   window#waybar.hidden {

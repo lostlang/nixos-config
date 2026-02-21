@@ -24,12 +24,14 @@
     };
   };
 
-  home.file.".config/hypr/resolution".source = ./resolution;
+  xdg.configFile."hypr/resolution".source = ./resolution;
 
   home.activation.hyprSymlink = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ln -sf "$HOME/.config/hypr/resolution/monitor_16_9_1920_1080.conf" \
       "$HOME/.config/hypr/active-profile.conf"
   '';
 
-  home.packages = [ (import ./resolution_swich.nix { inherit pkgs; }) ];
+  home.packages = [
+    (import ./resolution_swich.nix { inherit pkgs; })
+  ];
 }

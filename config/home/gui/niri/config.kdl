@@ -1,0 +1,13 @@
+include "active-profile.kdl"
+include "autoload.kdl"
+include "binds.kdl"
+include "windowrule.kdl"
+
+input {
+  keyboard {
+    xkb {
+      layout "us, ru"
+      options "grp:win_space_toggle"
+    }
+  }
+}

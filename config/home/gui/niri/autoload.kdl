@@ -1,0 +1,3 @@
+spawn-at-startup "waybar"
+spawn-at-startup "udiskie"
+spawn-at-startup "Telegram"

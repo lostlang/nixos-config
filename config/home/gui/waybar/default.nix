@@ -7,6 +7,8 @@ let
   style = import ./theme.nix { inherit colorScheme; };
 in
 {
+  stylix.targets.waybar.enable = false;
+
   programs.waybar = {
     enable = true;
 
@@ -14,12 +16,9 @@ in
 
     settings.mainBar = {
       reload_style_on_change = true;
+
       layer = "top";
       position = "left";
-      margin-top = 15;
-      margin-bottom = 15;
-      margin-left = 5;
-      spacing = 5;
       modules-left = [
         "cpu"
         "memory"
@@ -31,29 +30,17 @@ in
       ];
       modules-center = [
         "clock"
-        "hyprland/language"
+        "niri/language"
         "tray"
         "mpris"
       ];
-      modules-right = [ "hyprland/workspaces" ];
-      "hyprland/workspaces" = {
+      modules-right = [
+        "niri/workspaces"
+      ];
+      "niri/workspaces" = {
         disable-scroll = true;
-        format = "{icon}";
-        format-icons = {
-          "1" = " ";
-          "2" = " ";
-          "3" = " ";
-          # "4" = " ";
-          # "5" = " ";
-          # "6" = " ";
-          # "7" = " ";
-          # "8" = " ";
-          "9" = "󰠮 ";
-          "10" = " ";
-          "default" = "󰊠 ";
-        };
       };
-      "hyprland/language" = {
+      "niri/language" = {
         format = "{}";
         format-en = "🇬🇧 EN";
         format-ru = "🇷🇺 RU";
