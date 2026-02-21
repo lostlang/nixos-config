@@ -16,5 +16,7 @@
 
   networking.hostName = hostname;
 
+  security.sudo.wheelNeedsPassword = true;
+
   system.stateVersion = stateVersion;
 }
