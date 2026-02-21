@@ -9,11 +9,11 @@
     age
     codex
     home-manager
-    microfetch
     neofetch
     pre-commit
     ripgrep
     sops
+    tree
     unzip
     wget
     zip

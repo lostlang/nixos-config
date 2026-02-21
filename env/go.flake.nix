@@ -4,21 +4,45 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # https://www.nixhub.io/packages/go
     nixpkgs-go.url = "";
   };
 
   outputs =
     {
+      self,
       systems,
       nixpkgs,
       nixpkgs-go,
+      treefmt-nix,
       ...
     }:
     let
       eachSystem = nixpkgs.lib.genAttrs (import systems);
+
+      treefmt = {
+        projectRootFile = ".git/config";
+
+        programs.nixfmt.enable = true;
+        programs.gofumpt.enable = true;
+        programs.goimports.enable = true;
+      };
+      treefmtEval = eachSystem (
+        system: treefmt-nix.lib.evalModule (import nixpkgs { inherit system; }) treefmt
+      );
     in
     {
+      formatter = eachSystem (system: treefmtEval.${system}.config.build.wrapper);
+
+      checks = eachSystem (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
+      });
+
       devShells = eachSystem (
         system:
         let
@@ -41,7 +65,6 @@
             coreutils
             direnv
             procps
-            tmux
           ];
 
           buildInputs = baseInputs ++ extraInputs;
@@ -89,7 +112,7 @@
                   --dev /dev
                   --tmpfs /tmp
                   --tmpfs /home
-                  --ro-bind /nix /nix
+                  --ro-bind /nix/store /nix/store
                   --ro-bind /etc/resolv.conf /etc/resolv.conf
                   --ro-bind "$PWD" /home/user/project
                   --chdir /home/user/project
@@ -111,7 +134,7 @@
                 bwrap_args+=("''${bwrap_host_env_args[@]}")
 
                 exec bwrap "''${bwrap_args[@]}" \
-                  bash -lc 'if [ -f "$PWD/.envrc" ]; then eval "$(direnv allow)"; eval "$(direnv export bash)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo "🐹 Go env: $(go version)"; exec bash -i'
+                  bash -lc 'if [ -f "$PWD/.envrc" ]; then eval "$(direnv allow)"; eval "$(direnv export bash)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo "🐹 Go version: $(go version)"; exec bash -i'
               }
 
               export -f bwrap-env

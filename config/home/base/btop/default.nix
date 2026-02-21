@@ -20,5 +20,5 @@ in
     };
   };
 
-  home.file.".config/btop/themes/${themeName}.theme".text = theme;
+  xdg.configFile."btop/themes/${themeName}.theme".text = theme;
 }

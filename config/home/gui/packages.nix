@@ -3,7 +3,7 @@
   ...
 }:
 {
-  programs.lazygit.enable = true;
+  programs.fuzzel.enable = true;
 
   home.packages = with pkgs; [
   ];

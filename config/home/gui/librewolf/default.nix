@@ -37,11 +37,20 @@ in
             "NixOS Package" = {
               urls = [
                 {
-                  template = "https://search.nixos.org/packages?channel=25.11&from=0&size=50&sort=relevance&type=packages&query={searchTerms}";
+                  template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
                 }
               ];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "!np" ];
+            };
+            "NixOS Options" = {
+              urls = [
+                {
+                  template = "https://mynixos.com/search?q={searchTerms}";
+                }
+              ];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = [ "!no" ];
             };
           };
         };

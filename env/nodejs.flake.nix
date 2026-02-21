@@ -1,5 +1,5 @@
 {
-  description = "Rust dev shell (flake)";
+  description = "Nodejs dev shell (flake)";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -9,8 +9,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # https://www.nixhub.io/packages/cargo
-    nixpkgs-cargo.url = "";
+    # https://www.nixhub.io/packages/nodejs
+    nixpkgs-nodejs.url = "";
   };
 
   outputs =
@@ -18,7 +18,7 @@
       self,
       systems,
       nixpkgs,
-      nixpkgs-cargo,
+      nixpkgs-nodejs,
       treefmt-nix,
       ...
     }:
@@ -29,7 +29,6 @@
         projectRootFile = ".git/config";
 
         programs.nixfmt.enable = true;
-        programs.rustfmt.enable = true;
       };
       treefmtEval = eachSystem (
         system: treefmt-nix.lib.evalModule (import nixpkgs { inherit system; }) treefmt
@@ -47,9 +46,10 @@
         let
           bwrapEnv = { };
           hostEnvPassthrough = [ ];
+          npmModuleRoots = [ ];
 
           pkgs = import nixpkgs { inherit system; };
-          pkgsCargo = import nixpkgs-cargo { inherit system; };
+          pkgsNodejs = import nixpkgs-nodejs { inherit system; };
 
           baseInputs = with pkgs; [
             bash
@@ -61,7 +61,12 @@
             procps
           ];
 
-          extraInputs = (with pkgsCargo; [ cargo ]) ++ (with pkgs; [ gcc ]);
+          extraInputs =
+            (with pkgsNodejs; [ nodejs_24 ])
+            ++ (with pkgs; [
+              gcc
+              protobuf
+            ]);
 
           buildInputs = baseInputs ++ extraInputs;
 
@@ -76,6 +81,15 @@
             ) bwrapEnv
           );
           hostEnvPassthroughArgs = pkgs.lib.concatStringsSep " " hostEnvPassthrough;
+          npmDirs = pkgs.lib.concatStringsSep " " (
+            map (path: "$PWD/${path}/node_modules $PWD/${path}/dist") npmModuleRoots
+          );
+          bwrapNpmArgs = pkgs.lib.concatStringsSep " " (
+            map (path: ''
+              --bind "$PWD/${path}/node_modules" "/home/user/project/${path}/node_modules"
+              --bind "$PWD/${path}/dist" "/home/user/project/${path}/dist"
+            '') npmModuleRoots
+          );
         in
         {
           default = pkgs.mkShell {
@@ -83,13 +97,9 @@
 
             shellHook = ''
               bwrap-env() {
-                local host_cargo_home
-                local host_cargo_target
                 local host_env_allowlist
                 local -a bwrap_host_env_args
                 local -a bwrap_args
-                host_cargo_home="''${CARGO_HOME:-$HOME/.cargo}"
-                host_cargo_target="''${CARGO_TARGET_DIR:-$PWD/target}"
                 host_env_allowlist=(${hostEnvPassthroughArgs})
                 bwrap_host_env_args=()
                 for name in "''${host_env_allowlist[@]}"; do
@@ -97,7 +107,7 @@
                     bwrap_host_env_args+=(--setenv "$name" "''${!name}")
                   fi
                 done
-                mkdir -p "$host_cargo_home" "$host_cargo_target"
+                mkdir -p ${npmDirs}
 
                 bwrap_args=(
                   --clearenv
@@ -108,18 +118,18 @@
                   --dev /dev
                   --tmpfs /tmp
                   --tmpfs /home
+                  --dir /usr
+                  --dir /usr/bin
                   --ro-bind /nix/store /nix/store
                   --ro-bind /etc/resolv.conf /etc/resolv.conf
+                  --ro-bind ${pkgs.coreutils}/bin/env /usr/bin/env
                   --ro-bind "$PWD" /home/user/project
-                  --bind "$host_cargo_home" /home/user/.cargo
-                  --bind "$host_cargo_target" /home/user/project/target
+                  ${bwrapNpmArgs}
                   --chdir /home/user/project
                   --setenv PATH "${pkgs.lib.makeBinPath buildInputs}"
                   --setenv TERM "xterm-256color"
                   --setenv TERMINFO "${pkgs.ncurses}/share/terminfo"
                   --setenv HOME /home/user
-                  --setenv CARGO_HOME /home/user/.cargo
-                  --setenv CARGO_TARGET_DIR /home/user/project/target
                   --setenv SSL_CERT_FILE "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
                   --setenv SSL_CERT_DIR "${pkgs.cacert}/etc/ssl/certs"
                   --setenv BWRAP_ACTIVE 1
@@ -128,7 +138,7 @@
                 bwrap_args+=("''${bwrap_host_env_args[@]}")
 
                 exec bwrap "''${bwrap_args[@]}" \
-                  bash -lc 'if [ -f "$PWD/.envrc" ]; then eval "$(direnv allow)"; eval "$(direnv export bash)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo "🦀 Cargo version: $(cargo version)"; exec bash -i'
+                  bash -lc 'if [ -f "$PWD/.envrc" ]; then eval "$(direnv allow)"; eval "$(direnv export bash)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo -e "\e[32m⬢\e[0m Nodejs version: $(node -v)"; exec bash -i'
               }
 
               export -f bwrap-env
