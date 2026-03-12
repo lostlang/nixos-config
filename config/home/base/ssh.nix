@@ -4,7 +4,7 @@
   ...
 }:
 let
-  keys = osConfig.myConfig.ssh.keys;
+  inherit (osConfig.myConfig.ssh) keys;
   includePath = osConfig.sops.templates."ssh/hosts.conf".path;
 in
 {

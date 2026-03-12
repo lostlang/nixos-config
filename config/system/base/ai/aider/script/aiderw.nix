@@ -4,7 +4,7 @@
   ...
 }:
 let
-  palette = colorScheme.default.palette;
+  inherit (colorScheme.default) palette;
 in
 pkgs.writeShellScriptBin "aiderw" ''
   exec ${pkgs.aider-chat-full}/bin/aider \

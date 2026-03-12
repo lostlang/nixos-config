@@ -63,7 +63,11 @@
 
           extraInputs = (with pkgsCargo; [ cargo ]) ++ (with pkgs; [ gcc ]);
 
+          libInputs = with pkgs; [ ];
+
           buildInputs = baseInputs ++ extraInputs;
+          libPath = pkgs.lib.makeLibraryPath libInputs;
+          pkgConfigPath = pkgs.lib.makeSearchPath "lib/pkgconfig" libInputs;
 
           bwrapEnvArgs = pkgs.lib.concatStringsSep " " (
             pkgs.lib.mapAttrsToList (
@@ -82,14 +86,31 @@
             inherit buildInputs;
 
             shellHook = ''
+              project_root() {
+                git -C "$PWD" rev-parse --show-toplevel 2>/dev/null || pwd -P
+              }
+
+              bwrap_chdir_for_cwd() {
+                local host_rel_path
+                host_rel_path="$(git -C "$PWD" rev-parse --show-prefix 2>/dev/null || true)"
+                if [ -n "$host_rel_path" ]; then
+                  echo "/home/user/project/''${host_rel_path%/}"
+                else
+                  echo "/home/user/project"
+                fi
+              }
+
               bwrap-env() {
                 local host_cargo_home
                 local host_cargo_target
                 local host_env_allowlist
+                local bwrap_chdir
                 local -a bwrap_host_env_args
                 local -a bwrap_args
                 host_cargo_home="''${CARGO_HOME:-$HOME/.cargo}"
-                host_cargo_target="''${CARGO_TARGET_DIR:-$PWD/target}"
+                export HOST_PROJECT_ROOT="$(project_root)"
+                bwrap_chdir="$(bwrap_chdir_for_cwd)"
+                host_cargo_target="''${CARGO_TARGET_DIR:-$HOST_PROJECT_ROOT/target}"
                 host_env_allowlist=(${hostEnvPassthroughArgs})
                 bwrap_host_env_args=()
                 for name in "''${host_env_allowlist[@]}"; do
@@ -110,14 +131,18 @@
                   --tmpfs /home
                   --ro-bind /nix/store /nix/store
                   --ro-bind /etc/resolv.conf /etc/resolv.conf
-                  --ro-bind "$PWD" /home/user/project
+                  --ro-bind "$HOST_PROJECT_ROOT" /home/user/project
                   --bind "$host_cargo_home" /home/user/.cargo
                   --bind "$host_cargo_target" /home/user/project/target
-                  --chdir /home/user/project
+                  --chdir "$bwrap_chdir"
                   --setenv PATH "${pkgs.lib.makeBinPath buildInputs}"
+                  --setenv LD_LIBRARY_PATH "${libPath}"
+                  --setenv LIBRARY_PATH "${libPath}"
+                  --setenv PKG_CONFIG_PATH "${pkgConfigPath}"
                   --setenv TERM "xterm-256color"
                   --setenv TERMINFO "${pkgs.ncurses}/share/terminfo"
                   --setenv HOME /home/user
+                  --setenv HOST_PROJECT_ROOT /home/user/project
                   --setenv CARGO_HOME /home/user/.cargo
                   --setenv CARGO_TARGET_DIR /home/user/project/target
                   --setenv SSL_CERT_FILE "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
@@ -128,7 +153,7 @@
                 bwrap_args+=("''${bwrap_host_env_args[@]}")
 
                 exec bwrap "''${bwrap_args[@]}" \
-                  bash -lc 'if [ -f "$PWD/.envrc" ]; then eval "$(direnv allow)"; eval "$(direnv export bash)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo "🦀 Cargo version: $(cargo version)"; exec bash -i'
+                  bash -lc 'if [ -f "$HOST_PROJECT_ROOT/.envrc" ]; then eval "$(direnv allow $HOST_PROJECT_ROOT)"; eval "$(direnv export bash $HOST_PROJECT_ROOT)"; fi; echo "🔒 Run bwrap for an isolated shell"; echo "🦀 Cargo version: $(cargo version)"; exec bash -i'
               }
 
               export -f bwrap-env
@@ -142,10 +167,16 @@
             inherit buildInputs;
 
             shellHook = ''
+              project_root() {
+                git -C "$PWD" rev-parse --show-toplevel 2>/dev/null || pwd -P
+              }
+
+              export HOST_PROJECT_ROOT="$(project_root)"
+
               ${bwrapEnvExports}
-              if [ -f "$PWD/.envrc" ]; then
-                eval "$(direnv allow)"
-                eval "$(direnv export bash)"
+              if [ -f "$HOST_PROJECT_ROOT/.envrc" ]; then
+                eval "$(direnv allow $HOST_PROJECT_ROOT)"
+                eval "$(direnv export bash $HOST_PROJECT_ROOT)"
               fi
               echo "Insecure dev shell"
             '';

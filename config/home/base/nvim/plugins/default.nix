@@ -16,6 +16,7 @@
     ./telescope.nix
     ./todo-comments.nix
     ./treesitter.nix
+    ./trouble.nix
   ];
 
   programs.nixvim.plugins = {

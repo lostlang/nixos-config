@@ -4,9 +4,9 @@
   ...
 }:
 let
-  enable = config.myConfig.ai.provider.ollamaLocal.enable;
+  inherit (config.myConfig.ai.provider.ollamaLocal) enable;
   models = config.myConfig.ai.provider.ollamaLocal.model;
-  loadModels = (map (m: m.name) models.embedding ++ map (m: m.name) models.chat);
+  loadModels = map (m: m.name) models.embedding ++ map (m: m.name) models.chat;
 in
 {
   imports = [
@@ -18,6 +18,6 @@ in
     enable = true;
 
     host = "0.0.0.0";
-    loadModels = loadModels;
+    inherit loadModels;
   };
 }

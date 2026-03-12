@@ -10,7 +10,7 @@ let
   mkAiderw = pkgs.callPackage ./aiderw-template.nix { inherit aiderw config; };
   mkAiderwTmp = pkgs.callPackage ./aiderw-tmp-template.nix { };
 
-  provider = config.myConfig.ai.provider;
+  inherit (config.myConfig.ai) provider;
   providerNames = builtins.attrNames provider;
   enabledProviderNames = builtins.filter (name: provider.${name}.enable) providerNames;
 

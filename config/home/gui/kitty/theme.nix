@@ -3,7 +3,7 @@
   ...
 }:
 let
-  palette = colorScheme.default.palette;
+  inherit (colorScheme.default) palette;
 in
 ''
   background            ${palette.light_white}

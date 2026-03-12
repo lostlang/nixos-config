@@ -1,21 +1,17 @@
-outputs {
-  "HDMI-A-1" {
-    mode "2400x1080@60"
-    position 0 0
-    scale 1.25
-  }
+output "HDMI-A-1" {
+  mode custom=true "2400x1080@60"
+  position x=0 y=0
+  scale 1.25
+}
 
-  "HDMI-A-2" {
-    mode "2400x1080@60"
-    position 0 0
-    scale 1.25
-    mirror "HDMI-A-1"
-  }
+output "HDMI-A-2" {
+  mode custom=true "2400x1080@60"
+  position x=0 y=0
+  scale 1.25
+}
 
-  "DP-1" {
-    mode "2400x1080@60"
-    position 0 0
-    scale 1.25
-    mirror "HDMI-A-1"
-  }
+output "DP-1" {
+  mode custom=true "2400x1080@60"
+  position x=0 y=0
+  scale 1.25
 }

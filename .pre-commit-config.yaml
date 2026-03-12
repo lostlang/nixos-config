@@ -1,7 +1,1 @@
-repos:
-  - repo: local
-    hooks:
-      - id: nix-fmt
-        name: Run nix fmt
-        entry: nix fmt
-        language: system
+/nix/store/nm6wzvz6ahcq954h35pvk0akg6rav6lg-pre-commit-config.json
