@@ -14,7 +14,7 @@
     settings = {
       default_session = {
         command = "niri-session";
-        user = user;
+        inherit user;
       };
     };
   };

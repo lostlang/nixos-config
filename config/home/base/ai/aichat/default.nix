@@ -4,7 +4,7 @@
   ...
 }:
 let
-  provider = osConfig.myConfig.ai.provider;
+  inherit (osConfig.myConfig.ai) provider;
   providerDefs = builtins.filter (p: p != null) (
     map (
       name:
@@ -13,7 +13,7 @@ let
       in
       {
         inherit name;
-        enable = p.enable;
+        inherit (p) enable;
         api_base = p.apiBase;
         models = p.model.embedding ++ p.model.chat;
       }
@@ -37,9 +37,9 @@ in
 
       clients = map (p: {
         type = "openai-compatible";
-        name = p.name;
-        api_base = p.api_base;
-        models = p.models;
+        inherit (p) name;
+        inherit (p) api_base;
+        inherit (p) models;
       }) enabledProviders;
     };
   };

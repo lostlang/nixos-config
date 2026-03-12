@@ -23,8 +23,8 @@ let
 in
 {
   gradient = {
-    light = gradient.light;
-    dark = gradient.dark;
+    inherit (gradient) light;
+    inherit (gradient) dark;
   };
 
   light_white = gradient.light.g1;

@@ -1,8 +1,8 @@
 {
   imports = [
-    ./niri
     ./kitty
     ./librewolf
+    ./niri
     ./waybar
 
     ./fonts.nix

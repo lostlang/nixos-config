@@ -5,8 +5,8 @@
   ...
 }:
 let
-  enable = config.myConfig.cloudflare.enable;
-  tunnels = config.myConfig.cloudflare.tunnels;
+  inherit (config.myConfig.cloudflare) enable;
+  inherit (config.myConfig.cloudflare) tunnels;
 in
 {
   imports = [

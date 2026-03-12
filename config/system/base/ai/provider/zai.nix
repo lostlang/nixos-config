@@ -1,6 +1,4 @@
-{
-  ...
-}@args:
+args:
 let
   mkProvider = import ./mkProvider.nix;
 
@@ -61,6 +59,6 @@ let
 in
 (mkProvider {
   name = "zai";
-  provider = provider;
+  inherit provider;
 })
   args

@@ -2,8 +2,6 @@
   pkgs,
   ...
 }:
-let
-in
 {
   stylix = {
     image = ./wallpaper.jpg;

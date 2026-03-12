@@ -3,7 +3,7 @@
   ...
 }:
 let
-  palette = colorScheme.default.palette;
+  inherit (colorScheme.default) palette;
   style = import ./theme.nix { inherit colorScheme; };
 in
 {
@@ -12,7 +12,7 @@ in
   programs.waybar = {
     enable = true;
 
-    style = style;
+    inherit style;
 
     settings.mainBar = {
       reload_style_on_change = true;

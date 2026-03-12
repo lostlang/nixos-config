@@ -7,5 +7,5 @@ in
 {
   default = lostsand;
 
-  lostsand = lostsand;
+  inherit lostsand;
 }

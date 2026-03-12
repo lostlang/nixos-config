@@ -4,8 +4,8 @@
   ...
 }:
 let
-  enable = config.myConfig.zerotierone.enable;
-  interfaces = config.myConfig.zerotierone.interfaces;
+  inherit (config.myConfig.zerotierone) enable;
+  inherit (config.myConfig.zerotierone) interfaces;
 
   mkSecret = name: [
     {

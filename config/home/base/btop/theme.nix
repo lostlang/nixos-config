@@ -5,7 +5,7 @@
 }:
 let
   themeName = colorScheme.default.name;
-  palette = colorScheme.default.palette;
+  inherit (colorScheme.default) palette;
 in
 ''
   #Bashtop "${themeName}" theme

@@ -8,8 +8,9 @@
   environment.systemPackages = with pkgs; [
     age
     codex
+    gitleaks
     home-manager
-    neofetch
+    microfetch
     pre-commit
     ripgrep
     sops

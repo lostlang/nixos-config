@@ -5,7 +5,7 @@
   ...
 }:
 let
-  enable = config.myConfig.ai.provider.ollamaLocal.enable;
+  inherit (config.myConfig.ai.provider.ollamaLocal) enable;
   provider = config.myConfig.ai.provider.ollamaLocal;
 in
 {

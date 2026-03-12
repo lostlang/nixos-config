@@ -74,7 +74,7 @@
         configs
         // {
           "${host.hostname}" = nixpkgs.lib.nixosSystem {
-            system = host.system;
+            inherit (host) system;
             specialArgs = {
               inherit (host)
                 extraLocalModules

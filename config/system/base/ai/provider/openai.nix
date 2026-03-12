@@ -1,6 +1,4 @@
-{
-  ...
-}@args:
+args:
 let
   mkProvider = import ./mkProvider.nix;
 
@@ -26,6 +24,6 @@ let
 in
 (mkProvider {
   name = "openai";
-  provider = provider;
+  inherit provider;
 })
   args

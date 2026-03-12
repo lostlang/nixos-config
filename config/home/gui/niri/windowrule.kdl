@@ -12,9 +12,7 @@ window-rule {
 window-rule {
   match title=r#"^Picture-in-Picture"#
   open-floating true
-  default-column-width { fixed 320; }
-  default-window-height { fixed 180; }
-  default-floating-position x=940 y=20 relative-to="top-left"
+  default-floating-position x=0 y=0 relative-to="bottom-right"
 }
 
 window-rule {
@@ -22,4 +20,9 @@ window-rule {
   open-floating true
   default-column-width { fixed 300; }
   default-window-height { fixed 300; }
+}
+
+window-rule {
+  match app-id="qalculate-gtk"
+  open-floating true
 }

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  keys = config.myConfig.ssh.keys;
+  inherit (config.myConfig.ssh) keys;
 
   mkSecret = name: [
     {

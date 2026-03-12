@@ -4,7 +4,7 @@
   ...
 }:
 let
-  enable = (config.myConfig.ai.provider.ollamaLocal.enable && config.myConfig.openWebui.enable);
+  enable = config.myConfig.ai.provider.ollamaLocal.enable && config.myConfig.openWebui.enable;
 in
 {
   users = lib.mkIf enable {
