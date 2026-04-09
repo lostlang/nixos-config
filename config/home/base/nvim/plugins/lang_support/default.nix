@@ -8,7 +8,7 @@
     ./kdl.nix
     ./md.nix
     ./nix.nix
-    ./rust.nix
+    ./rust2.nix
     ./zig.nix
   ];
 }

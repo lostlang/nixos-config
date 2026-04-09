@@ -61,7 +61,13 @@
             procps
           ];
 
-          extraInputs = (with pkgsCargo; [ cargo ]) ++ (with pkgs; [ gcc ]);
+          extraInputs =
+            (with pkgsCargo; [
+              cargo
+              cargo-machete
+              cargo-sort
+            ])
+            ++ (with pkgs; [ gcc ]);
 
           libInputs = with pkgs; [ ];
 

@@ -2,10 +2,11 @@
   colorScheme,
   config,
   pkgs,
+  pkgsStable,
   ...
 }:
 let
-  aiderw = pkgs.callPackage ./aiderw.nix { inherit colorScheme; };
+  aiderw = pkgs.callPackage ./aiderw.nix { inherit colorScheme pkgsStable; };
 
   mkAiderw = pkgs.callPackage ./aiderw-template.nix { inherit aiderw config; };
   mkAiderwTmp = pkgs.callPackage ./aiderw-tmp-template.nix { };

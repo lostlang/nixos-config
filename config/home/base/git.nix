@@ -13,8 +13,9 @@
 
     ignores = [
       ".aider*"
-      ".envrc"
+      ".codex"
       ".direnv"
+      ".envrc"
     ];
   };
 }
