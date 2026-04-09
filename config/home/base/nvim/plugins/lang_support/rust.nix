@@ -6,7 +6,7 @@
 {
   programs.nixvim.plugins.lsp.servers.rust_analyzer = {
     enable = true;
-    installCargo = true;
+    installCargo = false;
     installRustc = false;
 
     settings = {
@@ -57,6 +57,8 @@
       };
       cargo = {
         buildScripts.enable = true;
+        sysroot = "${pkgs.rustc}";
+        sysrootSrc = "${pkgs.rustPlatform.rustLibSrc}";
       };
     };
 
@@ -100,7 +102,7 @@
               ]
             )
           }" \
-          ${lib.getExe pkgs.rust-analyzer}
+          ${lib.getExe pkgs.rust-analyzer-unwrapped} "$@"
       ''}"
     ];
   };

@@ -4,7 +4,7 @@
   programs.opencode = {
     enable = true;
 
-    settings = {
+    tui = {
       theme = "system";
     };
   };

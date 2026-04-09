@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -14,6 +15,11 @@
 
     stylix = {
       url = "github:danth/stylix/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -31,9 +37,11 @@
   outputs =
     {
       nixpkgs,
+      nixpkgs-stable,
       sops-nix,
       home-manager,
       stylix,
+      nix-index-database,
       nixvim,
       nixos-wsl,
       ...
@@ -88,12 +96,20 @@
                 stateVersion
                 user
                 ;
+              pkgsStable = import nixpkgs-stable {
+                inherit (host) system;
+                config.allowUnfree = true;
+              };
             };
             modules = [
               ./host/${host.hostname}/system
               ./system
               sops-nix.nixosModules.sops
               stylix.nixosModules.stylix
+              nix-index-database.nixosModules.default
+              {
+                programs.nix-index-database.comma.enable = true;
+              }
               home-manager.nixosModules.home-manager
               {
                 home-manager = {
@@ -111,6 +127,10 @@
                       stateVersion
                       user
                       ;
+                    pkgsStable = import nixpkgs-stable {
+                      inherit (host) system;
+                      config.allowUnfree = true;
+                    };
                   };
                   users.${user}.imports = [
                     ./host/${host.hostname}/home

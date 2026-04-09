@@ -24,6 +24,7 @@
         ai = "zellij --layout=code";
         edit-secret = "sudo -E SOPS_AGE_KEY_FILE=${key} sops ${secret}";
         files-for-aichat-rag = ''git ls-files --cached --others --exclude-standard | sed "s|^|$(pwd)/|" | wl-copy'';
+        fmt-staged = "git diff --name-only --cached | xargs -r nix fmt";
       };
 
     oh-my-zsh = {

@@ -8,6 +8,7 @@
   imports = [
     ./options.nix
 
+    ./docker.nix
     ./keyd.nix
   ];
 
