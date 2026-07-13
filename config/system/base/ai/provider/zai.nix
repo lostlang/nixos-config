@@ -7,10 +7,31 @@ let
     apiBase = "https://api.z.ai/api/coding/paas/v4";
     model = {
       prefix = "openai";
-      default = "glm-4.7";
+      default = "glm-5.1";
       weak = "glm-4.7-flash";
       embedding = [ ];
       chat = [
+        {
+          name = "glm-5.1";
+          max_input_tokens = 199999;
+          max_output_tokens = 127999;
+          input_price = 1.4;
+          output_price = 4.4;
+        }
+        {
+          name = "glm-5";
+          max_input_tokens = 199999;
+          max_output_tokens = 127999;
+          input_price = 1;
+          output_price = 3.2;
+        }
+        {
+          name = "glm-5-turbo";
+          max_input_tokens = 199999;
+          max_output_tokens = 127999;
+          input_price = 1.2;
+          output_price = 4.0;
+        }
         {
           name = "glm-4.7";
           max_input_tokens = 199999;
@@ -22,8 +43,8 @@ let
           name = "glm-4.7-flash";
           max_input_tokens = 199999;
           max_output_tokens = 127999;
-          input_price = 0.6;
-          output_price = 2.2;
+          input_price = 0;
+          output_price = 0;
         }
         {
           name = "glm-4.6";

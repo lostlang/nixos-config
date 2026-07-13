@@ -2,15 +2,13 @@
   colorScheme,
   lib,
   pkgs,
-  pkgsStable,
   ...
 }:
 let
   inherit (colorScheme.default) palette;
 in
 pkgs.writeShellScriptBin "aiderw" ''
-  #HACK: aider is not yet stable
-  exec ${lib.getExe pkgsStable.aider-chat-full} \
+  exec ${lib.getExe pkgs.aider-chat-full} \
     --watch-files \
     --user-input-color "${palette.green}" \
     --tool-output-color "${palette.black}" \

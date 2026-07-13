@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}@args:
+args:
 let
   mkProvider = import ./mkProvider.nix;
 
@@ -15,16 +12,16 @@ let
       embedding = [ ];
       chat = [
         {
-          name = "arcee-ai/trinity-mini:free";
-          max_input_tokens = 131071;
-          max_output_tokens = 131071;
+          name = "moonshotai/kimi-k2.6:free";
+          max_input_tokens = 262143;
+          max_output_tokens = 262143;
           input_price = 0;
           output_price = 0;
         }
         {
-          name = "nvidia/nemotron-nano-9b-v2:free";
-          max_input_tokens = 127999;
-          max_output_tokens = 127999;
+          name = "qwen/qwen3-next-80b-a3b-instruct:free";
+          max_input_tokens = 262143;
+          max_output_tokens = 262143;
           input_price = 0;
           output_price = 0;
         }
