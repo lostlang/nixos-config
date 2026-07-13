@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -9,12 +9,12 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     stylix = {
-      url = "github:danth/stylix/master";
+      url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -29,7 +29,7 @@
     };
 
     nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main";
+      url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -47,7 +47,7 @@
       ...
     }@inputs:
     let
-      stateVersion = "25.11";
+      stateVersion = "26.11";
       user = "lostlang";
       colorScheme = import ./colorScheme;
       secretPath = "/home/${user}/.secret/";
@@ -132,12 +132,15 @@
                       config.allowUnfree = true;
                     };
                   };
-                  users.${user}.imports = [
-                    ./host/${host.hostname}/home
-                    ./home
-                    nixvim.homeModules.nixvim
-                  ]
-                  ++ (host.extraExternalModules.home or [ ]);
+                  users.${user} = {
+                    imports = [
+                      ./host/${host.hostname}/home
+                      ./home
+                      nixvim.homeModules.nixvim
+                    ]
+                    ++ (host.extraExternalModules.home or [ ]);
+                    programs.nixvim.nixpkgs.source = nixpkgs;
+                  };
                 };
               }
             ]
