@@ -3,6 +3,7 @@
     ./ai
     ./btop
     ./nvim
+    ./tmuxp
     ./zellij
 
     ./env.nix
