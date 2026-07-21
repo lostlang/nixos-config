@@ -22,6 +22,7 @@
         btop = "btop -p 1";
         v = "nvim .";
         ai = "zellij --layout=code";
+        dev = "tmuxp load dev";
         edit-secret = "sudo -E SOPS_AGE_KEY_FILE=${key} sops ${secret}";
         files-for-aichat-rag = ''git ls-files --cached --others --exclude-standard | sed "s|^|$(pwd)/|" | wl-copy'';
       };

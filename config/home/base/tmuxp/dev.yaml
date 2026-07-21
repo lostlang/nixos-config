@@ -1,0 +1,19 @@
+session_name: dev
+windows:
+  - window_name: nvim
+    panes:
+      - nvim .
+  - window_name: lazygit
+    panes:
+      - lazygit
+  - window_name: shell
+    layout: even-horizontal
+    panes:
+      - null
+      - null
+  - window_name: codex
+    panes:
+      - codex
+  - window_name: claude
+    panes:
+      - claude
