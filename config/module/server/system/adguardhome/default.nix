@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   ...
 }:
@@ -57,15 +56,5 @@ in
         filters_update_interval = 24;
       };
     };
-  };
-
-  # HACK: wait pr https://github.com/NixOS/nixpkgs/pull/554062
-  systemd.services.adguardhome = lib.mkIf config.services.adguardhome.enable {
-    preStart = lib.mkAfter ''
-      configFile="$STATE_DIRECTORY/AdGuardHome.yaml"
-      content="$(<"$configFile")"
-      content="''${content/insecure_enabled: false/insecure_enabled: true}"
-      printf '%s\n' "$content" > "$configFile"
-    '';
   };
 }
