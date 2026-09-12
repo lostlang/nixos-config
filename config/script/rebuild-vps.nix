@@ -38,6 +38,7 @@ let
         nixos-rebuild switch \
           --flake "$config_dir#$selected_host" \
           --target-host "$selected_host" \
+          --use-substitutes \
           --elevate=sudo
       done
     '';

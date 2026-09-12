@@ -34,6 +34,8 @@ in
   ];
 
   systemd.services.remnawave-node-bootstrap = lib.mkIf (panelCfg.enable && nodes != [ ]) {
+    enable = false;
+
     wantedBy = [ "multi-user.target" ];
     requires = [ "remnawave-panel.service" ];
     after = [
