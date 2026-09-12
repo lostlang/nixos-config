@@ -81,7 +81,7 @@
 
       checks = eachSystem (system: {
         formatting = treefmtEval.${system}.config.build.check self;
-        pre-commit = preCommit.${system}.check;
+        pre-commit = preCommit.${system};
       });
 
       devShells = eachSystem (system: {

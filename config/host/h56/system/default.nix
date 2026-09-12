@@ -5,9 +5,10 @@
 }:
 {
   imports = [
-    ./options.nix
-
+    ./extra.nix
+    ./fix.nix
     ./hardware-configuration.nix
+    ./options.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

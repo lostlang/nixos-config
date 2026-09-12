@@ -1,8 +1,0 @@
-{
-  lib,
-  ...
-}:
-{
-  options.myConfig = {
-  };
-}

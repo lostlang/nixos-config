@@ -6,6 +6,12 @@
       openrouterFree.enable = true;
       zai.enable = true;
     };
-    ssh.keys = [ "work" ];
+    ssh = {
+      # identities = [ "work" ];
+      vpsHosts = [
+        "vps15358d36"
+        "vps72c411b0"
+      ];
+    };
   };
 }

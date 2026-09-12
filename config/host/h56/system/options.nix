@@ -8,14 +8,8 @@
       openrouterPaid.enable = true;
       zai.enable = true;
     };
-    cloudflare = {
-      enable = true;
-      tunnels = [ "test" ];
-    };
-    ssh.keys = [ "work" ];
-    zerotierone = {
-      enable = true;
-      interfaces = [ "game" ];
-    };
+    cloudflare.tunnels = [ "test" ];
+    ssh.identities = [ "work" ];
+    zerotierone.interfaces = [ "game" ];
   };
 }
