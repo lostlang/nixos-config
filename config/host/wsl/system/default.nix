@@ -6,18 +6,17 @@
 }:
 {
   imports = [
+    ./extra.nix
+    ./fix.nix
     ./options.nix
-
-    ./docker.nix
-    ./keyd.nix
   ];
 
-  wsl.enable = true;
-  wsl.defaultUser = user;
+  wsl = {
+    enable = true;
+    defaultUser = user;
+  };
 
   networking.hostName = hostname;
-
-  security.sudo.wheelNeedsPassword = true;
 
   system.stateVersion = stateVersion;
 }

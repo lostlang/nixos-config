@@ -3,8 +3,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -13,13 +13,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -28,8 +23,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    stylix = {
+      url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -38,78 +38,114 @@
     {
       nixpkgs,
       nixpkgs-stable,
-      sops-nix,
+      disko,
       home-manager,
-      stylix,
-      nix-index-database,
-      nixvim,
       nixos-wsl,
+      nixvim,
+      sops-nix,
+      stylix,
       ...
     }@inputs:
     let
       stateVersion = "26.11";
       user = "lostlang";
       colorScheme = import ./colorScheme;
-      secretPath = "/home/${user}/.secret/";
+      secretPath = "/home/${user}/.secret";
 
       hosts = [
         {
           hostname = "wsl";
-          system = "x86_64-linux";
+          nvimExtra = true;
           extraExternalModules = {
             system = [
               nixos-wsl.nixosModules.default
             ];
-            home = [ ];
           };
-          extraLocalModules = [ ];
+          extraLocalModules = [
+            "ai"
+          ];
         }
         {
           hostname = "h56";
-          system = "x86_64-linux";
-          extraExternalModules = {
-            system = [ ];
-            home = [ ];
-          };
-          extraLocalModules = [ "gui" ];
+          nvimExtra = true;
+          extraLocalModules = [
+            "ai"
+            "gui"
+          ];
         }
+        {
+          hostname = "vps15358d36";
+          extraExternalModules = {
+            system = [
+              disko.nixosModules.disko
+            ];
+          };
+          extraLocalModules = [
+            "server"
+          ];
+        }
+        {
+          hostname = "vps72c411b0";
+          extraExternalModules = {
+            system = [
+              disko.nixosModules.disko
+            ];
+          };
+          extraLocalModules = [
+            "server"
+          ];
+        }
+
+        # {
+        #   hostname = "vps";
+        #   system = "x86_64-linux";
+        #   extraExternalModules = {
+        #     system = [
+        #       disko.nixosModules.disko
+        #     ];
+        #     home = [ ];
+        #   };
+        #   extraLocalModules = [
+        #     "server"
+        #   ];
+        # }
       ];
 
     in
     {
       nixosConfigurations = nixpkgs.lib.foldl' (
         configs: host:
+        let
+          system = host.system or "x86_64-linux";
+        in
         configs
         // {
           "${host.hostname}" = nixpkgs.lib.nixosSystem {
-            inherit (host) system;
+            inherit system;
             specialArgs = {
               inherit (host)
                 extraLocalModules
                 hostname
-                system
                 ;
               inherit
                 colorScheme
                 inputs
                 secretPath
                 stateVersion
+                system
                 user
                 ;
               pkgsStable = import nixpkgs-stable {
-                inherit (host) system;
+                inherit system;
                 config.allowUnfree = true;
               };
             };
             modules = [
               ./host/${host.hostname}/system
-              ./system
+              ./module/core/system
+              ./module/extra/system
               sops-nix.nixosModules.sops
               stylix.nixosModules.stylix
-              nix-index-database.nixosModules.default
-              {
-                programs.nix-index-database.comma.enable = true;
-              }
               home-manager.nixosModules.home-manager
               {
                 home-manager = {
@@ -118,25 +154,28 @@
                   extraSpecialArgs = {
                     inherit (host)
                       extraLocalModules
-                      system
                       ;
                     inherit
                       colorScheme
                       inputs
                       secretPath
                       stateVersion
+                      system
                       user
                       ;
+                    nvimExtra = host.nvimExtra or false;
                     pkgsStable = import nixpkgs-stable {
-                      inherit (host) system;
+                      inherit system;
                       config.allowUnfree = true;
                     };
                   };
                   users.${user} = {
                     imports = [
                       ./host/${host.hostname}/home
-                      ./home
+                      ./module/core/home
+                      ./module/extra/home
                       nixvim.homeModules.nixvim
+                      stylix.homeModules.stylix
                     ]
                     ++ (host.extraExternalModules.home or [ ]);
                     programs.nixvim.nixpkgs.source = nixpkgs;

@@ -14,7 +14,7 @@
 1. Generate secrets (in WSL)
     ```bash
     sudo mkdir $HOME/.secret
-    sudo age-keygen -o $HOME/.secret/key 
+    sudo age-keygen -o $HOME/.secret/key
     sudo cp template.secret.yaml $HOME/.secret/secret.yaml
     sudo chmod 0600 $HOME/.secret/secret.yaml
     ```

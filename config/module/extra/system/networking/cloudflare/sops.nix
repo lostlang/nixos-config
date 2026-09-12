@@ -1,0 +1,34 @@
+{
+  config,
+  lib,
+  ...
+}:
+let
+  inherit (config.myConfig.cloudflare) tunnels;
+
+  mkSecret = name: [
+    {
+      name = "cloudflare.tunnel.${name}";
+      value = { };
+    }
+  ];
+  secretEntries = builtins.concatMap mkSecret tunnels;
+
+  mkTemplate = name: [
+    {
+      name = "cloudflare/${name}.env";
+      value = {
+        content = ''
+          TUNNEL_TOKEN=${config.sops.placeholder."cloudflare.tunnel.${name}"}
+        '';
+      };
+    }
+  ];
+  templateEntries = builtins.concatMap mkTemplate tunnels;
+in
+{
+  sops = lib.mkIf (tunnels != [ ]) {
+    secrets = builtins.listToAttrs secretEntries;
+    templates = builtins.listToAttrs templateEntries;
+  };
+}
