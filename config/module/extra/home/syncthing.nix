@@ -1,6 +1,10 @@
 {
+  lib,
+  ...
+}:
+{
   services.syncthing = {
-    enable = false;
+    enable = lib.mkDefault false;
 
     guiAddress = "0.0.0.0:8384";
   };

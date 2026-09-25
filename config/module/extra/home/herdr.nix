@@ -1,5 +1,6 @@
 {
   colorScheme,
+  lib,
   ...
 }:
 let
@@ -7,7 +8,7 @@ let
 in
 {
   programs.herdr = {
-    enable = false;
+    enable = lib.mkDefault false;
 
     settings = {
       onboarding = false;

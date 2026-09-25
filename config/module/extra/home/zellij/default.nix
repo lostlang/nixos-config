@@ -12,22 +12,22 @@ let
 in
 {
   programs.zellij = {
-    enable = false;
+    enable = lib.mkDefault false;
 
     settings = {
-      default_mode = "locked";
-      pane_frames = false;
+      # default_mode = "locked";
+      # pane_frames = false;
       theme = themeName;
       themes = {
         ${themeName} = theme;
       };
-      keybinds = {
-        locked = {
-          "bind \"Ctrl t\"" = {
-            GoToNextTab = { };
-          };
-        };
-      };
+      # keybinds = {
+      #   locked = {
+      #     "bind \"Ctrl t\"" = {
+      #       GoToNextTab = { };
+      #     };
+      #   };
+      # };
     };
   };
 
