@@ -1,8 +1,7 @@
 {
-  lib,
-  ...
-}:
-{
-  programs.herdr.enable = lib.mkForce true;
-  programs.lazygit.enable = lib.mkForce true;
+  programs = {
+    herdr.enable = true;
+    lazygit.enable = true;
+    zellij.enable = true;
+  };
 }

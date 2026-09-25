@@ -1,5 +1,6 @@
 {
   colorScheme,
+  lib,
   user,
   ...
 }:
@@ -9,7 +10,7 @@ let
 in
 {
   stylix = {
-    enable = false;
+    enable = lib.mkDefault false;
 
     homeManagerIntegration.autoImport = false;
 
