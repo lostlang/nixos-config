@@ -64,14 +64,14 @@ in
         name = "openrouterFree";
         provider = providerFree;
       })
-      args
+        args
     )
     (
       (mkProvider {
         name = "openrouterPaid";
         provider = providerPaid;
       })
-      args
+        args
     )
   ];
 }
