@@ -29,8 +29,11 @@
 
       treefmt_config = {
         projectRootFile = ".git/config";
-        programs.nixfmt.enable = true;
-        programs.yamlfmt.enable = true;
+        programs = {
+          nixfmt.enable = true;
+          yamlfmt.enable = true;
+          black.enable = true;
+        };
       };
       treefmtEval = eachSystem (
         system: treefmt-nix.lib.evalModule (import nixpkgs { inherit system; }) treefmt_config
@@ -50,7 +53,7 @@
               name = "treefmt";
               description = "One CLI to format the code tree.";
               entry = "${lib.getExe treefmtEval.${system}.config.build.wrapper} --fail-on-change --no-cache";
-              pass_filenames = false;
+              pass_filenames = true;
             };
             statix = {
               enable = true;
