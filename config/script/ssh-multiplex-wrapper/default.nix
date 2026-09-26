@@ -9,7 +9,7 @@ let
   session-name = "ssh-${user}-${hostname}";
 in
 pkgs.writeShellApplication {
-  name = "ssh-wrapper";
+  name = "ssh-multiplex-wrapper";
 
   runtimeInputs = with pkgs; [
     openssh

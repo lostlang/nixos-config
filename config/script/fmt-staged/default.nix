@@ -9,7 +9,6 @@ let
 
     runtimeInputs = with pkgs; [
       git
-      nix
       python3
     ];
 
