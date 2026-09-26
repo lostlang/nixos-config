@@ -10,15 +10,16 @@ let
 
   rebuild-vps = pkgs.writeShellApplication {
     name = "rebuild-vps";
-    runtimeInputs = [
-      pkgs.fzf
-      pkgs.python3
+
+    runtimeInputs = with pkgs; [
+      fzf
+      python3
     ];
 
     text = ''
       export PYTHONPATH=${./..}''${PYTHONPATH:+:$PYTHONPATH}
 
-      exec ${pkgs.python3}/bin/python3 ${./main.py} \
+      exec ${lib.getExe pkgs.python3} ${./main.py} \
         --config-dir /home/${user}/.config/nixos/config \
         --hosts ${lib.escapeShellArgs hosts}
     '';

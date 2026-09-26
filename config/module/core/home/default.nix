@@ -8,12 +8,13 @@
   imports = [
     ./btop
     ./nvim
+    ./zellij
+    ./zsh
 
     ./env.nix
     ./git.nix
     ./ssh.nix
     ./tmux.nix
-    ./zsh.nix
   ]
   ++ map (name: ../../${name}/home) extraLocalModules;
 

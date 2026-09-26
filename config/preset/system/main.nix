@@ -1,6 +1,6 @@
 {
   imports = [
-    ../../script/fmt-staged.nix
+    ../../script/fmt-staged
     ../../script/rebuild-vps
   ];
 
