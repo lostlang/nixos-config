@@ -155,6 +155,7 @@
                   extraSpecialArgs = {
                     inherit (host)
                       extraLocalModules
+                      hostname
                       ;
                     inherit
                       colorScheme

@@ -12,7 +12,7 @@ let
 in
 {
   programs.zellij = {
-    enable = lib.mkDefault false;
+    enable = true;
 
     settings = {
       # default_mode = "locked";
