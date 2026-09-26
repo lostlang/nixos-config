@@ -9,6 +9,8 @@
 
     extraConfig = ''
       set-option -sa terminal-features ",*:RGB"
+      set-option -s set-clipboard on
+      set-option -g allow-passthrough on
     '';
   };
 }
