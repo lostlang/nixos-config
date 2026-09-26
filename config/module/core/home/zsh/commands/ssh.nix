@@ -6,17 +6,17 @@
   ...
 }:
 let
-  ssh-wrapper = pkgs.callPackage ../../../../../script/ssh-wrapper {
+  ssh-multiplex-wrapper = pkgs.callPackage ../../../../../script/ssh-multiplex-wrapper {
     inherit hostname user;
   };
 in
 {
-  home.packages = [ ssh-wrapper ];
+  home.packages = [ ssh-multiplex-wrapper ];
 
   programs.zsh.initContent = ''
     ssh() {
       if [[ -o interactive ]]; then
-        command ssh-wrapper "$@"
+        command ssh-multiplex-wrapper "$@"
       else
         command ${lib.getExe pkgs.openssh} "$@"
       fi
