@@ -7,7 +7,6 @@
       zai.enable = true;
     };
     ssh = {
-      # identities = [ "work" ];
       hosts = [
         "h56"
       ];

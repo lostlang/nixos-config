@@ -1,4 +1,8 @@
 {
+  pkgs,
+  ...
+}:
+{
   imports = [
     ../../script/env-init
     ../../script/fmt-staged
@@ -6,4 +10,8 @@
   ];
 
   stylix.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    gitleaks
+  ];
 }
