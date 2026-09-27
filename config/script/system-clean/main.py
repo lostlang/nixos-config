@@ -13,6 +13,7 @@ def clean_os():
 
 
 def clean_zellij():
+    subprocess.run(["zellij", "kill-all-sessions", "-y"], check=True)
     subprocess.run(["zellij", "delete-all-sessions", "-y"], check=True)
 
 
