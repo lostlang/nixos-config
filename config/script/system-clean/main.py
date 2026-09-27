@@ -13,7 +13,19 @@ def clean_os():
 
 
 def clean_zellij():
-    subprocess.run(["zellij", "kill-all-sessions", "-y"], check=True)
+    result = subprocess.run(
+        ["zellij", "kill-all-sessions", "-y"], capture_output=True, text=True
+    )
+    if result.returncode != 0 and "No active zellij sessions found." not in (
+        result.stdout + result.stderr
+    ):
+        raise subprocess.CalledProcessError(
+            result.returncode,
+            result.args,
+            output=result.stdout,
+            stderr=result.stderr,
+        )
+
     subprocess.run(["zellij", "delete-all-sessions", "-y"], check=True)
 
 
