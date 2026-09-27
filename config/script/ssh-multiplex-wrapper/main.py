@@ -14,18 +14,18 @@ OPTIONS_WITH_ARGUMENTS = {
     "-F",
     "-i",
     "-J",
-    "-L",
     "-l",
     "-m",
     "-O",
     "-o",
     "-P",
     "-p",
-    "-R",
     "-S",
     "-W",
     "-w",
 }
+
+OPTIONS_WITH_PORT_FORWARDING = {"-L", "-R"}
 
 
 def server_without_command(args):
@@ -41,6 +41,9 @@ def server_without_command(args):
             break
 
         option = argument[:2]
+        if option in OPTIONS_WITH_PORT_FORWARDING:
+            return None
+
         if option in OPTIONS_WITH_ARGUMENTS and len(argument) == 2:
             index += 1
         index += 1

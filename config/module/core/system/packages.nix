@@ -10,6 +10,7 @@
     home-manager
     microfetch
     openssl
+    python3
     ripgrep
     sops
     unzip
