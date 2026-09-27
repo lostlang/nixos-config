@@ -16,6 +16,8 @@
     ./timezone.nix
     ./user.nix
     ./xdg-portal.nix
+
+    ../../../preset/system/script.nix
   ]
   ++ map (name: ../../${name}/system) extraLocalModules;
 }

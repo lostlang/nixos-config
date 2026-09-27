@@ -4,12 +4,11 @@
   ...
 }:
 let
-  env-init = pkgs.writeShellApplication {
-    name = "env-init";
+  update-flake = pkgs.writeShellApplication {
+    name = "update-flake";
 
     runtimeInputs = with pkgs; [
       fzf
-      git
       python3
     ];
 
@@ -21,5 +20,5 @@ let
   };
 in
 {
-  environment.systemPackages = [ env-init ];
+  environment.systemPackages = [ update-flake ];
 }

@@ -15,6 +15,8 @@
     ./git.nix
     ./ssh.nix
     ./tmux.nix
+
+    ../../../preset/home/script.nix
   ]
   ++ map (name: ../../${name}/home) extraLocalModules;
 

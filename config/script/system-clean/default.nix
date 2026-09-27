@@ -1,23 +1,28 @@
 {
-  programs,
+  config,
   lib,
   pkgs,
   ...
 }:
-pkgs.writeShellApplication {
-  name = "system-clean";
+let
+  system-clean = pkgs.writeShellApplication {
+    name = "system-clean";
 
-  runtimeInputs = with pkgs; [
-    fzf
-    python3
-  ];
+    runtimeInputs = with pkgs; [
+      fzf
+      python3
+    ];
 
-  text = ''
-    export PYTHONPATH=${./..}''${PYTHONPATH:+:$PYTHONPATH}
+    text = ''
+      export PYTHONPATH=${./..}''${PYTHONPATH:+:$PYTHONPATH}
 
-    exec ${lib.getExe pkgs.python3} ${./main.py} \
-      ${lib.optionalString programs.nixvim.enable "--nvim"} \
-      ${lib.optionalString programs.zellij.enable "--zellij"} \
-      "$@"
-  '';
+      exec ${lib.getExe pkgs.python3} ${./main.py} \
+        ${lib.optionalString config.programs.nixvim.enable "--nvim"} \
+        ${lib.optionalString config.programs.zellij.enable "--zellij"} \
+        "$@"
+    '';
+  };
+in
+{
+  home.packages = [ system-clean ];
 }
