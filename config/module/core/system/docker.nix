@@ -1,11 +1,10 @@
 {
-  config,
   lib,
   user,
   ...
 }:
 {
-  virtualisation.docker.enable = true;
+  virtualisation.docker.enable = lib.mkDefault true;
 
-  users.users.${user}.extraGroups = lib.mkIf config.virtualisation.docker.enable [ "docker" ];
+  users.users.${user}.extraGroups = [ "docker" ];
 }

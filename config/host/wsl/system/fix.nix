@@ -1,9 +1,5 @@
 {
-  lib,
-  ...
-}:
-{
-  virtualisation.docker.enable = lib.mkForce false;
+  virtualisation.docker.enable = false;
 
   # For docker desktop work
   systemd.tmpfiles.rules = [
