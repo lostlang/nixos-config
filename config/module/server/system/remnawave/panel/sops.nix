@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  remnawave,
+  ports,
   ...
 }:
 {
@@ -16,13 +16,13 @@
       mode = "0400";
       restartUnits = [ "remnawave-panel.service" ];
       content = ''
-        APP_PORT=${toString remnawave.panel.port}
-        METRICS_PORT=${toString remnawave.panel.metrics.port}
+        APP_PORT=${toString ports.remnawave.panel.port}
+        METRICS_PORT=${toString ports.remnawave.panel.metrics}
         METRICS_USER=admin
         METRICS_PASS=admin
         API_INSTANCES=1
 
-        DATABASE_URL=postgresql://postgres:postgres@remnawave-db:5432/postgres
+        DATABASE_URL=postgresql://postgres:postgres@remnawave-db:${toString ports.remnawave.database}/postgres
         REDIS_SOCKET=/var/run/valkey/valkey.sock
 
         APP_SECRET=${config.sops.placeholder."remnawave.panel.app-secret"}
@@ -43,8 +43,8 @@
       mode = "0400";
       restartUnits = [ "remnawave-panel.service" ];
       content = ''
-        APP_PORT=${toString remnawave.panel.subscription.port}
-        REMNAWAVE_PANEL_URL=http://remnawave:${toString remnawave.panel.port}
+        APP_PORT=${toString ports.remnawave.panel.subscription}
+        REMNAWAVE_PANEL_URL=http://remnawave:${toString ports.remnawave.panel.port}
         REMNAWAVE_API_TOKEN=${config.sops.placeholder."remnawave.api-token"}
 
         TRUST_PROXY=1

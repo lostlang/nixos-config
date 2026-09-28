@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  remnawave,
+  ports,
   remnawaveContainerCommon,
   ...
 }:
@@ -17,7 +17,7 @@ let
       "httpd"
       "-f"
       "-p"
-      "127.0.0.1:${toString remnawave.mask.backend.port}"
+      "127.0.0.1:${toString ports.remnawave.mask.backend}"
       "-h"
       "/www"
     ];
@@ -28,7 +28,7 @@ let
         "wget"
         "--spider"
         "-q"
-        "http://127.0.0.1:${toString remnawave.mask.backend.port}"
+        "http://127.0.0.1:${toString ports.remnawave.mask.backend}"
       ];
       interval = "10s";
       timeout = "3s";
@@ -52,7 +52,7 @@ in
       web.http.redirections.entryPoint.to = lib.mkForce ":443";
 
       websecure = {
-        address = lib.mkForce "127.0.0.1:${toString remnawave.mask.entryPoint.port}";
+        address = lib.mkForce "127.0.0.1:${toString ports.remnawave.mask.entryPoint}";
         proxyProtocol.trustedIPs = [ "127.0.0.1/32" ];
       };
     };

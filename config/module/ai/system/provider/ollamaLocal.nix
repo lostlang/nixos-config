@@ -1,11 +1,12 @@
 {
   lib,
+  ports,
   ...
 }:
 let
   provider = {
     enable = false;
-    apiBase = "http://127.0.0.1:11434/v1";
+    apiBase = "http://127.0.0.1:${toString ports.ollama}/v1";
     model = {
       prefix = "ollama";
       default = "qwen3.5:2b";

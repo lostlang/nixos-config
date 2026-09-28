@@ -1,19 +1,8 @@
 {
   _module.args = {
     remnawave = {
-      mask = {
-        backend.port = 20267;
-        entryPoint.port = 20268;
-      };
-      node = {
-        port = 2222;
-        hopping.port = 30173;
-      };
       panel = {
         address = "172.30.0.2";
-        port = 15867;
-        metrics.port = 15868;
-        subscription.port = 15869;
       };
       network = {
         subnet = "172.30.0.0/24";

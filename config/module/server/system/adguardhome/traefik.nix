@@ -1,8 +1,7 @@
 {
   config,
-  dnsPort,
   lib,
-  webPort,
+  ports,
   ...
 }:
 lib.mkIf config.services.adguardhome.enable {
@@ -30,7 +29,7 @@ lib.mkIf config.services.adguardhome.enable {
             adguardhome:
               loadBalancer:
                 servers:
-                  - url: "http://127.0.0.1:${toString webPort}"
+                  - url: "http://127.0.0.1:${toString ports.adguardhome.web}"
 
         tcp:
           routers:
@@ -46,7 +45,7 @@ lib.mkIf config.services.adguardhome.enable {
             adguardhome-dns:
               loadBalancer:
                 servers:
-                  - address: "127.0.0.1:${toString dnsPort}"
+                  - address: "127.0.0.1:${toString ports.adguardhome.dns}"
       '';
     };
   };

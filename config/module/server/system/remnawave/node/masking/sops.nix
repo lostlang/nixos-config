@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  remnawave,
+  ports,
   ...
 }:
 let
@@ -33,7 +33,7 @@ in
             remnawave-node-mask:
               loadBalancer:
                 servers:
-                  - url: "http://127.0.0.1:${toString remnawave.mask.backend.port}"
+                  - url: "http://127.0.0.1:${toString ports.remnawave.mask.backend}"
       '';
     };
   };

@@ -1,5 +1,6 @@
 {
   lib,
+  ports,
   ...
 }:
 {
@@ -15,7 +16,7 @@
     };
 
     hopping.availableNodeCount = lib.mkOption {
-      type = lib.types.ints.positive;
+      type = lib.types.ints.between 1 ports.remnawave.node.hopping.count;
       default = 1;
     };
   };

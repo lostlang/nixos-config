@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  remnawave,
+  ports,
   ...
 }:
 let
@@ -26,7 +26,7 @@ in
       mode = "0400";
       restartUnits = [ "remnawave-node.service" ];
       content = ''
-        NODE_PORT=${toString remnawave.node.port}
+        NODE_PORT=${toString ports.remnawave.node.port}
         SECRET_KEY=${config.sops.placeholder."remnawave.node.secret-key"}
       '';
     };

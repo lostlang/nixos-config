@@ -15,5 +15,6 @@
         availableNodeCount = 1;
       };
     };
+    vaultwarden.enable = true;
   };
 }

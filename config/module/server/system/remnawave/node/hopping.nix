@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  remnawave,
+  ports,
   ...
 }:
 let
@@ -9,8 +9,8 @@ let
 in
 {
   networking.firewall.allowedTCPPorts = lib.mkIf (cfg.enable && cfg.hopping.enable) (
-    lib.range remnawave.node.hopping.port (
-      remnawave.node.hopping.port + cfg.hopping.availableNodeCount - 1
+    lib.range ports.remnawave.node.hopping.start (
+      ports.remnawave.node.hopping.start + cfg.hopping.availableNodeCount - 1
     )
   );
 }

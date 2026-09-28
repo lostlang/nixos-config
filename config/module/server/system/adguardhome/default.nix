@@ -1,30 +1,25 @@
 {
   lib,
+  ports,
   ...
 }:
-let
-  webPort = 43074;
-  dnsPort = 51071;
-in
 {
   imports = [
     ./traefik.nix
   ];
 
-  _module.args = { inherit dnsPort webPort; };
-
   services.adguardhome = {
     enable = lib.mkDefault false;
 
     host = "127.0.0.1";
-    port = webPort;
+    port = ports.adguardhome.web;
 
     settings = {
       http.doh.insecure_enabled = true;
 
       dns = {
         bind_hosts = [ "127.0.0.1" ];
-        port = dnsPort;
+        port = ports.adguardhome.dns;
 
         upstream_dns = [
           "https://dns.cloudflare.com/dns-query"

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  ports,
   remnawave,
   remnawaveContainerCommon,
   ...
@@ -22,13 +23,13 @@ let
           env_file = [ panelEnvFile ];
           volumes = [ "valkey-socket:/var/run/valkey" ];
           ports = [
-            "127.0.0.1:${toString remnawave.panel.port}:${toString remnawave.panel.port}"
-            "127.0.0.1:${toString remnawave.panel.metrics.port}:${toString remnawave.panel.metrics.port}"
+            "127.0.0.1:${toString ports.remnawave.panel.port}:${toString ports.remnawave.panel.port}"
+            "127.0.0.1:${toString ports.remnawave.panel.metrics}:${toString ports.remnawave.panel.metrics}"
           ];
           healthcheck = {
             test = [
               "CMD-SHELL"
-              "curl -f http://localhost:${toString remnawave.panel.metrics.port}/health"
+              "curl -f http://localhost:${toString ports.remnawave.panel.metrics}/health"
             ];
             interval = "30s";
             timeout = "5s";
@@ -103,7 +104,7 @@ let
           hostname = "remnawave-subscription-page";
           env_file = [ subscriptionEnvFile ];
           ports = [
-            "127.0.0.1:${toString remnawave.panel.subscription.port}:${toString remnawave.panel.subscription.port}"
+            "127.0.0.1:${toString ports.remnawave.panel.subscription}:${toString ports.remnawave.panel.subscription}"
           ];
           depends_on.remnawave.condition = "service_healthy";
         };

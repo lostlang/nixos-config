@@ -50,6 +50,7 @@
       stateVersion = "26.11";
       user = "lostlang";
       colorScheme = import ./colorScheme;
+      ports = import ./ports.nix;
       secretPath = "/home/${user}/.secret";
 
       hosts = [
@@ -130,6 +131,7 @@
               inherit
                 colorScheme
                 inputs
+                ports
                 secretPath
                 stateVersion
                 system
@@ -160,6 +162,7 @@
                     inherit
                       colorScheme
                       inputs
+                      ports
                       secretPath
                       stateVersion
                       system

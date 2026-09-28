@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  remnawave,
+  ports,
   ...
 }:
 let
@@ -49,9 +49,9 @@ in
       StateDirectory = "remnawave-node-bootstrap";
       EnvironmentFile = bootstrapEnvFile;
       Environment = [
-        "API_PORT=${toString remnawave.panel.port}"
+        "API_PORT=${toString ports.remnawave.panel.port}"
         "NODES_FILE=${nodeDomainsFile}"
-        "MASK_PORT=${toString remnawave.mask.entryPoint.port}"
+        "MASK_PORT=${toString ports.remnawave.mask.entryPoint}"
       ];
       ExecStartPre = bootstrapSetup;
       ExecStart = "/var/lib/remnawave-node-bootstrap/venv/bin/python ${bootstrapScript}";

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  ports,
   ...
 }:
 let
@@ -17,7 +18,7 @@ in
     enable = true;
 
     host = "0.0.0.0";
-    port = 11435;
+    port = ports.openWebui;
     environment = {
       ANONYMIZED_TELEMETRY = "False";
       DO_NOT_TRACK = "True";

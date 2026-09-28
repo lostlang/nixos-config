@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  remnawave,
+  ports,
   ...
 }:
 lib.mkIf config.services.remnawave-panel.enable {
@@ -29,7 +29,7 @@ lib.mkIf config.services.remnawave-panel.enable {
             remnawave-subscription:
               loadBalancer:
                 servers:
-                  - url: "http://127.0.0.1:${toString remnawave.panel.subscription.port}"
+                  - url: "http://127.0.0.1:${toString ports.remnawave.panel.subscription}"
       '';
     };
   };

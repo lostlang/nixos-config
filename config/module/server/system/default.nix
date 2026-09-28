@@ -2,6 +2,7 @@
   imports = [
     ./adguardhome
     ./remnawave
+    ./vaultwarden
 
     ./weekly-reboot.nix
     ./traefik.nix
