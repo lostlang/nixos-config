@@ -11,6 +11,9 @@
     cloudflare.tunnels = [
       "test"
     ];
+    bitwardenCli.profiles = [
+      "common"
+    ];
     ssh = {
       identities = [
         "work"

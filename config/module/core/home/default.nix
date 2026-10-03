@@ -7,6 +7,7 @@
 {
   imports = [
     ./btop
+    ./bitwarden-cli-config.nix
     ./nvim
     ./zellij
     ./zsh
