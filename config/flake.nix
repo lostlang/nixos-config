@@ -32,6 +32,11 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    zjstatus = {
+      url = "github:dj95/zjstatus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -44,6 +49,7 @@
       nixvim,
       sops-nix,
       stylix,
+      zjstatus,
       ...
     }@inputs:
     let
@@ -167,6 +173,7 @@
                       stateVersion
                       system
                       user
+                      zjstatus
                       ;
                     nvimExtra = host.nvimExtra or false;
                     pkgsStable = import nixpkgs-stable {

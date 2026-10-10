@@ -31,7 +31,7 @@ def main():
     session_fd = os.open(
         args.session_file,
         os.O_WRONLY | os.O_CREAT | os.O_TRUNC,
-        0o600,
+        0o644,
     )
     with os.fdopen(session_fd, "w") as session_file:
         session_file.write(unlock.stdout.strip())
