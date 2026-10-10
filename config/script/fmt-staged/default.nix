@@ -13,6 +13,8 @@ let
     ];
 
     text = ''
+      export PYTHONPATH=${./..}''${PYTHONPATH:+:$PYTHONPATH}
+
       exec ${lib.getExe pkgs.python3} ${./main.py} "$@"
     '';
   };

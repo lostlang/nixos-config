@@ -4,11 +4,16 @@ import os
 import subprocess
 import sys
 
+from lib.project_context import find_project_root
+
 
 def main():
+    project_root = find_project_root()
+
     try:
         staged_files = subprocess.run(
             ["git", "diff", "--cached", "--name-only", "--diff-filter=d", "-z"],
+            cwd=project_root,
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -24,7 +29,9 @@ def main():
     if not staged_files:
         return 0
 
-    return subprocess.run(["nix", "fmt", *staged_files], check=False).returncode
+    return subprocess.run(
+        ["nix", "fmt", *staged_files], cwd=project_root, check=False
+    ).returncode
 
 
 if __name__ == "__main__":

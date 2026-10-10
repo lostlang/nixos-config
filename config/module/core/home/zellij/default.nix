@@ -3,6 +3,7 @@
   config,
   lib,
   osConfig,
+  pkgs,
   ...
 }:
 let
@@ -11,6 +12,17 @@ let
   codeLayout = import ./layouts/code.nix { inherit colorScheme osConfig; };
 in
 {
+  home.packages = [
+    (import ./zellij-project.nix {
+      inherit lib pkgs;
+      zellij = config.programs.zellij.package;
+    })
+    (import ./zellij-sessions.nix {
+      inherit lib pkgs;
+      zellij = config.programs.zellij.package;
+    })
+  ];
+
   programs.zellij = {
     enable = true;
 

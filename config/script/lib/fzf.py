@@ -1,10 +1,7 @@
-"""Reusable helpers for interactive fzf selection."""
-
 import subprocess
 
 
 def select(items, prompt="Select an item: ", executable="fzf"):
-    """Return the selected item, or None when the selection is cancelled."""
     result = subprocess.run(
         [
             executable,
