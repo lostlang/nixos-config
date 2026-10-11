@@ -5,8 +5,7 @@
     ./audio.nix
     ./greetd.nix
     ./packages.nix
-    ./steam.nix
-    ./sunshine.nix
+    # ./steam.nix
     ./udisks2.nix
     ./xdg-portal.nix
     # ./tlp.nix

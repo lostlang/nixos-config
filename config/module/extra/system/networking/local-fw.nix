@@ -1,10 +1,11 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
   systemd.services.local-fw = {
-    enable = false;
+    enable = lib.mkDefault false;
 
     wantedBy = [ "multi-user.target" ];
     wants = [

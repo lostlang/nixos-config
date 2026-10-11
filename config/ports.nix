@@ -34,6 +34,11 @@ let
     openWebui = 11435;
 
     syncthing.gui = 8384;
+
+    sunshine = {
+      start = 47984;
+      count = 27;
+    };
   };
 
   flatten =

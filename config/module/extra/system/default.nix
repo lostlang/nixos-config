@@ -5,5 +5,6 @@
     ./keyd.nix
     # ./packages.nix
     ./stylix.nix
+    ./sunshine.nix
   ];
 }

@@ -1,6 +1,10 @@
 {
+  lib,
+  ...
+}:
+{
   services.keyd = {
-    enable = false;
+    enable = lib.mkDefault false;
 
     keyboards.default = {
       ids = [ "*" ];
