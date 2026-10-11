@@ -25,6 +25,16 @@ in
       pane_frames = false;
       show_release_notes = false;
       show_startup_tips = false;
+      post_command_discovery_hook = ''
+        case "$RESURRECT_COMMAND" in
+          sudo|sudo\ *|*/sudo|*/sudo\ *)
+            printf '%s\n' "$SHELL"
+            ;;
+          *)
+            printf '%s\n' "$RESURRECT_COMMAND"
+            ;;
+        esac
+      '';
       theme = themeName;
       themes = {
         ${themeName} = theme;
