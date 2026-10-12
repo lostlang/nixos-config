@@ -30,9 +30,10 @@
       treefmt_config = {
         projectRootFile = ".git/config";
         programs = {
-          nixfmt.enable = true;
-          yamlfmt.enable = true;
           black.enable = true;
+          nixfmt.enable = true;
+          stylua.enable = true;
+          yamlfmt.enable = true;
         };
       };
       treefmtEval = eachSystem (

@@ -1,19 +1,16 @@
 {
-  pkgs,
   user,
   ...
 }:
 {
-  environment.systemPackages = with pkgs; [
-    niri
-  ];
+  programs.hyprland.enable = true;
 
   services.greetd = {
     enable = true;
 
     settings = {
       default_session = {
-        command = "niri-session";
+        command = "Hyprland";
         inherit user;
       };
     };

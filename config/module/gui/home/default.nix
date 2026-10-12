@@ -2,8 +2,7 @@
   imports = [
     ./kitty
     ./librewolf
-    ./niri
-    ./waybar
+    ./hyprland
 
     ./fonts.nix
   ];

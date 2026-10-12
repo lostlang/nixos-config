@@ -14,6 +14,7 @@ in
 
     settings = {
       confirm_os_window_close = 0;
+      remember_window_size = false;
       scrollback_pager = "nvim -c 'set buftype=nofile' -c 'set nomodifiable' -";
       font_family = "JetBrainsMono Nerd Fonts";
       font_size = 14.0;
