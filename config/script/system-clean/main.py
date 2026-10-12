@@ -79,10 +79,10 @@ def main():
     parser.add_argument("--zellij", action="store_true")
     args = parser.parse_args()
 
-    if args.zellij:
-        cleanup_functions["zellij"] = clean_zellij
     if args.nvim:
         cleanup_functions["nvim"] = clean_nvim
+    if args.zellij:
+        cleanup_functions["zellij"] = clean_zellij
 
     options = ["all", *cleanup_functions]
     selected = select(options, prompt="Select what to clean: ")
