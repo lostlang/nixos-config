@@ -187,7 +187,6 @@
                       ./module/core/home
                       ./module/extra/home
                       nixvim.homeModules.nixvim
-                      stylix.homeModules.stylix
                     ]
                     ++ (host.extraExternalModules.home or [ ]);
                     programs.nixvim.nixpkgs.source = nixpkgs;

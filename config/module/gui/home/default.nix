@@ -1,8 +1,9 @@
 {
   imports = [
+    ./hyprland
     ./kitty
     ./librewolf
-    ./hyprland
+    ./noctalia
 
     ./fonts.nix
   ];

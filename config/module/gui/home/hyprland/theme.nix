@@ -27,13 +27,13 @@ in
   })
 
   hl.on("window.urgent", function(window)
-    if window and not window.active then
+    if window and window.mapped and not window.active then
       hl.dispatch(hl.dsp.window.tag({ window = window, tag = "+urgent" }))
     end
   end)
 
   hl.on("window.active", function(window)
-    if window then
+    if window and window.mapped and window.active then
       hl.dispatch(hl.dsp.window.tag({ window = window, tag = "-urgent" }))
     end
   end)

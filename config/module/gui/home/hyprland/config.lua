@@ -17,8 +17,14 @@ hl.config({
 		follow_focus = true,
 	},
 	input = {
+		follow_mouse = 0,
+		float_switch_override_focus = 0,
 		kb_layout = "us, ru",
 		kb_options = "grp:win_space_toggle",
+	},
+	-- HACK: check this in new versions
+	cursor = {
+		no_hardware_cursors = 1,
 	},
 	misc = {
 		disable_hyprland_logo = true,

@@ -1,4 +1,5 @@
 {
+  config,
   colorScheme,
   lib,
   user,
@@ -9,10 +10,14 @@ let
   inherit (colorScheme.default) palette;
 in
 {
+  home-manager.sharedModules = lib.mkIf (!config.stylix.enable) [
+    config.stylix.homeManagerIntegration.module
+  ];
+
   stylix = {
     enable = lib.mkDefault false;
 
-    homeManagerIntegration.autoImport = false;
+    # homeManagerIntegration.autoImport = true;
 
     polarity = "light";
     base16Scheme = {

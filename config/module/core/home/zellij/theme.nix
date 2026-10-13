@@ -15,7 +15,7 @@ let
   };
 
   selected = unselected // {
-    base = palette.black;
+    base = palette.light_black;
     background = palette.white;
   };
 in
