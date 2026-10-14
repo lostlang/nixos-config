@@ -1,12 +1,11 @@
 {
   colorScheme,
-  osConfig,
   zjstatus,
   ...
 }:
 let
   statusBar = import ../status-bar.nix {
-    inherit colorScheme osConfig zjstatus;
+    inherit colorScheme zjstatus;
   };
 in
 ''

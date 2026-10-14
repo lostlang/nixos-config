@@ -4,7 +4,5 @@
     ./kitty
     ./librewolf
     ./noctalia
-
-    ./fonts.nix
   ];
 }

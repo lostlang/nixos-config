@@ -2,7 +2,6 @@
   colorScheme,
   config,
   lib,
-  osConfig,
   pkgs,
   zjstatus,
   ...
@@ -13,7 +12,7 @@ let
   zjstatusPackage = zjstatus.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   codeLayout = import ./layouts/code.nix {
-    inherit colorScheme osConfig;
+    inherit colorScheme;
     zjstatus = zjstatusPackage;
   };
 in
@@ -46,7 +45,7 @@ in
         "autolock location=\"https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm\"" =
           {
             is_enabled = true;
-            lock_regex = "^(vim|nvim|hx|fzf)$";
+            lock_regex = "^(vim|nvim|hx|fzf|tmux|ssh)$";
           };
       };
       load_plugins = {

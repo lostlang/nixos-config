@@ -6,16 +6,16 @@
 }:
 {
   imports = [
-    ./btop
     ./bitwarden-cli-config.nix
+    ./btop
     ./nvim
+    ./tmux
     ./zellij
     ./zsh
 
     ./env.nix
     ./git.nix
     ./ssh.nix
-    ./tmux.nix
 
     ../../../preset/home/script.nix
   ]

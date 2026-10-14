@@ -1,6 +1,5 @@
 {
   colorScheme,
-  osConfig,
   zjstatus,
 }:
 let
@@ -9,38 +8,38 @@ let
   background = palette.gradient.dark.g2;
 
   style = {
-    mode = "#[bg=${palette.green},fg=${palette.light_white},bold]";
-    modeSeparator = "#[bg=${background},fg=${palette.green}]";
-    session = "#[bg=${background},fg=${palette.light_white},bold]";
-    sessionSeparator = "#[fg=${background}]";
-    tabNormal = "#[fg=${palette.light_blue},bold]";
-    tabActive = "#[fg=${palette.blue},bold,italic]";
-    gitBranch = "#[fg=${palette.blue}]";
-    datetimeSeparator = "#[bg=${palette.light_white},fg=${palette.green}]";
-    datetime = "#[bg=${palette.green},fg=${palette.light_white}]";
+    section1 = "#[bg=${palette.green},fg=${palette.light_white},bold]";
+    separator1 = "#[bg=${background},fg=${palette.green}]";
+
+    section2 = "#[bg=${background},fg=${palette.light_white},bold]";
+    separator2 = "#[fg=${background}]";
+
+    section3 = "#[bg=${palette.green},fg=${palette.light_white},bold]";
+    separator3 = "#[fg=${palette.green}]";
+
+    tabNormal = "#[fg=${palette.blue},bold]";
+    tabActive = "#[fg=${palette.green},bold]";
   };
 in
 ''
   pane size=1 {
     plugin location="file:${zjstatus}/bin/zjstatus.wasm" {
-      format_left   "${style.mode} {mode} ${style.modeSeparator}${style.session} {session} ${style.sessionSeparator} {command_git_branch} "
+      format_left   "${style.section1} {mode} ${style.separator1} ${style.section2} {command_git_branch} ${style.separator2} "
       format_center "{tabs}"
-      format_right  "{datetime}"
+      format_right  "${style.separator3} ${style.section3} {session} "
+
+      format_hide_on_overlength "true"
+      format_precedence "clr"
 
       mode_normal "{name}"
 
-      tab_normal    "${style.tabNormal}{name}"
-      tab_active    "${style.tabActive}{name}"
-      tab_separator " "
+      tab_normal    "${style.tabNormal}   {name}   "
+      tab_active    "${style.separator3} ${style.section3} {name} ${style.separator3} "
 
       command_git_branch_command    "git rev-parse --abbrev-ref HEAD"
-      command_git_branch_format     "${style.gitBranch} {stdout} "
+      command_git_branch_format     " {stdout}"
       command_git_branch_interval   "10"
       command_git_branch_rendermode "static"
-
-      datetime          "${style.datetimeSeparator}${style.datetime} {format} "
-      datetime_format   "%A %H:%M"
-      datetime_timezone "${osConfig.time.timeZone}"
     }
   }
 ''

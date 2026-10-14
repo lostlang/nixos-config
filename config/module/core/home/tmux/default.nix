@@ -1,4 +1,11 @@
 {
+  colorScheme,
+  pkgs,
+  ...
+}:
+{
+  stylix.targets.tmux.enable = false;
+
   programs.tmux = {
     enable = true;
 
@@ -11,6 +18,8 @@
       set-option -sa terminal-features ",*:RGB"
       set-option -s set-clipboard on
       set-option -g allow-passthrough on
-    '';
+
+    ''
+    + import ./theme.nix { inherit colorScheme pkgs; };
   };
 }

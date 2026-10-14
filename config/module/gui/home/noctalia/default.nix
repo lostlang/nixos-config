@@ -34,7 +34,7 @@
 
       shell = {
         panel_anchor_bar = "default";
-        font_family = "JetBrainsMono Nerd Font";
+        font_family = config.stylix.fonts.monospace.name;
         settings_show_advanced = true;
 
         screenshot.directory = "${config.home.homeDirectory}/Pictures/Screenshots";
