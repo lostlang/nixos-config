@@ -1,6 +1,8 @@
 {
-  config,
   colorScheme,
+  config,
+  lib,
+  osConfig,
   ...
 }:
 {
@@ -20,13 +22,14 @@
         ];
         behavior = {
           lock = {
-            enabled = true;
+            enabled = lib.mkDefault true;
             timeout = 600;
             action = "lock";
           };
           screen-off = {
-            enabled = true;
+            enabled = lib.mkDefault (!osConfig.services.sunshine.enable);
             timeout = 660;
+            locked_timeout = 60;
             action = "screen_off";
           };
         };
