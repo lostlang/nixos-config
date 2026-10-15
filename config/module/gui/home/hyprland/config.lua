@@ -1,8 +1,8 @@
 hl.config({
 	general = {
 		layout = "scrolling",
-		gaps_in = 5,
-		gaps_out = 10,
+		gaps_in = 4,
+		gaps_out = 8,
 		border_size = 2,
 	},
 	decoration = {
@@ -12,7 +12,6 @@ hl.config({
 	scrolling = {
 		column_width = 0.5,
 		explicit_column_widths = "0.5, 1.0",
-		fullscreen_on_one_column = false,
 		focus_fit_method = 1,
 		follow_focus = true,
 	},

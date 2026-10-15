@@ -6,14 +6,26 @@
   ...
 }:
 {
+  imports = [
+    ./timezones.nix
+    ./shelf.nix
+  ];
+
   stylix.targets.noctalia.enable = false;
+
+  home.activation.clearNoctaliaSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] /* sh */ ''
+    run rm -f -- ${lib.escapeShellArg "${config.xdg.stateHome}/noctalia/settings.toml"}
+  '';
 
   programs.noctalia = {
     enable = true;
+
     customPalettes.${colorScheme.default.name} = import ./theme.nix { inherit colorScheme; };
 
     settings = {
-      hooks.started = [ "noctalia msg session lock" ];
+      hooks.started = lib.optional (
+        !osConfig.services.displayManager.noctalia-greeter.enable
+      ) "noctalia msg session lock";
 
       idle = {
         behavior_order = [
@@ -27,7 +39,7 @@
             action = "lock";
           };
           screen-off = {
-            enabled = lib.mkDefault (!osConfig.services.sunshine.enable);
+            enabled = lib.mkDefault osConfig.services.displayManager.noctalia-greeter.enable;
             timeout = 660;
             locked_timeout = 60;
             action = "screen_off";
@@ -37,34 +49,35 @@
 
       shell = {
         panel_anchor_bar = "default";
+        password_style = "random";
         font_family = config.stylix.fonts.monospace.name;
         settings_show_advanced = true;
 
-        screenshot.directory = "${config.home.homeDirectory}/Pictures/Screenshots";
+        screenshot = {
+          directory = "${config.home.homeDirectory}/Pictures/Screenshots";
+          filename_pattern = "%Y/%m/screenshot_%Y%m%d_%H%M%S";
+          # NOTE: don't work with config/module/gui/home/hyprland/config.lua:24-27
+          show_cursor = false;
+        };
 
         session.actions = [
-          {
-            action = "lock";
-            enabled = true;
-            shortcut = "1";
-          }
           {
             action = "lock_and_suspend";
             enabled = true;
             countdown_seconds = 5;
-            shortcut = "2";
+            shortcut = "l";
           }
           {
             action = "reboot";
             enabled = true;
             countdown_seconds = 5;
-            shortcut = "3";
+            shortcut = "r";
           }
           {
             action = "shutdown";
             enabled = true;
             countdown_seconds = 5;
-            shortcut = "4";
+            shortcut = "s";
             variant = "destructive";
           }
         ];
@@ -76,6 +89,18 @@
         custom_palette = colorScheme.default.name;
       };
 
+      lockscreen.transition = [ "honeycomb" ];
+
+      wallpaper = {
+        transition = [ "honeycomb" ];
+        directory = "${config.home.homeDirectory}/Pictures/Wallpapers";
+        automation = {
+          enabled = true;
+          interval_seconds = 1800;
+          order = "random";
+        };
+      };
+
       bar = {
         order = [
           "default"
@@ -83,9 +108,6 @@
         ];
 
         default = {
-          enabled = true;
-          position = "top";
-          layer = "overlay";
           smart_auto_hide = true;
           reserve_space = false;
           start = [
@@ -94,20 +116,17 @@
           ];
           center = [ ];
           end = [
-            "weather"
             "media"
             "volume"
             "brightness"
             "tray"
             "bluetooth"
             "network"
+            "weather"
           ];
         };
 
         island = {
-          enabled = true;
-          position = "top";
-          layer = "overlay";
           shadow = false;
           reserve_space = false;
           margin_ends = 830;
@@ -118,35 +137,17 @@
             "screenshot"
             "clipboard"
             "keyboard_layout"
-            "clock-moscow"
+            "clock-remote"
           ];
           end = [ ];
         };
       };
 
-      widget = {
-        clock-current = {
-          type = "clock";
-          capsule = true;
-          capsule_fill = "primary";
-          capsule_foreground = "on_primary";
-        };
-        clock-moscow = {
-          type = "clock";
-          timezone = "Europe/Moscow";
-          capsule = true;
-          capsule_fill = "secondary";
-          capsule_foreground = "on_secondary";
-        };
-      };
-
       location = {
-        auto_locate = false;
         address = "Boracay, Philippines";
       };
 
       weather = {
-        enabled = true;
         unit = "metric";
         refresh_minutes = 30;
         effects = true;
@@ -157,7 +158,6 @@
       };
 
       notification = {
-        enable_daemon = true;
         position = "top_center";
         offset_y = 42; # 34px bar + 8px gap.
       };

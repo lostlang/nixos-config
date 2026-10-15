@@ -6,16 +6,20 @@ local function spawn(key, command, flags)
 	hl.bind(key, hl.dsp.exec_cmd(command), flags or {})
 end
 
-hl.bind(mod .. " + Q", hl.dsp.window.close())
 spawn(mod .. " + T", "kitty")
-spawn(mod .. " + E", "thunar")
+
+hl.bind(mod .. " + X", hl.dsp.window.close())
 spawn(mod .. " + R", "noctalia msg panel-toggle launcher")
-spawn(mod .. " + L", "noctalia msg session lock")
-spawn(mod .. " + M", "noctalia msg panel-toggle session")
-spawn(mod .. " + Tab", "noctalia msg window-switcher")
 spawn("Print", "noctalia msg screenshot-region")
+spawn(mod .. " + P", "noctalia msg screenshot-region")
 spawn("SHIFT + Print", "noctalia msg screenshot-fullscreen")
-hl.bind(mod .. " + P", function()
+spawn(mod .. " + SHIFT + P", "noctalia msg screenshot-fullscreen")
+spawn(mod .. " + L", "noctalia msg session lock")
+spawn(mod .. " + Q", "noctalia msg panel-toggle session")
+spawn(mod .. " + Tab", "noctalia msg window-switcher")
+spawn(mod .. " + S", "noctalia msg plugin alok-debnath/shelf:service all toggle")
+
+hl.bind(mod .. " + SHIFT + R", function()
 	local window = hl.get_active_window()
 	if not window then
 		return
@@ -23,6 +27,52 @@ hl.bind(mod .. " + P", function()
 
 	if not window.floating then
 		hl.dispatch(hl.dsp.layout("colresize +conf"))
+		return
+	end
+end)
+
+hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+
+_G.hiddenFloatingWindows = _G.hiddenFloatingWindows or {}
+hl.bind(mod .. " + H", function()
+	local hidden = _G.hiddenFloatingWindows
+
+	if #hidden > 0 then
+		local workspace = hl.get_active_workspace()
+		for _, saved in ipairs(hidden) do
+			local ok, window = pcall(hl.get_window, saved.window)
+			if ok and window and window.workspace and window.workspace.name == "special:hidden-floating" then
+				hl.dispatch(hl.dsp.window.move({ window = window, workspace = workspace.id, follow = false }))
+				hl.dispatch(hl.dsp.window.move({ window = window, x = saved.x, y = saved.y, relative = false }))
+				hl.dispatch(hl.dsp.window.pin({ window = window, action = "enable" }))
+			end
+		end
+		_G.hiddenFloatingWindows = {}
+		return
+	end
+
+	for _, window in ipairs(hl.get_windows()) do
+		local workspace = window.workspace
+		if window.floating and window.pinned and workspace and workspace.id > 0 then
+			table.insert(hidden, {
+				window = window,
+				x = window.at.x,
+				y = window.at.y,
+			})
+			hl.dispatch(hl.dsp.window.pin({ window = window, action = "disable" }))
+			hl.dispatch(hl.dsp.window.move({ window = window, workspace = "special:hidden-floating", follow = false }))
+		end
+	end
+end)
+
+hl.bind(mod .. " + C", function()
+	local window = hl.get_active_window()
+	if not window then
+		return
+	end
+
+	if not window.floating then
+		hl.dispatch(hl.dsp.layout("center"))
 		return
 	end
 
@@ -68,20 +118,6 @@ hl.bind(mod .. " + P", function()
 	}))
 end)
 
-hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mod .. " + C", function()
-	local window = hl.get_active_window()
-	if not window then
-		return
-	end
-
-	if window.floating then
-		hl.dispatch(hl.dsp.window.center())
-	else
-		hl.dispatch(hl.dsp.layout("center"))
-	end
-end)
-
 hl.bind(mod .. " + left", hl.dsp.layout("focus l"))
 hl.bind(mod .. " + right", hl.dsp.layout("focus r"))
 hl.bind(mod .. " + mouse_left", hl.dsp.layout("focus l"))
@@ -105,8 +141,8 @@ for workspace = 1, 10 do
 	hl.bind(mod .. " + " .. key, hl.dsp.focus({ workspace = workspace }))
 	hl.bind(mod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = workspace }))
 end
-hl.bind(mod .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mod .. " + M", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mod .. " + SHIFT + M", hl.dsp.window.move({ workspace = "special:magic" }))
 hl.bind(mod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 

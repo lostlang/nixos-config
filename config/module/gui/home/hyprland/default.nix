@@ -5,6 +5,8 @@
   ...
 }:
 {
+  stylix.targets.hyprland.enable = false;
+
   wayland.windowManager.hyprland = {
     enable = true;
     configType = "lua";
@@ -13,9 +15,9 @@
     systemd.enable = true;
 
     extraLuaFiles = {
-      config = ./config.lua;
       autoload = ./autoload.lua;
-      binds = ./binds.lua;
+      config = ./config.lua;
+      keymap = ./keymap.lua;
       private = ./private.lua;
       theme = pkgs.writeText "hyprland-theme.lua" (import ./theme.nix { inherit colorScheme; });
       windowrule = ./windowrule.lua;

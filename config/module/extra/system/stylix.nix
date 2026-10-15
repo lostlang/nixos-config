@@ -12,12 +12,11 @@ in
 {
   home-manager.sharedModules = lib.mkIf (!config.stylix.enable) [
     config.stylix.homeManagerIntegration.module
+    { stylix.overlays.enable = false; }
   ];
 
   stylix = {
     enable = lib.mkDefault false;
-
-    # homeManagerIntegration.autoImport = true;
 
     polarity = "light";
     base16Scheme = {
