@@ -9,19 +9,15 @@ let
   domainSecret = host: "domain.remnawave.node.${host}";
 in
 {
-  sops = lib.mkIf (cfg.enable && nodes != [ ]) {
-    secrets = lib.genAttrs (map domainSecret nodes) (_: { });
-
-    templates."remnawave-node-bootstrap.env" = {
-      mode = "0400";
-      restartUnits = [ "remnawave-node-bootstrap.service" ];
-      content = ''
-        ADGUARD_DOMAIN=${
-          lib.optionalString config.services.adguardhome.enable config.sops.placeholder."domain.adguardhome"
-        }
-        API_TOKEN=${config.sops.placeholder."remnawave.api-token"}
-      '';
-    };
+  sops = lib.mkIf (cfg.enable && cfg.bootstrap.enable && nodes != [ ]) {
+    secrets =
+      lib.genAttrs (map domainSecret nodes) (_: { })
+      // {
+        "remnawave.api-token".restartUnits = [ "remnawave-node-bootstrap.service" ];
+      }
+      // lib.optionalAttrs config.services.adguardhome.enable {
+        "domain.adguardhome".restartUnits = [ "remnawave-node-bootstrap.service" ];
+      };
 
     templates."remnawave-node-domains.json" = {
       mode = "0400";

@@ -3,17 +3,21 @@
   ...
 }:
 {
-  options.services.remnawave-panel.nodes = {
-    basic = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      apply = lib.unique;
-    };
+  options.services.remnawave-panel = {
+    bootstrap.enable = lib.mkEnableOption "automatic Remnawave node bootstrap";
 
-    hopping = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-      apply = lib.unique;
+    nodes = {
+      basic = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        apply = lib.unique;
+      };
+
+      hopping = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        apply = lib.unique;
+      };
     };
   };
 }
