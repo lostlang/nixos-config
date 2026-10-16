@@ -1,13 +1,14 @@
 {
   programs.nixvim.diagnostic.settings = {
     virtual_text = false;
+    virtual_lines = true;
 
     signs = {
       text = {
-        ERROR = "󰃤 ";
+        ERROR = " ";
         WARN = " ";
-        INFO = " ";
-        HINT = "󱠂 ";
+        INFO = " ";
+        HINT = " ";
       };
     };
   };

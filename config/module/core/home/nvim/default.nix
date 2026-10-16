@@ -5,10 +5,10 @@
 }:
 {
   imports = [
+    ./command
     ./core
 
     ./core.nix
-    ./diagnostic.nix
     ./keymap.nix
   ]
   ++ lib.optional nvimExtra ./extra;
@@ -17,10 +17,6 @@
 
   programs.nixvim = {
     enable = true;
-
-    withRuby = nvimExtra;
-    withNodeJs = nvimExtra;
-    withPython3 = nvimExtra;
 
     nixpkgs.useGlobalPackages = true;
   };

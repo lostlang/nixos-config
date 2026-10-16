@@ -4,12 +4,6 @@
 
     settings = {
       window.position = "float";
-
-      defaultComponentConfigs.gitStatus.symbols = {
-        untracked = " ";
-        unstaged = " ";
-        staged = "󰸞 ";
-      };
     };
   };
 

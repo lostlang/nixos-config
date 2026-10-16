@@ -1,46 +1,39 @@
 {
-  programs.nixvim.opts = {
-    mouse = "a";
-    termguicolors = true;
-    colorcolumn = [
-      "80"
-      "100"
-    ];
-    number = true;
-    relativenumber = true;
-    encoding = "utf-8";
-    smartindent = true;
-    spelllang = [
-      "en_us"
-      "ru"
-    ];
-    spell = true;
-    list = true;
-    listchars = {
-      space = "•";
-      tab = "▎-";
-      eol = "↵";
+  programs.nixvim = {
+    opts = {
+      encoding = "utf-8";
+      mouse = "a";
+      termguicolors = true;
+      smartindent = true;
+      updatetime = 500;
+
+      number = true;
+      relativenumber = true;
+      colorcolumn = [
+        "80"
+        "100"
+      ];
+
+      foldlevel = 99;
+      foldlevelstart = 99;
+
+      list = true;
+      listchars = {
+        eol = "↵";
+        multispace = "•";
+        tab = "▎-";
+        trail = "•";
+      };
+
+      spell = true;
+      spelllang = [
+        "en_us"
+        "ru"
+      ];
     };
-    updatetime = 500;
+
+    extraConfigLuaPre = /* lua */ ''
+      require("nvim.spellfile").config({ confirm = false })
+    '';
   };
-
-  programs.nixvim.extraConfigLua = ''
-    if vim.env.SSH_CONNECTION ~= nil or vim.env.SSH_TTY ~= nil then
-      vim.g.clipboard = "osc52"
-
-      vim.api.nvim_create_autocmd("TextYankPost", {
-        callback = function()
-          if vim.v.event.operator == "y" and vim.v.event.regname == "" then
-            vim.fn.setreg(
-              "+",
-              vim.fn.getreg('"'),
-              vim.fn.getregtype('"')
-            )
-          end
-        end,
-      })
-    else
-      vim.opt.clipboard = "unnamedplus"
-    end
-  '';
 }

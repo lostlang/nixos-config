@@ -5,8 +5,8 @@
     settings = {
       options = {
         component_separators = {
-          left = "󰇙 ";
-          right = "󰇙 ";
+          left = "󰇙";
+          right = "󰇙";
         };
         section_separators = {
           left = " ";
@@ -18,7 +18,7 @@
         lualine_b = [
           {
             __unkeyed-1 = {
-              __raw = ''
+              __raw = /* lua */ ''
                 function() return vim.bo.modified and "  UNSAVED " or "" end,
               '';
             };
@@ -31,10 +31,10 @@
             __unkeyed-1 = "diagnostics";
             sources = [ "nvim_diagnostic" ];
             symbols = {
-              error = "󰃤 ";
+              error = " ";
               warn = " ";
-              info = " ";
-              hint = "󱠂 ";
+              info = " ";
+              hint = " ";
             };
           }
         ];

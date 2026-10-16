@@ -3,12 +3,12 @@
     enable = true;
 
     settings = {
-      fps = 30;
+      fps = 60;
       icons = {
-        debug = "󱠂 ";
-        error = "󰃤 ";
-        info = " ";
-        trace = " ";
+        debug = " ";
+        error = " ";
+        info = " ";
+        trace = " ";
         warn = " ";
       };
       level = "debug";

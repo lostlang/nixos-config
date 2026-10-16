@@ -1,14 +1,17 @@
 {
   imports = [
     ./lang_support
+    ./treesitter
 
-    ./cmp.nix
+    ./blink-cmp.nix
     ./lsp.nix
-    ./treesitter.nix
-    ./trouble.nix
+    ./nerdy.nix
   ];
 
   programs.nixvim.plugins = {
-    windsurf-nvim.enable = true;
+    luasnip.enable = true;
+    friendly-snippets.enable = true;
+
+    trouble.enable = true;
   };
 }

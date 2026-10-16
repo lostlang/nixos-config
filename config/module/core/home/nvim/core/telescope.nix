@@ -1,20 +1,60 @@
 {
-  programs.nixvim.plugins.telescope = {
-    enable = true;
-
-    extensions.fzf-native = {
+  programs.nixvim.plugins = {
+    telescope = {
       enable = true;
 
       settings = {
-        case_mode = "ignore_case";
+        defaults.__raw = /* lua */ ''
+          require("telescope.themes").get_dropdown({
+            preview = { filesize_limit = 0.5 },
+            cache_picker = { num_pickers = 10 },
+          })
+        '';
+
+        pickers.builtin.include_extensions = true;
       };
+
+      extensions.fzf-native = {
+        enable = true;
+
+        settings = {
+          case_mode = "ignore_case";
+        };
+      };
+    };
+
+    which-key = {
+      settings.spec = [
+        {
+          __unkeyed-1 = "<leader>f";
+          group = "Telescope finds";
+        }
+      ];
     };
   };
 
   programs.nixvim.keymaps = [
     {
       mode = "n";
-      key = "ff";
+      key = "<leader>fp";
+      action = ":Telescope pickers<CR>";
+      options = {
+        desc = "Telescope picker history";
+        silent = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>fr";
+      action = ":Telescope resume<CR>";
+      options = {
+        desc = "Telescope resume last search";
+        silent = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>ff";
       action = ":Telescope find_files<CR>";
       options = {
         desc = "Telescope find file";
@@ -23,7 +63,7 @@
     }
     {
       mode = "n";
-      key = "fg";
+      key = "<leader>fg";
       action = ":Telescope live_grep<CR>";
       options = {
         desc = "Telescope live grep";
@@ -32,7 +72,7 @@
     }
     {
       mode = "n";
-      key = "fk";
+      key = "<leader>fk";
       action = ":Telescope keymaps<CR>";
       options = {
         desc = "Telescope find keymap";
@@ -41,32 +81,8 @@
     }
     {
       mode = "n";
-      key = "fb";
-      action.__raw = ''
-        function()
-          local builtin = require('telescope.builtin')
-          local action_state = require('telescope.actions.state')
-          builtin.buffers({
-            initial_mode = "normal",
-            attach_mappings = function(prompt_bufnr, map)
-              local delete_buf = function()
-                local current_picker = action_state.get_current_picker(prompt_bufnr)
-                current_picker:delete_selection(function(selection)
-                  vim.api.nvim_buf_delete(selection.bufnr, { force = true })
-                end)
-              end
-
-              map('n', '<c-d>', delete_buf)
-
-              return true
-            end
-          }, {
-            sort_lastused = true,
-            sort_mru = true,
-            theme = "dropdown"
-          })
-        end
-      '';
+      key = "<leader>fb";
+      action = ":Telescope buffers initial_mode=normal sort_lastused=true sort_mru=true<CR>";
       options = {
         desc = "Telescope find buffer";
         silent = true;
@@ -74,7 +90,7 @@
     }
     {
       mode = "n";
-      key = "fh";
+      key = "<leader>fh";
       action = ":Telescope highlights<CR>";
       options = {
         desc = "Telescope find highlight";
@@ -83,7 +99,7 @@
     }
     {
       mode = "n";
-      key = "ft";
+      key = "<leader>ft";
       action = ":TodoTelescope<CR>";
       options = {
         desc = "Telescope find todos";
@@ -92,7 +108,7 @@
     }
     {
       mode = "n";
-      key = "fs";
+      key = "<leader>fs";
       action = ":Telescope spell_suggest<CR>";
       options = {
         desc = "Telescope find spell suggest";
@@ -101,7 +117,7 @@
     }
     {
       mode = "n";
-      key = "fc";
+      key = "<leader>fc";
       action = ":Telescope current_buffer_fuzzy_find<CR>";
       options = {
         desc = "Telescope live grep in current buffer";
