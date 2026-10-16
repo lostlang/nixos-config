@@ -15,6 +15,7 @@ in
 
   programs.zsh.initContent = ''
     ssh() {
+      local -x TERM=xterm-256color
       if [[ -o interactive ]]; then
         command ssh-multiplex-wrapper "$@"
       else

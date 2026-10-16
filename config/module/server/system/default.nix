@@ -1,6 +1,7 @@
 {
   imports = [
     ./adguardhome
+    ./matrix
     ./remnawave
     ./vaultwarden
 

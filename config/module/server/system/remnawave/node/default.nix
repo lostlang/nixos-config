@@ -3,7 +3,6 @@
   lib,
   pkgs,
   remnawaveContainerCommon,
-  remnawaveNodeMaskContainer,
   ...
 }:
 let
@@ -21,8 +20,6 @@ let
           cap_add = [ "NET_ADMIN" ];
           env_file = [ nodeEnvFile ];
         };
-
-        remnawave-node-mask = remnawaveNodeMaskContainer;
       };
     }
   );
@@ -50,7 +47,10 @@ in
         "remnawave-node-firewall.service"
         "traefik.service"
       ];
-      wants = [ "network-online.target" ];
+      wants = [
+        "network-online.target"
+        "remnawave-node-mask.service"
+      ];
       restartTriggers = [ composeFile ];
 
       serviceConfig = {

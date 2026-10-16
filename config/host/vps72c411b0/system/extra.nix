@@ -1,6 +1,11 @@
 {
   services = {
     adguardhome.enable = true;
+    matrix-tuwunel.enable = true;
+    matrix = {
+      client.enable = true;
+      admin.enable = true;
+    };
     remnawave-panel = {
       enable = true;
       nodes = {

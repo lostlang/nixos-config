@@ -28,6 +28,12 @@ let
       database = 5432;
     };
 
+    matrix = {
+      server = 30287;
+      client = 30288;
+      admin = 30289;
+    };
+
     vaultwarden = 43774;
 
     ollama = 11434;
