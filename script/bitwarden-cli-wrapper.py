@@ -11,12 +11,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bw-executable", required=True)
     parser.add_argument("--session-file", required=True, type=Path)
-    parser.add_argument("command", nargs=argparse.REMAINDER)
-    args = parser.parse_args()
+    parser.add_argument("--command", nargs=argparse.REMAINDER, default=[])
+    args, remaining_args = parser.parse_known_args()
 
-    command = args.command
-    if command and command[0] == "--":
-        command = command[1:]
+    command = args.command + remaining_args
 
     env = os.environ.copy()
     if args.session_file.is_file():

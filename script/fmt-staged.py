@@ -1,18 +1,33 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
 import subprocess
 import sys
+from pathlib import Path
 
-from lib.project_context import find_project_root
+from lib.find_folders import find_roots
 
 
 def main():
-    project_root = find_project_root()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--git-executable", required=True)
+    parser.add_argument("--nix-executable", required=True)
+    args = parser.parse_args()
+
+    roots = find_roots("git") or [Path.cwd()]
+    project_root = roots[0]
 
     try:
         staged_files = subprocess.run(
-            ["git", "diff", "--cached", "--name-only", "--diff-filter=d", "-z"],
+            [
+                args.git_executable,
+                "diff",
+                "--cached",
+                "--name-only",
+                "--diff-filter=d",
+                "-z",
+            ],
             cwd=project_root,
             check=True,
             stdout=subprocess.PIPE,
@@ -30,7 +45,7 @@ def main():
         return 0
 
     return subprocess.run(
-        ["nix", "fmt", *staged_files], cwd=project_root, check=False
+        [args.nix_executable, "fmt", *staged_files], cwd=project_root, check=False
     ).returncode
 
 

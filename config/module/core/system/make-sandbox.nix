@@ -23,8 +23,6 @@ let
     user
     "--bubblewrap-executable"
     (lib.getExe pkgs.bubblewrap)
-    "--git-executable"
-    (lib.getExe pkgs.git)
     "--runtime-path"
     (lib.makeBinPath runtimeInputs)
   ]
@@ -60,10 +58,13 @@ let
       (toString value)
     ]) environment
   )
-  ++ [ executable ];
+  ++ [
+    "--command"
+    executable
+  ];
 in
 pkgs.writeShellScriptBin name /* sh */ ''
-  export PYTHONPATH=${../../../script}''${PYTHONPATH:+:$PYTHONPATH}
+  export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
 
-  exec ${lib.getExe pkgs.python3} ${../../../script/make-sandbox.py} ${lib.escapeShellArgs arguments} "$@"
+  exec ${lib.getExe pkgs.python3} ${../../../../script/make-sandbox.py} ${lib.escapeShellArgs arguments} "$@"
 ''

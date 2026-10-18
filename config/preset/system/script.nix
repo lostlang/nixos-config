@@ -1,5 +1,0 @@
-{
-  imports = [
-    ../../script/update-flake
-  ];
-}

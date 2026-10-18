@@ -12,12 +12,12 @@ pkgs.writeShellApplication {
     pkgs.python3
   ];
 
-  text = ''
-    export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
+  text = /* sh */ ''
+    export PYTHONPATH=${../../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
 
-    exec ${lib.getExe pkgs.python3} ${../../../../script/zellij-sessions.py} \
-      --fzf-executable fzf \
-      --zellij-executable zellij \
+    exec ${lib.getExe pkgs.python3} ${../../../../../script/zellij-sessions.py} \
+      --fzf-executable ${lib.getExe pkgs.fzf} \
+      --zellij-executable ${lib.getExe zellij} \
       "$@"
   '';
 }

@@ -1,7 +1,7 @@
 import subprocess
 
 
-def select(items, prompt="Select an item: ", executable="fzf"):
+def select(items, prompt, executable):
     result = subprocess.run(
         [
             executable,

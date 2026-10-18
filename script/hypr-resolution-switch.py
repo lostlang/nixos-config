@@ -14,7 +14,9 @@ def main():
     for path in (hypr_dir / "resolution").glob("*.lua"):
         profiles[path.stem] = path
 
-    parser = argparse.ArgumentParser(prog="hypr-resolution-switch")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fzf-executable", required=True)
+    parser.add_argument("--hyprctl-executable", required=True)
     parser.add_argument(
         "--hard", action="store_true", help="exit Hyprland instead of reloading"
     )
@@ -26,7 +28,9 @@ def main():
         return 1
 
     if args.mode is None:
-        args.mode = select(profiles, prompt="Resolution: ")
+        args.mode = select(
+            profiles, prompt="Resolution: ", executable=args.fzf_executable
+        )
         if args.mode is None:
             return 0
 
@@ -40,9 +44,9 @@ def main():
     active.unlink(missing_ok=True)
     active.symlink_to(target)
     if args.hard:
-        command = ["hyprctl", "dispatch", "hl.dsp.exit()"]
+        command = [args.hyprctl_executable, "dispatch", "hl.dsp.exit()"]
     else:
-        command = ["hyprctl", "reload"]
+        command = [args.hyprctl_executable, "reload"]
 
     return subprocess.run(command, check=False).returncode
 

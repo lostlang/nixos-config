@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import shlex
 import sys
 
 OPTIONS_WITH_ARGUMENTS = {
@@ -56,16 +57,15 @@ def server_without_command(args):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--ssh-executable", required=True)
     parser.add_argument("--session-name", required=True)
-    parser.add_argument("ssh_args", nargs=argparse.REMAINDER)
-    parsed_args = parser.parse_args()
+    parser.add_argument("--ssh-args", nargs=argparse.REMAINDER, default=[])
+    parsed_args, remaining_args = parser.parse_known_args()
 
-    args = parsed_args.ssh_args
-    if args and args[0] == "--":
-        args = args[1:]
+    args = parsed_args.ssh_args + remaining_args
 
     server = server_without_command(args)
-    session_name = parsed_args.session_name
+    session_name = shlex.quote(parsed_args.session_name)
 
     if server is not None:
         remote_commands = []
@@ -84,9 +84,12 @@ def main():
         remote_commands.append('exec "${SHELL:-/bin/sh}" -l')
         remote_command = " ".join(remote_commands)
 
-        os.execvp("ssh", ["ssh", "-t", *args, remote_command])
+        os.execv(
+            parsed_args.ssh_executable,
+            [parsed_args.ssh_executable, "-t", *args, remote_command],
+        )
 
-    os.execvp("ssh", ["ssh", *args])
+    os.execv(parsed_args.ssh_executable, [parsed_args.ssh_executable, *args])
 
 
 if __name__ == "__main__":

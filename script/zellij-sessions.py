@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 from lib.fzf import select
-from lib.project_context import is_project_session
+from lib.project_sessions import is_project_session
 
 
 def main():

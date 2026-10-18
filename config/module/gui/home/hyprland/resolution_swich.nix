@@ -12,8 +12,11 @@ pkgs.writeShellApplication {
   ];
 
   text = /* sh */ ''
-    export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
+    export PYTHONPATH=${../../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
 
-    exec ${lib.getExe pkgs.python3} ${../../../../script/hypr-resolution-switch.py} "$@"
+    exec ${lib.getExe pkgs.python3} ${../../../../../script/hypr-resolution-switch.py} \
+      --fzf-executable ${lib.getExe pkgs.fzf} \
+      --hyprctl-executable ${lib.getExe' pkgs.hyprland "hyprctl"} \
+      "$@"
   '';
 }

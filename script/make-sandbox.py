@@ -6,13 +6,12 @@ import os
 import sys
 from pathlib import Path
 
-from lib.project_context import find_project_root
+from lib.find_folders import find_roots
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bubblewrap-executable", required=True)
-    parser.add_argument("--git-executable", required=True)
     parser.add_argument("--user", required=True)
     parser.add_argument("--sandbox-directory", type=Path)
     parser.add_argument("--runtime-path", required=True)
@@ -24,8 +23,9 @@ def main():
     parser.add_argument("--bind", nargs=2, action="append", default=[])
     parser.add_argument("--ro-bind", nargs=2, action="append", default=[])
     parser.add_argument("--setenv", nargs=2, action="append", default=[])
-    parser.add_argument("command", nargs=argparse.REMAINDER)
-    args = parser.parse_args()
+    parser.add_argument("--command", nargs=argparse.REMAINDER, default=[])
+    args, remaining_args = parser.parse_known_args()
+    sandbox_command = args.command + remaining_args
 
     user_home = str(Path("/home") / args.user)
     environment = {
@@ -41,7 +41,7 @@ def main():
     environment.update(args.setenv)
 
     if args.sandbox_directory is None:
-        parameters = (environment, args.command)
+        parameters = (environment, sandbox_command)
         sandbox_hash = hashlib.sha256(os.fsencode(repr(parameters))).hexdigest()
         sandbox_directory = Path.home() / ".cache/sandbox" / sandbox_hash
     else:
@@ -87,7 +87,8 @@ def main():
         command += ["--ro-bind", source, target]
 
     cwd = str(Path.cwd())
-    project_directory = str(find_project_root(executable=args.git_executable))
+    roots = find_roots("git") or [Path.cwd()]
+    project_directory = str(roots[0])
     command += [
         "--ro-bind" if args.read_only_project else "--bind",
         project_directory,
@@ -105,7 +106,7 @@ def main():
 
     for name, value in environment.items():
         command += ["--setenv", name, value]
-    command += args.command
+    command += sandbox_command
 
     os.execv(args.bubblewrap_executable, command)
 

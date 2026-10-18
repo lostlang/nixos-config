@@ -4,8 +4,10 @@ import argparse
 import os
 import subprocess
 import sys
+from pathlib import Path
 
-from lib.project_context import find_project_root, project_session_name
+from lib.find_folders import find_roots
+from lib.project_sessions import project_session_name
 
 
 def active_sessions(zellij_executable):
@@ -26,11 +28,11 @@ def active_sessions(zellij_executable):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--zellij-executable", required=True)
-    parser.add_argument("--git-executable", required=True)
     parser.add_argument("--layout", required=True)
     args = parser.parse_args()
 
-    project_dir = str(find_project_root(executable=args.git_executable))
+    roots = find_roots("nix") or find_roots("git") or [Path.cwd()]
+    project_dir = str(roots[0])
     session = project_session_name(args.layout, project_dir)
 
     if os.environ.get("ZELLIJ"):

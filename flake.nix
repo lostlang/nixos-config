@@ -68,13 +68,7 @@
               pass_filenames = false;
             };
             deadnix.enable = true;
-            gitleaks = {
-              enable = true;
-              name = "gitleaks";
-              description = "Detect secrets with gitleaks";
-              entry = "${lib.getExe pkgs.gitleaks} detect --source . --no-git --redact";
-              pass_filenames = false;
-            };
+            gitleaks.enable = true;
             check-added-large-files.enable = true;
           };
         }

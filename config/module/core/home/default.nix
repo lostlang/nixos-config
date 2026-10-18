@@ -16,8 +16,7 @@
     ./env.nix
     ./git.nix
     ./ssh.nix
-
-    ../../../preset/home/script.nix
+    ./system-clean.nix
   ]
   ++ map (name: ../../${name}/home) extraLocalModules;
 

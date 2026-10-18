@@ -19,10 +19,10 @@ let
     name: _:
     pkgs.writeShellScriptBin "bw-${name}" ''
       export BITWARDENCLI_APPDATA_DIR=${lib.escapeShellArg (profileDirectory name)}
-      exec ${pkgs.python3}/bin/python ${../../../script/bitwarden-cli-wrapper.py} \
+      exec ${lib.getExe pkgs.python3} ${../../../../script/bitwarden-cli-wrapper.py} \
         --bw-executable ${lib.escapeShellArg bw} \
         --session-file "$XDG_RUNTIME_DIR/${profileSessionPath name}" \
-        -- "$@"
+        --command "$@"
     ''
   ) (builtins.listToAttrs (map (name: lib.nameValuePair name true) profiles));
 
@@ -43,7 +43,7 @@ let
           "${bw} config server $BW_SERVER_URL"
           "${bw} login --apikey"
           ''
-            ${lib.getExe pkgs.python3} ${../../../script/bitwarden-cli-unlock.py} \
+            ${lib.getExe pkgs.python3} ${../../../../script/bitwarden-cli-unlock.py} \
               --bw-executable ${lib.escapeShellArg bw} \
               --password-file ${lib.escapeShellArg (profilePasswordPath name)} \
               --session-file %t/${profileSessionPath name}

@@ -8,16 +8,14 @@ pkgs.writeShellApplication {
 
   runtimeInputs = [
     zellij
-    pkgs.git
     pkgs.python3
   ];
 
-  text = ''
-    export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
+  text = /* sh */ ''
+    export PYTHONPATH=${../../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
 
-    exec ${lib.getExe pkgs.python3} ${../../../../script/zellij-project.py} \
-      --zellij-executable zellij \
-      --git-executable git \
+    exec ${lib.getExe pkgs.python3} ${../../../../../script/zellij-project.py} \
+      --zellij-executable ${lib.getExe zellij} \
       --layout code \
       "$@"
   '';
