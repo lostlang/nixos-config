@@ -6,6 +6,7 @@
   imports = [
     ./secret
     ./ssh
+    ./lsp
 
     ./docker.nix
     ./localization.nix
