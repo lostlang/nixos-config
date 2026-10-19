@@ -58,6 +58,10 @@ in
 
         # about:config
         settings = {
+          "media.eme.enabled" = true;
+          "media.gmp-manager.updateEnabled" = true;
+          "media.gmp-widevinecdm.enabled" = true;
+
           "privacy.clearOnShutdown.cache" = false;
           "privacy.clearOnShutdown.cookies" = false;
           "privacy.clearOnShutdown_v2.cache" = false;
