@@ -16,6 +16,7 @@
 - When parsing more than once, use `lib.cli.help_requested()` to avoid enforcing preliminary required arguments in help mode: set argument objects to `required = True` only when `not help_mode`. The final parser handles help.
 - Before using a preliminary value, check whether it was supplied. Initialize choices to an empty list when dependencies are absent. Required arguments added only to the final parser can use `required=True` directly.
 - Use early returns to reduce nesting where they make the normal path clearer.
+- Write simple. Use explicit `if` statements instead of inline conditional expressions, and explicit `for` loops instead of comprehensions or generator expressions.
 - Do not write comments. Make the code easy to understand through descriptive names, explicit steps, and simple control flow. Rewrite unclear code instead of adding a comment to explain it.
 
 ```python

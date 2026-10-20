@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A seeded Nix contour wallpaper using the local color scheme."
+    />
+    <title>Wallpaper</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      id="painting"
+      role="img"
+      aria-label="A Nix snowflake on flowing topographic contours."
+    >
+      A Nix snowflake on a procedural painted topographic background.
+    </canvas>
+    <script>
+      "use strict";
+
+      const hexToRgb = (hex) =>
+        [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16));
+      const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+      const mix = (start, end, amount) => start + (end - start) * amount;
+      const smooth = (amount) => amount * amount * (3 - 2 * amount);
+
+      const toUnsigned32Bit = (value) => value >>> 0;
+      function toHash(value) {
+        let hash = 2166136261;
+        for (const character of String(value)) {
+          hash ^= character.codePointAt(0);
+          hash = Math.imul(hash, 16777619);
+        }
+
+        return toUnsigned32Bit(hash);
+      }
+
+      const defaultColorScheme = {
+        name: "lostsand",
+        palette: {
+          gradient: {
+            dark: {
+              g0: "#E6D1A3",
+              g1: "#DAB97C",
+              g2: "#A78A5E",
+              g3: "#8C6A46",
+              g4: "#5D3A39",
+              g5: "#10072B",
+              g6: "#0B0014",
+            },
+            light: {
+              g0: "#F9F0D2",
+              g1: "#EDDFBF",
+              g2: "#D4B979",
+              g3: "#B98D56",
+              g4: "#8C5A3E",
+              g5: "#25373A",
+              g6: "#0A1A1D",
+            },
+          },
+
+          light_white: "#EDDFBF",
+          light_red: "#E26F6F",
+          light_orange: "#EA7742",
+          light_yellow: "#E1BA3F",
+          light_green: "#92C654",
+          light_aqua: "#49AB77",
+          light_blue: "#257DC7",
+          light_purple: "#B47CC0",
+          light_black: "#25373A",
+
+          white: "#DAB97C",
+          red: "#AE2626",
+          orange: "#A8460B",
+          yellow: "#9B8318",
+          green: "#437F06",
+          aqua: "#0B8C5F",
+          blue: "#23569F",
+          purple: "#991294",
+          black: "#10072B",
+        },
+      };
+      let colorScheme = "@colorScheme@";
+      if (typeof colorScheme === "string") colorScheme = defaultColorScheme;
+      const palette = colorScheme.palette;
+
+      const REFERENCE_WIDTH = 1920;
+      const REFERENCE_HEIGHT = 1080;
+
+      const query = new URLSearchParams(location.search);
+      const randomSeed = () =>
+        String(crypto.getRandomValues(new Uint32Array(1))[0]);
+      const settings = {
+        seed: query.get("seed") || randomSeed(),
+        lineWidth: 3.2,
+        logo: query.get("logo") !== "0",
+        logoSize: 1,
+        logoColors: [
+          palette.light_red,
+          palette.light_yellow,
+          palette.light_green,
+          palette.light_aqua,
+          palette.light_blue,
+          palette.light_purple,
+        ],
+        colors: {
+          ground: palette.light_white,
+          middle: palette.white,
+          dark: palette.gradient.light.g4,
+          light: palette.gradient.dark.g0,
+          ink: palette.light_black,
+          backing: palette.black,
+        },
+      };
+
+      const canvas = document.getElementById("painting");
+      const context = canvas.getContext("2d", { alpha: false });
+      document.documentElement.style.background = settings.colors.ground;
+
+      let noise, wavePhase;
+      function setSeed(seed) {
+        const hash = toHash(seed);
+        noise = makeNoise(hash);
+        wavePhase = (hash / 2 ** 32) * Math.PI * 2;
+      }
+      updateSeed(settings.seed);
+
+      const colors = Object.fromEntries(
+        Object.entries(settings.colors).map(([key, hex]) => [
+          key,
+          hexToRgb(hex),
+        ]),
+      );
+
+      function makeNoise(seed) {
+        const nextRandomState = (state) =>
+          toUnsigned32Bit(Math.imul(state, 1664525) + 1013904223);
+        const fade = (amount) =>
+          amount * amount * amount * (amount * (amount * 6 - 15) + 10);
+        const directionX = [1, -1, 1, -1, 1, -1, 0, 0];
+        const directionY = [1, 1, -1, -1, 0, 0, 1, -1];
+
+        const permutation = Uint8Array.from(
+          { length: 256 },
+          (_, index) => index,
+        );
+        let randomState = toUnsigned32Bit(seed);
+        for (let index = 255; index > 0; index--) {
+          randomState = nextRandomState(randomState);
+          const swapIndex = randomState % (index + 1);
+          [permutation[index], permutation[swapIndex]] = [
+            permutation[swapIndex],
+            permutation[index],
+          ];
+        }
+        const permutationTable = Uint8Array.from(
+          { length: 512 },
+          (_, index) => permutation[index & 255],
+        );
+
+        return Array.from({ length: 7 }, () => {
+          let previousCellKey = -1;
+          let topLeftX,
+            topLeftY,
+            topRightX,
+            topRightY,
+            bottomLeftX,
+            bottomLeftY,
+            bottomRightX,
+            bottomRightY;
+          return (x, y) => {
+            const cellX = Math.floor(x);
+            const cellY = Math.floor(y);
+            const wrappedX = cellX & 255;
+            const wrappedY = cellY & 255;
+            const key = (wrappedX << 8) | wrappedY;
+            if (key !== previousCellKey) {
+              const left = permutationTable[wrappedX] + wrappedY;
+              const right = permutationTable[wrappedX + 1] + wrappedY;
+              const topLeft = permutationTable[left] & 7;
+              const topRight = permutationTable[right] & 7;
+              const bottomLeft = permutationTable[left + 1] & 7;
+              const bottomRight = permutationTable[right + 1] & 7;
+              topLeftX = directionX[topLeft];
+              topLeftY = directionY[topLeft];
+              topRightX = directionX[topRight];
+              topRightY = directionY[topRight];
+              bottomLeftX = directionX[bottomLeft];
+              bottomLeftY = directionY[bottomLeft];
+              bottomRightX = directionX[bottomRight];
+              bottomRightY = directionY[bottomRight];
+              previousCellKey = key;
+            }
+            const offsetX = x - cellX;
+            const offsetY = y - cellY;
+            const blendX = fade(offsetX);
+            const blendY = fade(offsetY);
+            return mix(
+              mix(
+                topLeftX * offsetX + topLeftY * offsetY,
+                topRightX * (offsetX - 1) + topRightY * offsetY,
+                blendX,
+              ),
+              mix(
+                bottomLeftX * offsetX + bottomLeftY * (offsetY - 1),
+                bottomRightX * (offsetX - 1) + bottomRightY * (offsetY - 1),
+                blendX,
+              ),
+              blendY,
+            );
+          };
+        });
+      }
+
+      let contourCache, terrainCache;
+      function paintContours(width, height, worldWidth, worldHeight) {
+        const cacheKey = JSON.stringify([
+          width,
+          height,
+          worldWidth,
+          worldHeight,
+          wavePhase,
+          settings.lineWidth,
+          colors,
+        ]);
+        if (
+          contourCache &&
+          contourCache.noise === noise &&
+          contourCache.key === cacheKey
+        ) {
+          context.putImageData(contourCache.image, 0, 0);
+          return;
+        }
+        const bandColor = (band) => {
+          const bandIndex = (((band + 20) % 20) + 2) % 20;
+          if (bandIndex < 2) return colors.dark;
+          if (bandIndex < 9) return colors.middle;
+          if (bandIndex < 14) return colors.ground;
+          if (bandIndex < 18) return colors.light;
+
+          return colors.dark;
+        };
+
+        const terrain = (x, y, waveOffsetX) => {
+          x += waveOffsetX;
+          y +=
+            9 * Math.sin((x * Math.PI * 2) / 108 + wavePhase + 1.7) +
+            2 * Math.sin((x * Math.PI * 2) / 61 - wavePhase);
+          const bendX = noise[0](x / 480 + 12.7, y / 480 - 3.1) * 170;
+          const bendY = noise[1](x / 420 - 8.3, y / 420 + 21.4) * 150;
+          const rippleX = noise[2](x / 95 + 7.9, y / 95 + 1.3) * 54;
+          const rippleY = noise[3](x / 110 - 4.6, y / 110 - 9.8) * 48;
+          const sampleX = (x + bendX + rippleX) / 270;
+          const sampleY = (y + bendY + rippleY) / 310;
+
+          return (
+            noise[4](sampleX, sampleY) * 1.25 +
+            noise[5](sampleX * 2.1 + 31.2, sampleY * 2.1 - 12.6) * 0.18 +
+            noise[6](sampleX * 4.2 - 5.7, sampleY * 4.2 + 8.4) * 0.035
+          );
+        };
+
+        const image = context.createImageData(width, height);
+        const coverage = new Float32Array(width);
+        const pixels = image.data;
+        const packedPixels = new Uint32Array(pixels.buffer);
+        const packColor = (color) =>
+          new Uint32Array(new Uint8Array([...color, 255]).buffer)[0];
+        const bandColors = Uint32Array.from({ length: 20 }, (_, band) =>
+          packColor(bandColor(band)),
+        );
+
+        const sampleStep = 2;
+        const columnCount = Math.ceil(worldWidth / sampleStep) + 2;
+        const rowCount = Math.ceil(worldHeight / sampleStep) + 2;
+        if (
+          !terrainCache ||
+          terrainCache.noise !== noise ||
+          terrainCache.worldWidth !== worldWidth ||
+          terrainCache.worldHeight !== worldHeight
+        ) {
+          const field = new Float32Array(columnCount * rowCount);
+          const offsetX = (REFERENCE_WIDTH - worldWidth) / 2;
+          const offsetY = (REFERENCE_HEIGHT - worldHeight) / 2;
+          for (let row = 0; row < rowCount; row++) {
+            const sampleY = row * sampleStep + offsetY;
+            const rowOffset = row * columnCount;
+            const waveOffsetX =
+              12 * Math.sin((sampleY * Math.PI * 2) / 120 + wavePhase) +
+              2 * Math.sin((sampleY * Math.PI * 2) / 65 + wavePhase * 0.7);
+            for (let column = 0; column < columnCount; column++) {
+              field[rowOffset + column] = terrain(
+                column * sampleStep + offsetX,
+                sampleY,
+                waveOffsetX,
+              );
+            }
+          }
+          terrainCache = { noise, worldWidth, worldHeight, field };
+        }
+        const terrainField = terrainCache.field;
+
+        const worldUnitsPerPixel = worldWidth / width;
+        const contourSpacing = 0.065;
+        const halfLineWidthPixels =
+          settings.lineWidth / (2 * worldUnitsPerPixel);
+        const sigma = 1 / worldUnitsPerPixel;
+        const radius = Math.ceil(sigma * 3);
+        const gridColumns = new Int32Array(width);
+        const gridFractions = new Float64Array(width);
+        for (let x = 0; x < width; x++) {
+          const gridX = (x * worldUnitsPerPixel) / sampleStep;
+          const column = Math.floor(gridX);
+          gridColumns[x] = column;
+          gridFractions[x] = gridX - column;
+        }
+        const blurSpans = new Int32Array(width * 2 + 4);
+        let blurSpanCount;
+        function rasterizeRow(y) {
+          blurSpanCount = 0;
+          let spanStart = 0;
+          let spanEnd = 0;
+          const rowOffset = y * width;
+          const gridY = (y * worldUnitsPerPixel) / sampleStep;
+          const row = Math.floor(gridY);
+          const fractionY = gridY - row;
+          let previousColumn = -1;
+          let topLeft, topRight, bottomLeft, bottomRight;
+          let slopeX,
+            slopeYLeft,
+            slopeYRight,
+            interpolatedLeft,
+            interpolatedRight;
+          for (let x = 0; x < width; x++) {
+            const column = gridColumns[x];
+            const fractionX = gridFractions[x];
+            if (column !== previousColumn) {
+              const sampleIndex = row * columnCount + column;
+              topLeft = terrainField[sampleIndex];
+              topRight = terrainField[sampleIndex + 1];
+              bottomLeft = terrainField[sampleIndex + columnCount];
+              bottomRight = terrainField[sampleIndex + columnCount + 1];
+              slopeX = mix(
+                topRight - topLeft,
+                bottomRight - bottomLeft,
+                fractionY,
+              );
+              slopeYLeft = bottomLeft - topLeft;
+              slopeYRight = bottomRight - topRight;
+              interpolatedLeft = mix(topLeft, bottomLeft, fractionY);
+              interpolatedRight = mix(topRight, bottomRight, fractionY);
+              previousColumn = column;
+            }
+            const value = mix(interpolatedLeft, interpolatedRight, fractionX);
+            const level = value / contourSpacing + 10;
+            const band = Math.floor(level);
+            const fraction = level - band;
+            const bandIndex = band - Math.floor(band / 20) * 20;
+            const boundary = bandIndex + (fraction >= 0.5 ? 1 : 0);
+            let lineCoverage = 0;
+            if (boundary !== 10 && boundary !== 11) {
+              const slopeY = mix(slopeYLeft, slopeYRight, fractionX);
+              const slope =
+                Math.sqrt(slopeX * slopeX + slopeY * slopeY) / sampleStep;
+              const spacingPixels =
+                contourSpacing /
+                (Math.max(slope, 0.00001) * worldUnitsPerPixel);
+              const halfWidthPixels = Math.min(
+                halfLineWidthPixels,
+                spacingPixels * 0.175,
+              );
+              lineCoverage = smooth(
+                clamp(
+                  halfWidthPixels +
+                    0.6 -
+                    Math.min(fraction, 1 - fraction) * spacingPixels,
+                  0,
+                  1,
+                ),
+              );
+            }
+            if (lineCoverage > 0) {
+              const start = Math.max(x - radius, 0);
+              if (start > spanEnd) {
+                blurSpans[blurSpanCount++] = spanStart;
+                blurSpans[blurSpanCount++] = spanEnd;
+                spanStart = start;
+              }
+              spanEnd = Math.min(x + radius + 1, width);
+            }
+            const pixelIndex = rowOffset + x;
+            coverage[x] = lineCoverage;
+            packedPixels[pixelIndex] = bandColors[bandIndex];
+          }
+          blurSpans[blurSpanCount++] = spanStart;
+          blurSpans[blurSpanCount++] = spanEnd;
+          blurSpans[blurSpanCount++] = width;
+          blurSpans[blurSpanCount++] = width;
+        }
+        const kernel = [];
+        let totalWeight = 1;
+        kernel.push(1);
+        for (let offset = 1; offset <= radius; offset++) {
+          const weight = Math.exp(-(offset * offset) / (2 * sigma * sigma));
+          kernel.push(weight);
+          totalWeight += 2 * weight;
+        }
+        const [, k1, k2, k3, k4, k5, k6] = kernel;
+        const bufferedRows = Math.min(height, radius * 2 + 1);
+        const horizontal = new Float32Array(width * bufferedRows);
+        const bufferedColumnCoverage = new Float64Array(width);
+        function blurRow(y) {
+          rasterizeRow(y);
+          const bufferOffset = (y % bufferedRows) * width;
+          const interiorEnd = width - radius;
+          let x = 0;
+          for (let span = 0; span < blurSpanCount; span += 2) {
+            const start = blurSpans[span];
+            const end = blurSpans[span + 1];
+            for (; x < start; x++) {
+              bufferedColumnCoverage[x] -= horizontal[bufferOffset + x];
+              horizontal[bufferOffset + x] = 0;
+            }
+            for (; x < end; x++) {
+              let sum = coverage[x];
+              if (x >= radius && x < interiorEnd) {
+                if (radius === 6) {
+                  sum += (coverage[x - 1] + coverage[x + 1]) * k1;
+                  sum += (coverage[x - 2] + coverage[x + 2]) * k2;
+                  sum += (coverage[x - 3] + coverage[x + 3]) * k3;
+                  sum += (coverage[x - 4] + coverage[x + 4]) * k4;
+                  sum += (coverage[x - 5] + coverage[x + 5]) * k5;
+                  sum += (coverage[x - 6] + coverage[x + 6]) * k6;
+                } else if (radius === 3) {
+                  sum += (coverage[x - 1] + coverage[x + 1]) * k1;
+                  sum += (coverage[x - 2] + coverage[x + 2]) * k2;
+                  sum += (coverage[x - 3] + coverage[x + 3]) * k3;
+                } else {
+                  for (let offset = 1; offset <= radius; offset++) {
+                    sum +=
+                      (coverage[x - offset] + coverage[x + offset]) *
+                      kernel[offset];
+                  }
+                }
+              } else {
+                for (let offset = 1; offset <= radius; offset++) {
+                  const left = Math.max(x - offset, 0);
+                  const right = Math.min(x + offset, width - 1);
+                  sum += (coverage[left] + coverage[right]) * kernel[offset];
+                }
+              }
+              const value = Math.fround(sum / totalWeight);
+              bufferedColumnCoverage[x] += value - horizontal[bufferOffset + x];
+              horizontal[bufferOffset + x] = value;
+            }
+          }
+        }
+        const threshold = 0.5;
+        const softness = 0.2;
+        const lowerEdge = threshold - softness;
+        const upperEdge = threshold + softness;
+        const skipCoverage = (lowerEdge - 0.000001) * totalWeight;
+        const sampleRows = new Int32Array(radius * 2);
+        const inkRed = colors.ink[0];
+        const inkGreen = colors.ink[1];
+        const inkBlue = colors.ink[2];
+        const packedInk = packColor(colors.ink);
+        let nextRow = 0;
+        for (let y = 0; y < height; y++) {
+          const rowOffset = y * width;
+          const lastRow = Math.min(y + radius, height - 1);
+          while (nextRow <= lastRow) blurRow(nextRow++);
+          const bufferOffset = (y % bufferedRows) * width;
+          for (let offset = 1; offset <= radius; offset++) {
+            sampleRows[(offset - 1) * 2] =
+              (Math.max(y - offset, 0) % bufferedRows) * width;
+            sampleRows[(offset - 1) * 2 + 1] =
+              (Math.min(y + offset, height - 1) % bufferedRows) * width;
+          }
+          const topPadding = Math.max(radius - y, 0);
+          const bottomPadding = Math.max(y + radius - height + 1, 0);
+          const lastBufferOffset = ((height - 1) % bufferedRows) * width;
+          for (let x = 0; x < width; x++) {
+            let coverageBound = bufferedColumnCoverage[x];
+            if (topPadding) coverageBound += horizontal[x] * topPadding;
+            if (bottomPadding) {
+              coverageBound += horizontal[lastBufferOffset + x] * bottomPadding;
+            }
+            if (coverageBound <= skipCoverage) continue;
+            let sum = horizontal[bufferOffset + x];
+            if (radius === 6) {
+              sum +=
+                (horizontal[sampleRows[0] + x] +
+                  horizontal[sampleRows[1] + x]) *
+                k1;
+              sum +=
+                (horizontal[sampleRows[2] + x] +
+                  horizontal[sampleRows[3] + x]) *
+                k2;
+              sum +=
+                (horizontal[sampleRows[4] + x] +
+                  horizontal[sampleRows[5] + x]) *
+                k3;
+              sum +=
+                (horizontal[sampleRows[6] + x] +
+                  horizontal[sampleRows[7] + x]) *
+                k4;
+              sum +=
+                (horizontal[sampleRows[8] + x] +
+                  horizontal[sampleRows[9] + x]) *
+                k5;
+              sum +=
+                (horizontal[sampleRows[10] + x] +
+                  horizontal[sampleRows[11] + x]) *
+                k6;
+            } else if (radius === 3) {
+              sum +=
+                (horizontal[sampleRows[0] + x] +
+                  horizontal[sampleRows[1] + x]) *
+                k1;
+              sum +=
+                (horizontal[sampleRows[2] + x] +
+                  horizontal[sampleRows[3] + x]) *
+                k2;
+              sum +=
+                (horizontal[sampleRows[4] + x] +
+                  horizontal[sampleRows[5] + x]) *
+                k3;
+            } else {
+              for (let offset = 1; offset <= radius; offset++) {
+                const top = sampleRows[(offset - 1) * 2];
+                const bottom = sampleRows[(offset - 1) * 2 + 1];
+                sum +=
+                  (horizontal[top + x] + horizontal[bottom + x]) *
+                  kernel[offset];
+              }
+            }
+            const blurredCoverage = Math.fround(sum / totalWeight);
+            if (blurredCoverage <= lowerEdge) continue;
+            const pixelOffset = (rowOffset + x) * 4;
+            if (blurredCoverage >= upperEdge) {
+              packedPixels[rowOffset + x] = packedInk;
+              continue;
+            }
+            const amount = smooth(
+              (blurredCoverage - lowerEdge) / (2 * softness),
+            );
+            pixels[pixelOffset] = mix(pixels[pixelOffset], inkRed, amount);
+            pixels[pixelOffset + 1] = mix(
+              pixels[pixelOffset + 1],
+              inkGreen,
+              amount,
+            );
+            pixels[pixelOffset + 2] = mix(
+              pixels[pixelOffset + 2],
+              inkBlue,
+              amount,
+            );
+          }
+        }
+
+        contourCache = { key: cacheKey, noise, image };
+        context.putImageData(image, 0, 0);
+      }
+
+      function paintNix(width, height, scale) {
+        const logoBorder = 50;
+        const points = [
+          [-192, -84],
+          [-165, -131],
+          [-102, -131],
+          [-134, -185],
+          [-120, -208],
+          [-93, -208],
+          [-49, -131],
+          [15, -131],
+          [42, -84],
+        ];
+        const branches = [];
+        for (let branch = 0; branch < 6; branch++) {
+          const angle = (branch * Math.PI) / 3;
+          const path = new Path2D();
+          points.forEach(([x, y], index) => {
+            const rotatedX = x * Math.cos(angle) - y * Math.sin(angle);
+            const rotatedY = x * Math.sin(angle) + y * Math.cos(angle);
+            if (index === 0) path.moveTo(rotatedX, rotatedY);
+            else path.lineTo(rotatedX, rotatedY);
+          });
+          path.closePath();
+          branches.push(path);
+        }
+        context.save();
+        context.translate(width / 2, height / 2);
+        context.scale(scale, scale);
+        context.strokeStyle = settings.colors.backing;
+        context.lineWidth = logoBorder;
+        context.lineJoin = "round";
+
+        if (logoBorder > 0) branches.forEach((path) => context.stroke(path));
+        branches.forEach((path, index) => {
+          context.fillStyle = settings.logoColors[index];
+          context.fill(path);
+        });
+        context.restore();
+      }
+
+      function paint() {
+        const cssWidth = Math.max(1, innerWidth);
+        const cssHeight = Math.max(1, innerHeight);
+        let density = 1;
+        if (query.get("export") !== "1") {
+          density = devicePixelRatio || 1;
+        }
+        canvas.width = Math.max(1, Math.round(cssWidth * density));
+        canvas.height = Math.max(1, Math.round(cssHeight * density));
+        const scale = Math.max(
+          cssWidth / REFERENCE_WIDTH,
+          cssHeight / REFERENCE_HEIGHT,
+        );
+
+        paintContours(
+          canvas.width,
+          canvas.height,
+          cssWidth / scale,
+          cssHeight / scale,
+        );
+
+        if (settings.logo) {
+          const logoScale =
+            Math.min(scale, cssWidth / 720, cssHeight / 650) *
+            density *
+            settings.logoSize;
+          paintNix(canvas.width, canvas.height, logoScale);
+        }
+      }
+      paint();
+
+      let resizeTimer;
+      addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(paint, 120);
+      });
+
+      function updateSeed(seed) {
+        const url = new URL(location.href);
+        url.searchParams.set("seed", seed);
+        history.replaceState(null, "", url);
+        setSeed(seed);
+      }
+      addEventListener("keydown", (event) => {
+        if (
+          event.key.toLowerCase() !== "r" ||
+          event.repeat ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.altKey
+        )
+          return;
+        updateSeed(randomSeed());
+        paint();
+      });
+    </script>
+  </body>
+</html>

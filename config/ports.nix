@@ -16,10 +16,6 @@ let
       admin = 30289;
     };
 
-    ollama = 11434;
-
-    openWebui = 11435;
-
     remnawave = {
       mask = {
         backend = 20267;

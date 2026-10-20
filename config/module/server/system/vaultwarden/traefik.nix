@@ -14,7 +14,7 @@ lib.mkIf config.services.vaultwarden.enable {
       path = "${config.services.traefik.dataDir}/dynamic/vaultwarden.yaml";
       owner = "traefik";
       mode = "0400";
-      content = ''
+      content = /* yaml */ ''
         http:
           routers:
             vaultwarden:

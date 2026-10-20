@@ -8,6 +8,7 @@
   imports = [
     ./bitwarden-cli-config.nix
     ./btop
+    ./make-sandbox
     ./nvim
     ./tmux
     ./zellij

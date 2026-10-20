@@ -1,12 +1,13 @@
 {
+  config,
   pkgs,
   pythonScriptEnv,
   ...
 }:
 {
-  environment.systemPackages = [
+  home.packages = [
     (pkgs.callPackage ./make-sandbox.nix {
-      inherit pythonScriptEnv;
+      inherit config pythonScriptEnv;
     })
   ];
 }

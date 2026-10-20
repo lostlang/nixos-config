@@ -14,7 +14,7 @@ lib.mkIf config.services.adguardhome.enable {
       path = "${config.services.traefik.dataDir}/dynamic/adguardhome.yaml";
       owner = "traefik";
       mode = "0400";
-      content = ''
+      content = /* yaml */ ''
         http:
           routers:
             adguardhome:

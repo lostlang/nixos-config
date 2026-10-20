@@ -1,5 +1,9 @@
 {
   services = {
+    cloudflare = {
+      enable = true;
+      tunnels = [ "vps72c411b0" ];
+    };
     adguardhome.enable = true;
     matrix-tuwunel.enable = true;
     matrix = {

@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.services.matrix.client;
   webService = import ../../../web-service.nix { inherit lib pkgs; };
 in
 {
@@ -21,7 +20,7 @@ in
     };
   };
 
-  config = lib.mkIf (config.services.matrix-tuwunel.enable && cfg.enable) (
+  config = lib.mkIf (config.services.matrix-tuwunel.enable && config.services.matrix.client.enable) (
     lib.mkMerge [
       (webService {
         name = "element-web";

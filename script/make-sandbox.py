@@ -31,13 +31,14 @@ def main():
 
     parser = argparse.ArgumentParser(parents=[executables_parser])
     parser.add_argument("--user", required=True)
+    parser.add_argument("--default-sandbox-directory", type=Path, required=True)
     parser.add_argument("--sandbox-directory", type=Path)
     parser.add_argument("--runtime-path", required=True)
     parser.add_argument("--library-path", default="")
     parser.add_argument("--pkg-config-path", default="")
-    parser.add_argument("--ssl-cert-file")
-    parser.add_argument("--ssl-cert-dir")
-    parser.add_argument("--terminfo")
+    parser.add_argument("--ssl-cert-file", default="")
+    parser.add_argument("--ssl-cert-dir", default="")
+    parser.add_argument("--terminfo", default="")
     parser.add_argument("--share-network", action="store_true")
     parser.add_argument("--read-only-project", action="store_true")
     parser.add_argument("--show-git", action="store_true")
@@ -61,13 +62,10 @@ def main():
         EnvironmentField.LD_LIBRARY_PATH: args.library_path,
         EnvironmentField.LIBRARY_PATH: args.library_path,
         EnvironmentField.PKG_CONFIG_PATH: args.pkg_config_path,
+        EnvironmentField.TERMINFO: args.terminfo,
+        EnvironmentField.SSL_CERT_FILE: args.ssl_cert_file,
+        EnvironmentField.SSL_CERT_DIR: args.ssl_cert_dir,
     }
-    if args.terminfo is not None:
-        environment[EnvironmentField.TERMINFO] = args.terminfo
-    if args.ssl_cert_file is not None:
-        environment[EnvironmentField.SSL_CERT_FILE] = args.ssl_cert_file
-    if args.ssl_cert_dir is not None:
-        environment[EnvironmentField.SSL_CERT_DIR] = args.ssl_cert_dir
     for name in args.host_env_passthrough:
         if name in os.environ:
             environment[name] = os.environ[name]
@@ -76,9 +74,9 @@ def main():
     if args.sandbox_directory is None:
         parameters = (environment, sandbox_command)
         sandbox_hash = hashlib.sha256(os.fsencode(repr(parameters))).hexdigest()
-        sandbox_directory = Path.home() / ".cache/sandbox" / sandbox_hash
+        sandbox_directory = args.default_sandbox_directory / sandbox_hash
     else:
-        sandbox_directory = Path.home() / args.sandbox_directory
+        sandbox_directory = args.sandbox_directory
 
     directories = [
         sandbox_directory,

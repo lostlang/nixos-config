@@ -75,6 +75,7 @@
           };
           extraLocalModules = [
             "ai"
+            "lsp"
           ];
         }
         {
@@ -82,6 +83,7 @@
           nvimExtra = true;
           extraLocalModules = [
             "ai"
+            "lsp"
             "gui"
           ];
         }

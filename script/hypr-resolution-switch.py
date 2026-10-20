@@ -36,9 +36,9 @@ def main():
         profiles = find_named_files(args.config_dir / "resolution", ".lua")
 
     parser = argparse.ArgumentParser(parents=[dependency_parser])
-    parser.add_argument(
-        "--hard", action="store_true", help="exit Hyprland instead of reloading"
-    )
+    parser.add_argument("--wallpaper-dir", type=Path, required=True)
+    parser.add_argument("--generated-wallpaper-dir", type=Path, required=True)
+    parser.add_argument("--hard", action="store_true")
     parser.add_argument("mode", nargs="?", choices=profiles)
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
@@ -60,6 +60,11 @@ def main():
     if not target.is_file():
         print(f"profile not found: {target}", file=sys.stderr)
         return 1
+
+    wallpaper = args.generated_wallpaper_dir / target.stem
+    current_wallpaper = args.wallpaper_dir
+    current_wallpaper.unlink(missing_ok=True)
+    current_wallpaper.symlink_to(wallpaper)
 
     active.unlink(missing_ok=True)
     active.symlink_to(target)

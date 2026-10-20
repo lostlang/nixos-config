@@ -20,8 +20,10 @@ in
 {
   systemd.services.${name} = {
     description = "Static web server for ${name}";
+
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
+
     serviceConfig = {
       RuntimeDirectory = name;
       ExecStartPre = prepareRoot;

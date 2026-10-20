@@ -32,6 +32,10 @@
         programs = {
           black.enable = true;
           nixfmt.enable = true;
+          prettier = {
+            enable = true;
+            includes = [ "*.html" ];
+          };
           stylua.enable = true;
           taplo.enable = true;
           yamlfmt.enable = true;

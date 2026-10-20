@@ -1,16 +1,5 @@
 {
   config.myConfig = {
-    ai.provider = {
-      ollamaLocal.enable = true;
-
-      openai.enable = true;
-      openrouterFree.enable = true;
-      openrouterPaid.enable = true;
-      zai.enable = true;
-    };
-    cloudflare.tunnels = [
-      "test"
-    ];
     bitwardenCli.profiles = [
       "common"
     ];
@@ -23,6 +12,5 @@
         "vps72c411b0"
       ];
     };
-    zerotierone.interfaces = [ "game" ];
   };
 }

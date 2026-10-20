@@ -1,0 +1,1 @@
+Follow nested AGENTS.md

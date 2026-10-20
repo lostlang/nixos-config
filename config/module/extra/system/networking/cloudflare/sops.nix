@@ -4,31 +4,18 @@
   ...
 }:
 let
-  inherit (config.myConfig.cloudflare) tunnels;
-
-  mkSecret = name: [
-    {
-      name = "cloudflare.tunnel.${name}";
-      value = { };
-    }
-  ];
-  secretEntries = builtins.concatMap mkSecret tunnels;
-
-  mkTemplate = name: [
-    {
-      name = "cloudflare/${name}.env";
-      value = {
-        content = ''
-          TUNNEL_TOKEN=${config.sops.placeholder."cloudflare.tunnel.${name}"}
-        '';
-      };
-    }
-  ];
-  templateEntries = builtins.concatMap mkTemplate tunnels;
+  inherit (config.services.cloudflare) enable tunnels;
 in
 {
-  sops = lib.mkIf (tunnels != [ ]) {
-    secrets = builtins.listToAttrs secretEntries;
-    templates = builtins.listToAttrs templateEntries;
-  };
+  sops.secrets = lib.mkIf enable (
+    lib.genAttrs (map (name: "cloudflare.tunnel.${name}") tunnels) (
+      secretName:
+      let
+        name = lib.removePrefix "cloudflare.tunnel." secretName;
+      in
+      {
+        restartUnits = [ "cloudflared-tunnel-${name}.service" ];
+      }
+    )
+  );
 }

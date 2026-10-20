@@ -12,7 +12,7 @@ def main():
     executables_parser.add_argument("--bw-executable", required=True)
 
     parser = argparse.ArgumentParser(parents=[executables_parser])
-    parser.add_argument("--session-file", required=True, type=Path)
+    parser.add_argument("--session-file", type=Path, required=True)
     parser.add_argument("--command", nargs=argparse.REMAINDER, default=[])
     args, remaining_args = parser.parse_known_args()
 

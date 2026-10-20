@@ -13,16 +13,17 @@ in
 
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
 
     includes = lib.optional (allHosts != [ ]) hostsPath;
-    matchBlocks = {
+    settings = {
       "*" = {
-        serverAliveInterval = 120;
-        hashKnownHosts = true;
-        addKeysToAgent = "yes";
-        identityFile = "~/.ssh/default_ed25519";
+        ServerAliveInterval = 120;
+        HashKnownHosts = true;
+        AddKeysToAgent = "yes";
+        IdentityFile = "~/.ssh/default_ed25519";
       };
-      "github.com".identityFile = "~/.ssh/github_ed25519";
+      "github.com".IdentityFile = "~/.ssh/github_ed25519";
     };
   };
 }

@@ -8,11 +8,19 @@
   };
 
   networking.firewall.trustedInterfaces = [
-    "en+"
-    "wl+"
+    "en*"
+    "wl*"
   ];
 
   services = {
+    cloudflare = {
+      enable = true;
+      tunnels = [ "test" ];
+    };
+    zerotierone = {
+      enable = true;
+      interfaces = [ "game" ];
+    };
     keyd.enable = true;
     sunshine.enable = true;
   };

@@ -5,26 +5,40 @@
   ...
 }:
 let
-  inherit (config.myConfig.cloudflare) tunnels;
+  inherit (config.services.cloudflare) enable tunnels;
 in
 {
   imports = [
-    ./options.nix
     ./sops.nix
   ];
 
-  systemd.services = lib.mkIf (tunnels != [ ]) (
+  options.services.cloudflare = {
+    enable = lib.mkEnableOption "Cloudflare token-based tunnels";
+    tunnels = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
+  };
+
+  config.systemd.services = lib.mkIf enable (
     builtins.listToAttrs (
       map (name: {
         name = "cloudflared-tunnel-${name}";
+
         value = {
           wantedBy = [ "multi-user.target" ];
           wants = [ "network-online.target" ];
           after = [ "network-online.target" ];
 
           serviceConfig = {
-            EnvironmentFile = config.sops.templates."cloudflare/${name}.env".path;
-            ExecStart = "${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate run --token $TUNNEL_TOKEN";
+            ExecStart = lib.escapeShellArgs [
+              (lib.getExe pkgs.cloudflared)
+              "tunnel"
+              "--no-autoupdate"
+              "run"
+              "--token-file"
+              config.sops.secrets."cloudflare.tunnel.${name}".path
+            ];
           };
         };
       }) tunnels

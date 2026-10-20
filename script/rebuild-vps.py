@@ -18,11 +18,13 @@ def main():
     help_mode = help_requested()
 
     executables_parser = argparse.ArgumentParser(add_help=False)
-    fzf_option = executables_parser.add_argument("--fzf-executable")
-    rebuild_option = executables_parser.add_argument("--nixos-rebuild-executable")
+    required_executables = [
+        executables_parser.add_argument("--fzf-executable"),
+        executables_parser.add_argument("--nixos-rebuild-executable"),
+    ]
     if not help_mode:
-        fzf_option.required = True
-        rebuild_option.required = True
+        for option in required_executables:
+            option.required = True
 
     dependency_parser = argparse.ArgumentParser(
         add_help=False, parents=[executables_parser]
@@ -43,17 +45,17 @@ def main():
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
 
-    host = args.target
-    if host is None:
-        host = select(
+    target = args.target
+    if target is None:
+        target = select(
             [Target.ALL, *args.hosts],
             prompt="Select a VPS to update: ",
             executable=args.fzf_executable,
         )
-        if host is None:
+        if target is None:
             return 0
 
-    selected_hosts = args.hosts if host == Target.ALL else [host]
+    selected_hosts = args.hosts if target == Target.ALL else [target]
     for selected_host in selected_hosts:
         subprocess.run(
             [

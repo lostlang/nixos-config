@@ -8,7 +8,6 @@
   ...
 }:
 let
-  cfg = config.services.remnawave-panel;
   panelEnvFile = config.sops.templates."remnawave-panel.env".path;
   subscriptionEnvFile = config.sops.templates."remnawave-subscription.env".path;
 
@@ -144,7 +143,7 @@ in
     ./traefik.nix
   ];
 
-  systemd.services.remnawave-panel = lib.mkIf cfg.enable {
+  systemd.services.remnawave-panel = lib.mkIf config.services.remnawave-panel.enable {
     wantedBy = [ "multi-user.target" ];
     requires = [ "docker.service" ];
     after = [

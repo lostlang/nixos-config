@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.services.remnawave-node;
   webService = import ../../../../web-service.nix { inherit lib pkgs; };
 in
 {
@@ -14,7 +13,7 @@ in
     ./sops.nix
   ];
 
-  config = lib.mkIf cfg.enable (
+  config = lib.mkIf config.services.remnawave-node.enable (
     lib.mkMerge [
       (webService {
         name = "remnawave-node-mask";

@@ -38,9 +38,7 @@ def main():
             stderr=subprocess.PIPE,
         ).stdout.split(b"\0")
     except subprocess.CalledProcessError:
-        print(
-            "fmt-staged: run this command from inside a Git repository", file=sys.stderr
-        )
+        print("run this command from inside a Git repository", file=sys.stderr)
         return 1
 
     staged_files = [os.fsdecode(path) for path in staged_files if path]

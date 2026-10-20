@@ -14,8 +14,8 @@ let
   profileDirectory = name: "${config.xdg.configHome}/bw/${name}";
   profileSessionPath = name: "bw-${name}/session";
 
-  profileWrappers = lib.mapAttrsToList (
-    name: _:
+  profileWrappers = map (
+    name:
     pkgs.writeShellApplication {
       name = "bw-${name}";
 
@@ -32,7 +32,7 @@ let
           --command "$@"
       '';
     }
-  ) (builtins.listToAttrs (map (name: lib.nameValuePair name true) profiles));
+  ) (lib.unique profiles);
 in
 {
   config = {

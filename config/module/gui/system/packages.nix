@@ -3,8 +3,6 @@
   ...
 }:
 {
-  nixpkgs.config.allowUnfree = true;
-
   environment.systemPackages = with pkgs; [
     imv
     obs-studio

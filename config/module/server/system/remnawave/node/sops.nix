@@ -4,21 +4,20 @@
   ports,
   ...
 }:
-let
-  cfg = config.services.remnawave-node;
-in
 {
-  sops = lib.mkIf cfg.enable {
+  sops = lib.mkIf config.services.remnawave-node.enable {
     secrets = {
       "remnawave.node.panel-ip" = { };
       "remnawave.node.secret-key" = { };
     };
 
-    templates."remnawave-node-firewall.env" = {
+    templates."remnawave-node-firewall.nft" = {
       mode = "0400";
-      restartUnits = [ "remnawave-node-firewall.service" ];
+      restartUnits = [ "nftables.service" ];
       content = ''
-        PANEL_IP=${config.sops.placeholder."remnawave.node.panel-ip"}
+        ip saddr ${
+          config.sops.placeholder."remnawave.node.panel-ip"
+        } tcp dport ${toString ports.remnawave.node.port} accept
       '';
     };
 

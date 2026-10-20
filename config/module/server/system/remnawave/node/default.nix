@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.services.remnawave-node;
   nodeEnvFile = config.sops.templates."remnawave-node.env".path;
 
   composeFile = pkgs.writeText "remnawave-node-compose.json" (
@@ -33,18 +32,18 @@ in
     ./sops.nix
   ];
 
-  systemd.services = lib.mkIf cfg.enable {
+  systemd.services = lib.mkIf config.services.remnawave-node.enable {
     remnawave-node = {
       wantedBy = [ "multi-user.target" ];
       requires = [
         "docker.service"
-        "remnawave-node-firewall.service"
+        "nftables.service"
         "traefik.service"
       ];
       after = [
         "docker.service"
         "network-online.target"
-        "remnawave-node-firewall.service"
+        "nftables.service"
         "traefik.service"
       ];
       wants = [

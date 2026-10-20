@@ -18,7 +18,7 @@ in
       path = "${config.services.traefik.dataDir}/dynamic/remnawave-node-mask.yaml";
       owner = "traefik";
       mode = "0400";
-      content = ''
+      content = /* yaml */ ''
         http:
           routers:
             remnawave-node-mask:

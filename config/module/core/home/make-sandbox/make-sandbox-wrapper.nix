@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   pythonScriptEnv,
@@ -24,7 +25,7 @@
 }:
 let
   make-sandbox = pkgs.callPackage ./make-sandbox.nix {
-    inherit pythonScriptEnv;
+    inherit config pythonScriptEnv;
   };
   arguments = [
     "--user"

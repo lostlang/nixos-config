@@ -14,7 +14,7 @@ lib.mkIf config.services.remnawave-panel.enable {
       path = "${config.services.traefik.dataDir}/dynamic/remnawave-subscription.yaml";
       owner = "traefik";
       mode = "0400";
-      content = ''
+      content = /* yaml */ ''
         http:
           routers:
             remnawave-subscription:

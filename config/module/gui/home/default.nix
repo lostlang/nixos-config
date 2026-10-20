@@ -4,5 +4,6 @@
     ./kitty
     ./librewolf
     ./noctalia
+    ./wallpaper
   ];
 }

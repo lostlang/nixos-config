@@ -4,8 +4,6 @@
 }:
 {
   imports = [
-    ./lsp
-    ./make-sandbox
     ./secret
     ./ssh
 

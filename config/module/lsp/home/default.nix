@@ -7,15 +7,21 @@
   ...
 }:
 let
-  makeSandbox = import ../make-sandbox/make-sandbox-wrapper.nix { inherit lib pkgs pythonScriptEnv; };
+  makeSandbox = import ../../core/home/make-sandbox/make-sandbox-wrapper.nix {
+    inherit
+      config
+      lib
+      pkgs
+      pythonScriptEnv
+      ;
+  };
 in
 {
-  options.lsp.enable = lib.mkEnableOption "language servers";
-
-  config.environment.systemPackages = lib.mkIf config.lsp.enable [
+  home.packages = [
     pkgs.nixd
     (import ./python.nix {
       inherit
+        config
         lib
         pkgs
         makeSandbox
@@ -24,6 +30,7 @@ in
     })
     (import ./go.nix {
       inherit
+        config
         lib
         pkgs
         makeSandbox
@@ -32,6 +39,7 @@ in
     })
     (import ./rust.nix {
       inherit
+        config
         lib
         pkgs
         makeSandbox

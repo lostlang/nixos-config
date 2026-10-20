@@ -1,12 +1,13 @@
 {
+  config,
   lib,
   pkgs,
   makeSandbox,
   user,
 }:
 let
-  cargoHome = "/home/${user}/.cargo";
-  sandboxDirectory = "/home/${user}/.cache/sandbox/rust-analyzer";
+  cargoHome = "${config.home.homeDirectory}/.cargo";
+  sandboxDirectory = "${config.xdg.cacheHome}/sandbox/rust-analyzer";
 in
 makeSandbox {
   inherit user sandboxDirectory;

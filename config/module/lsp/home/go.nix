@@ -1,18 +1,19 @@
 {
+  config,
   lib,
   pkgs,
   makeSandbox,
   user,
 }:
 let
-  goPath = "/home/${user}/go";
-  goCache = "/home/${user}/.cache/go-build";
+  goPath = "${config.home.homeDirectory}/go";
+  goCache = "${config.xdg.cacheHome}/go-build";
 in
 makeSandbox {
   inherit user;
   name = "gopls-sandbox";
   executable = lib.getExe pkgs.gopls;
-  sandboxDirectory = ".cache/sandbox/gopls";
+  sandboxDirectory = "${config.xdg.cacheHome}/sandbox/gopls";
   runtimeInputs = with pkgs; [
     go
   ];

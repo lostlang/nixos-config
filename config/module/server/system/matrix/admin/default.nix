@@ -6,7 +6,6 @@
   ...
 }:
 let
-  cfg = config.services.matrix.admin;
   webService = import ../../../web-service.nix { inherit lib pkgs; };
 in
 {
@@ -17,7 +16,7 @@ in
     };
   };
 
-  config = lib.mkIf (config.services.matrix-tuwunel.enable && cfg.enable) (
+  config = lib.mkIf (config.services.matrix-tuwunel.enable && config.services.matrix.admin.enable) (
     lib.mkMerge [
       (webService {
         name = "synapse-admin";

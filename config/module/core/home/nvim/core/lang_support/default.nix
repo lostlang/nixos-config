@@ -9,6 +9,7 @@
   ];
 
   programs.nixvim.extraConfigLua = lib.concatMapStringsSep "\n" builtins.readFile [
+    ./html.lua
     ./nix.lua
   ];
 }
