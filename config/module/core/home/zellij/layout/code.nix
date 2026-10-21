@@ -1,5 +1,7 @@
 {
   colorScheme,
+  config,
+  lib,
   zjstatus,
   ...
 }:
@@ -16,11 +18,13 @@ in
         args "."
       }
     }
-    tab name="agent" {
-      pane {
-        command "codex"
+    ${lib.optionalString config.programs.codex.enable ''
+      tab name="agent" {
+        pane {
+          command "codex"
+        }
       }
-    }
+    ''}
     tab name="lazygit" {
       pane {
         command "lazygit"

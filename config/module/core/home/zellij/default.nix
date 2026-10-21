@@ -11,10 +11,23 @@ let
   theme = import ./theme.nix { inherit colorScheme; };
   zjstatusPackage = zjstatus.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-  codeLayout = import ./layouts/code.nix {
-    inherit colorScheme;
+  codeLayout = import ./layout/code.nix {
+    inherit colorScheme config lib;
     zjstatus = zjstatusPackage;
   };
+  resurrectCommandHook = pkgs.writeShellScript "zellij-resurrect-command" /* sh */ ''
+    case "$RESURRECT_COMMAND" in
+      sudo|sudo\ *|*/sudo|*/sudo\ *)
+        printf '%s\n' "$SHELL"
+        ;;
+      nvim|nvim\ *|*/nvim|*/nvim\ *)
+        printf '%s\n' 'nvim .'
+        ;;
+      *)
+        printf '%s\n' "$RESURRECT_COMMAND"
+        ;;
+    esac
+  '';
 in
 {
   programs.zellij = {
@@ -24,16 +37,10 @@ in
       pane_frames = false;
       show_release_notes = false;
       show_startup_tips = false;
-      post_command_discovery_hook = ''
-        case "$RESURRECT_COMMAND" in
-          sudo|sudo\ *|*/sudo|*/sudo\ *)
-            printf '%s\n' "$SHELL"
-            ;;
-          *)
-            printf '%s\n' "$RESURRECT_COMMAND"
-            ;;
-        esac
-      '';
+      # NOTE: zellij strange save session
+      # sometimes with full path to nix store
+      # don't work correctly with aliases like codex2(config/module/core/home/zsh/aliases.nix:12)
+      post_command_discovery_hook = "${resurrectCommandHook}";
       theme = themeName;
       themes = {
         ${themeName} = theme;
