@@ -17,6 +17,13 @@
         providers.todo_words = {
           name = "Todo words";
           module = "completion.todo_words";
+          enabled.__raw = /* lua */ ''
+            function()
+              local cursor = vim.api.nvim_win_get_cursor(0)
+              local before_cursor = vim.api.nvim_get_current_line():sub(1, cursor[2])
+              return before_cursor:match("%.[%w_]*$") == nil
+            end
+          '';
         };
       };
 

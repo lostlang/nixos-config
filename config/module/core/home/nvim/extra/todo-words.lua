@@ -14,13 +14,6 @@ function source:get_completions(_, callback)
 		}
 		table.insert(items, {
 			label = word,
-			insertText = word .. ": ",
-			kind = vim.lsp.protocol.CompletionItemKind.Keyword,
-			kind_name = "Todo",
-			documentation = documentation,
-		})
-		table.insert(items, {
-			label = "todo " .. word,
 			filterText = "todo" .. word,
 			insertText = word .. ": ",
 			kind = vim.lsp.protocol.CompletionItemKind.Keyword,
