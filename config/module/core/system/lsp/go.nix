@@ -1,10 +1,10 @@
 {
   lib,
   pkgs,
+  makeSandbox,
   user,
 }:
 let
-  makeSandbox = import ../make-sandbox.nix { inherit lib pkgs; };
   goPath = "/home/${user}/go";
   goCache = "/home/${user}/.cache/go-build";
 in

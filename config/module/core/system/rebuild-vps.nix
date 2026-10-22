@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pythonScriptEnv,
   user,
   ...
 }:
@@ -15,13 +16,11 @@ let
       fzf
       nixos-rebuild
       openssh
-      python3
+      pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-      exec ${lib.getExe pkgs.python3} ${../../../../script/rebuild-vps.py} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/rebuild-vps.py \
         --fzf-executable ${lib.getExe pkgs.fzf} \
         --nixos-rebuild-executable ${lib.getExe pkgs.nixos-rebuild} \
         --config-dir ${lib.escapeShellArg "/home/${user}/.config/nixos/config"} \

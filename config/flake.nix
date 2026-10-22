@@ -3,6 +3,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
+    scripts = {
+      url = "path:../script";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -124,6 +129,7 @@
         configs: host:
         let
           system = host.system or "x86_64-linux";
+          pythonScriptEnv = inputs.scripts.packages.${system}.python-env;
         in
         configs
         // {
@@ -138,6 +144,7 @@
                 colorScheme
                 inputs
                 ports
+                pythonScriptEnv
                 secretPath
                 stateVersion
                 system
@@ -169,6 +176,7 @@
                       colorScheme
                       inputs
                       ports
+                      pythonScriptEnv
                       secretPath
                       stateVersion
                       system

@@ -12,10 +12,14 @@
     };
 
     ignores = [
-      ".aider*"
-      ".codex"
       ".direnv"
       ".envrc"
+
+      ".aider*"
+      ".codex"
+
+      "**/.venv/"
+      "**/__pycache__/"
     ];
   };
 }

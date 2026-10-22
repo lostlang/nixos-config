@@ -4,9 +4,10 @@
 }:
 {
   imports = [
+    ./lsp
+    ./make-sandbox
     ./secret
     ./ssh
-    ./lsp
 
     ./docker.nix
     ./env-init.nix

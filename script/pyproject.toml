@@ -1,0 +1,13 @@
+[project]
+name = "nixos-scripts"
+version = "0.0.1"
+dependencies = [
+	"argcomplete"
+]
+
+[tool.uv]
+package = false
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"

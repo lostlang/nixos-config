@@ -2,11 +2,14 @@ import shutil
 
 
 def clear_directory(directory):
-    if directory.is_symlink():
-        directory.unlink()
+    if directory.is_symlink() or not directory.is_dir():
         return
-    if directory.is_dir():
-        shutil.rmtree(directory)
+
+    for entry in directory.iterdir():
+        if entry.is_symlink() or not entry.is_dir():
+            entry.unlink()
+        else:
+            shutil.rmtree(entry)
 
 
 def restore_file(source, destination):

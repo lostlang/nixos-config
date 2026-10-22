@@ -3,6 +3,7 @@
     ./commands
 
     ./aliases.nix
+    ./completions.nix
   ];
 
   programs.zsh = {

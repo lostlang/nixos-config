@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  pythonScriptEnv,
 }:
 {
   name,
@@ -8,6 +9,10 @@
   executable,
   sandboxDirectory ? null,
   runtimeInputs ? [ ],
+  libInputs ? [ ],
+  terminfo ? null,
+  sslCertFile ? null,
+  sslCertDir ? null,
   shareNetwork ? false,
   readOnlyProject ? false,
   showGit ? false,
@@ -18,13 +23,24 @@
   roBinds ? [ ],
 }:
 let
+  make-sandbox = pkgs.callPackage ./make-sandbox.nix {
+    inherit pythonScriptEnv;
+  };
   arguments = [
     "--user"
     user
-    "--bubblewrap-executable"
-    (lib.getExe pkgs.bubblewrap)
     "--runtime-path"
     (lib.makeBinPath runtimeInputs)
+    "--terminfo"
+    terminfo
+    "--library-path"
+    (lib.makeLibraryPath libInputs)
+    "--pkg-config-path"
+    (lib.makeSearchPath "lib/pkgconfig" libInputs)
+    "--ssl-cert-file"
+    sslCertFile
+    "--ssl-cert-dir"
+    sslCertDir
   ]
   ++ lib.optionals (sandboxDirectory != null) [
     "--sandbox-directory"
@@ -51,20 +67,19 @@ let
     mount.source
     mount.target
   ]) roBinds
-  ++ lib.concatLists (
-    lib.mapAttrsToList (name: value: [
-      "--setenv"
-      name
-      (toString value)
-    ]) environment
-  )
-  ++ [
-    "--command"
-    executable
-  ];
+  ++ lib.concatMap (name: [
+    "--setenv"
+    name
+    (toString environment.${name})
+  ]) (builtins.attrNames environment)
+  ++ [ executable ];
 in
-pkgs.writeShellScriptBin name /* sh */ ''
-  export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
+pkgs.writeShellApplication {
+  inherit name;
 
-  exec ${lib.getExe pkgs.python3} ${../../../../script/make-sandbox.py} ${lib.escapeShellArgs arguments} "$@"
-''
+  runtimeInputs = [ make-sandbox ];
+
+  text = /* sh */ ''
+    exec make-sandbox ${lib.escapeShellArgs arguments} "$@"
+  '';
+}

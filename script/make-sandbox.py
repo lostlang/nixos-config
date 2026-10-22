@@ -1,20 +1,45 @@
 #!/usr/bin/env python3
 
 import argparse
+import argcomplete
 import hashlib
 import os
 import sys
+from enum import StrEnum
 from pathlib import Path
 
 from lib.find_folders import find_roots
 
 
+class EnvironmentField(StrEnum):
+    HOME = "HOME"
+    PATH = "PATH"
+    USER = "USER"
+    LOGNAME = "LOGNAME"
+    TERM = "TERM"
+    LD_LIBRARY_PATH = "LD_LIBRARY_PATH"
+    LIBRARY_PATH = "LIBRARY_PATH"
+    PKG_CONFIG_PATH = "PKG_CONFIG_PATH"
+    TERMINFO = "TERMINFO"
+    SSL_CERT_FILE = "SSL_CERT_FILE"
+    SSL_CERT_DIR = "SSL_CERT_DIR"
+
+
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--bubblewrap-executable", required=True)
+    executables_parser = argparse.ArgumentParser(add_help=False)
+    required_executables = [executables_parser.add_argument("--bubblewrap-executable")]
+    for option in required_executables:
+        option.required = True
+
+    parser = argparse.ArgumentParser(parents=[executables_parser])
     parser.add_argument("--user", required=True)
     parser.add_argument("--sandbox-directory", type=Path)
     parser.add_argument("--runtime-path", required=True)
+    parser.add_argument("--library-path", default="")
+    parser.add_argument("--pkg-config-path", default="")
+    parser.add_argument("--ssl-cert-file")
+    parser.add_argument("--ssl-cert-dir")
+    parser.add_argument("--terminfo")
     parser.add_argument("--share-network", action="store_true")
     parser.add_argument("--read-only-project", action="store_true")
     parser.add_argument("--show-git", action="store_true")
@@ -23,18 +48,28 @@ def main():
     parser.add_argument("--bind", nargs=2, action="append", default=[])
     parser.add_argument("--ro-bind", nargs=2, action="append", default=[])
     parser.add_argument("--setenv", nargs=2, action="append", default=[])
-    parser.add_argument("--command", nargs=argparse.REMAINDER, default=[])
-    args, remaining_args = parser.parse_known_args()
-    sandbox_command = args.command + remaining_args
+    parser.add_argument("command", nargs=argparse.REMAINDER)
+    argcomplete.autocomplete(parser, always_complete_options=False)
+    args = parser.parse_args()
+    sandbox_command = args.command
 
     user_home = str(Path("/home") / args.user)
     environment = {
-        "HOME": user_home,
-        "PATH": args.runtime_path,
-        "USER": args.user,
-        "LOGNAME": args.user,
-        "TERM": "xterm-256color",
+        EnvironmentField.HOME: user_home,
+        EnvironmentField.PATH: args.runtime_path,
+        EnvironmentField.USER: args.user,
+        EnvironmentField.LOGNAME: args.user,
+        EnvironmentField.TERM: "xterm-256color",
+        EnvironmentField.LD_LIBRARY_PATH: args.library_path,
+        EnvironmentField.LIBRARY_PATH: args.library_path,
+        EnvironmentField.PKG_CONFIG_PATH: args.pkg_config_path,
     }
+    if args.terminfo is not None:
+        environment[EnvironmentField.TERMINFO] = args.terminfo
+    if args.ssl_cert_file is not None:
+        environment[EnvironmentField.SSL_CERT_FILE] = args.ssl_cert_file
+    if args.ssl_cert_dir is not None:
+        environment[EnvironmentField.SSL_CERT_DIR] = args.ssl_cert_dir
     for name in args.host_env_passthrough:
         if name in os.environ:
             environment[name] = os.environ[name]

@@ -3,6 +3,7 @@
   lib,
   osConfig,
   pkgs,
+  pythonScriptEnv,
   ...
 }:
 let
@@ -12,13 +13,11 @@ let
     runtimeInputs = with pkgs; [
       fzf
       nix
-      python3
+      pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-      exec ${lib.getExe pkgs.python3} ${../../../../script/system-clean.py} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/system-clean.py \
         --fzf-executable ${lib.getExe pkgs.fzf} \
         --sudo-executable ${lib.escapeShellArg "${osConfig.security.wrapperDir}/sudo"} \
         --nix-collect-garbage-executable ${lib.getExe' pkgs.nix "nix-collect-garbage"} \

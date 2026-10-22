@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  pythonScriptEnv,
   zellij ? pkgs.zellij,
 }:
 pkgs.writeShellApplication {
@@ -9,13 +10,11 @@ pkgs.writeShellApplication {
   runtimeInputs = [
     zellij
     pkgs.fzf
-    pkgs.python3
+    pythonScriptEnv
   ];
 
   text = /* sh */ ''
-    export PYTHONPATH=${../../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-    exec ${lib.getExe pkgs.python3} ${../../../../../script/zellij-sessions.py} \
+    exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/zellij-sessions.py \
       --fzf-executable ${lib.getExe pkgs.fzf} \
       --zellij-executable ${lib.getExe zellij} \
       "$@"

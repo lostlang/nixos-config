@@ -1,10 +1,10 @@
 {
   lib,
   pkgs,
+  makeSandbox,
   user,
 }:
 let
-  makeSandbox = import ../make-sandbox.nix { inherit lib pkgs; };
   cargoHome = "/home/${user}/.cargo";
   sandboxDirectory = "/home/${user}/.cache/sandbox/rust-analyzer";
 in

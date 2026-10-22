@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import argcomplete
 import os
 import subprocess
 import sys
@@ -10,60 +11,51 @@ from lib.find_folders import find_roots
 from lib.project_sessions import project_session_name
 
 
-def active_sessions(zellij_executable):
-    result = subprocess.run(
-        [zellij_executable, "list-sessions", "--no-formatting"],
-        capture_output=True,
-        text=True,
-    )
-    sessions = set()
-    for line in result.stdout.splitlines():
-        if not line.strip() or "EXITED" in line:
-            continue
-        sessions.add(line.split()[0])
-
-    return sessions
-
-
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--zellij-executable", required=True)
-    parser.add_argument("--layout", required=True)
+    executables_parser = argparse.ArgumentParser(add_help=False)
+    required_executables = [
+        executables_parser.add_argument("--zellij-executable"),
+    ]
+    for option in required_executables:
+        option.required = True
+
+    config_dir = Path(
+        os.environ.get("ZELLIJ_CONFIG_DIR")
+        or (
+            Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
+            / "zellij"
+        )
+    )
+    layouts = []
+    for path in (config_dir / "layouts").glob("*.kdl"):
+        layouts.append(path.stem)
+    layouts.sort()
+
+    parser = argparse.ArgumentParser(parents=[executables_parser])
+    parser.add_argument("--layout", required=True, choices=layouts)
+    argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
 
-    roots = find_roots("nix") or find_roots("git") or [Path.cwd()]
+    roots = find_roots("git") or find_roots("nix") or [Path.cwd()]
     project_dir = str(roots[0])
     session = project_session_name(args.layout, project_dir)
 
     if os.environ.get("ZELLIJ"):
         if os.environ.get("ZELLIJ_SESSION_NAME") == session:
             return 0
-        if session not in active_sessions(args.zellij_executable):
-            subprocess.run(
-                [
-                    args.zellij_executable,
-                    "attach",
-                    "--create-background",
-                    "--force-run-commands",
-                    session,
-                    "options",
-                    "--default-cwd",
-                    project_dir,
-                    "--default-layout",
-                    args.layout,
-                ],
-                check=True,
-            )
         command = [
             "action",
             "switch-session",
             session,
+            "--cwd",
+            project_dir,
+            "--layout",
+            args.layout,
         ]
     else:
         command = [
             "attach",
             "--create",
-            "--force-run-commands",
             session,
             "options",
             "--default-cwd",
