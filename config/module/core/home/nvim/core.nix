@@ -1,11 +1,11 @@
 {
   programs.nixvim = {
     opts = {
+      autoread = true;
       encoding = "utf-8";
       mouse = "a";
       termguicolors = true;
       smartindent = true;
-      updatetime = 500;
 
       number = true;
       relativenumber = true;
@@ -31,6 +31,17 @@
         "ru"
       ];
     };
+
+    autoCmd = [
+      {
+        event = [
+          "FocusGained"
+          "BufEnter"
+          "CursorHold"
+        ];
+        command = "checktime";
+      }
+    ];
 
     extraConfigLuaPre = /* lua */ ''
       require("nvim.spellfile").config({ confirm = false })
