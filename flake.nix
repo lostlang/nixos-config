@@ -33,6 +33,7 @@
           black.enable = true;
           nixfmt.enable = true;
           stylua.enable = true;
+          taplo.enable = true;
           yamlfmt.enable = true;
         };
       };

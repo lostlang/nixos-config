@@ -1,8 +1,15 @@
+from enum import StrEnum
 from pathlib import Path
 
+
+class Marker(StrEnum):
+    NIX = "nix"
+    GIT = "git"
+
+
 MARKER_PRESETS: dict[str, str] = {
-    "nix": "flake.nix",
-    "git": ".git",
+    Marker.NIX: "flake.nix",
+    Marker.GIT: ".git",
 }
 
 

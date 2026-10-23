@@ -1,23 +1,46 @@
 #!/usr/bin/env python3
 
 import argparse
+import argcomplete
 import subprocess
 import sys
 from pathlib import Path
 
+from lib.cli import help_requested
 from lib.flakes import find_flake_dirs
 from lib.fzf import select
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--nix-executable", required=True)
-    parser.add_argument("--fzf-executable", required=True)
-    args, update_args = parser.parse_known_args()
+    help_mode = help_requested()
 
-    flake_dirs = find_flake_dirs(
-        system_dir=Path.home() / ".config/nixos",
+    executables_parser = argparse.ArgumentParser(add_help=False)
+    required_executables = [
+        executables_parser.add_argument("--nix-executable"),
+        executables_parser.add_argument("--fzf-executable"),
+    ]
+    if not help_mode:
+        for option in required_executables:
+            option.required = True
+
+    dependency_parser = argparse.ArgumentParser(
+        add_help=False, parents=[executables_parser]
     )
+    config_dir_option = dependency_parser.add_argument("--config-dir", type=Path)
+    args, _ = dependency_parser.parse_known_args()
+    if not help_mode:
+        config_dir_option.required = True
+
+    flake_dirs = {}
+    if args.config_dir is not None:
+        flake_dirs = find_flake_dirs(system_dir=args.config_dir)
+
+    parser = argparse.ArgumentParser(parents=[dependency_parser])
+    parser.add_argument("target", nargs="?", choices=list(flake_dirs))
+    parser.add_argument("update_args", nargs=argparse.REMAINDER)
+    argcomplete.autocomplete(parser, always_complete_options=False)
+    args = parser.parse_args()
+    update_args = args.update_args
 
     if not flake_dirs:
         return 0
@@ -25,13 +48,15 @@ def main():
     if len(flake_dirs) == 1:
         selected = next(iter(flake_dirs))
     else:
-        selected = select(
-            list(flake_dirs),
-            prompt="Select flake to update: ",
-            executable=args.fzf_executable,
-        )
+        selected = args.target
         if selected is None:
-            return 0
+            selected = select(
+                list(flake_dirs),
+                prompt="Select flake to update: ",
+                executable=args.fzf_executable,
+            )
+            if selected is None:
+                return 0
 
     for flake_dir in flake_dirs[selected]:
         subprocess.run(

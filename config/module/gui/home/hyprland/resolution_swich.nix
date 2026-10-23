@@ -1,22 +1,29 @@
 {
+  config,
   lib,
   pkgs,
+  pythonScriptEnv,
+  ...
 }:
-pkgs.writeShellApplication {
-  name = "hypr-resolution-switch";
+let
+  hypr-resolution-switch = pkgs.writeShellApplication {
+    name = "hypr-resolution-switch";
 
-  runtimeInputs = with pkgs; [
-    fzf
-    hyprland
-    python3
-  ];
+    runtimeInputs = with pkgs; [
+      fzf
+      hyprland
+      pythonScriptEnv
+    ];
 
-  text = /* sh */ ''
-    export PYTHONPATH=${../../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-    exec ${lib.getExe pkgs.python3} ${../../../../../script/hypr-resolution-switch.py} \
-      --fzf-executable ${lib.getExe pkgs.fzf} \
-      --hyprctl-executable ${lib.getExe' pkgs.hyprland "hyprctl"} \
-      "$@"
-  '';
+    text = /* sh */ ''
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/hypr-resolution-switch.py \
+        --config-dir ${lib.escapeShellArg "${config.xdg.configHome}/hypr"} \
+        --fzf-executable ${lib.getExe pkgs.fzf} \
+        --hyprctl-executable ${lib.getExe' pkgs.hyprland "hyprctl"} \
+        "$@"
+    '';
+  };
+in
+{
+  home.packages = [ hypr-resolution-switch ];
 }

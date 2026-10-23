@@ -1,6 +1,8 @@
 {
   lib,
   pkgs,
+  pythonScriptEnv,
+  user,
   ...
 }:
 let
@@ -10,13 +12,12 @@ let
     runtimeInputs = with pkgs; [
       fzf
       git
-      python3
+      pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-      exec ${lib.getExe pkgs.python3} ${../../../../script/env-init.py} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/env-init.py \
+        --env-dir ${lib.escapeShellArg "/home/${user}/.config/nixos/env"} \
         --git-executable ${lib.getExe pkgs.git} \
         --fzf-executable ${lib.getExe pkgs.fzf} \
         "$@"

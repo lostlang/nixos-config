@@ -7,36 +7,38 @@ import subprocess
 import sys
 from pathlib import Path
 
-from lib.find_folders import find_roots
+from lib.cli import help_requested
+from lib.filesystem import find_named_files
+from lib.find_folders import Marker, find_roots
 from lib.project_sessions import project_session_name
 
 
 def main():
+    help_mode = help_requested()
+
     executables_parser = argparse.ArgumentParser(add_help=False)
-    required_executables = [
-        executables_parser.add_argument("--zellij-executable"),
-    ]
-    for option in required_executables:
-        option.required = True
+    zellij_option = executables_parser.add_argument("--zellij-executable")
+    if not help_mode:
+        zellij_option.required = True
 
-    config_dir = Path(
-        os.environ.get("ZELLIJ_CONFIG_DIR")
-        or (
-            Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
-            / "zellij"
-        )
+    dependency_parser = argparse.ArgumentParser(
+        add_help=False, parents=[executables_parser]
     )
-    layouts = []
-    for path in (config_dir / "layouts").glob("*.kdl"):
-        layouts.append(path.stem)
-    layouts.sort()
+    config_dir_option = dependency_parser.add_argument("--config-dir", type=Path)
+    args, _ = dependency_parser.parse_known_args()
+    if not help_mode:
+        config_dir_option.required = True
 
-    parser = argparse.ArgumentParser(parents=[executables_parser])
+    layouts = []
+    if args.config_dir is not None:
+        layouts = list(find_named_files(args.config_dir / "layouts", ".kdl"))
+
+    parser = argparse.ArgumentParser(parents=[dependency_parser])
     parser.add_argument("--layout", required=True, choices=layouts)
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
 
-    roots = find_roots("git") or find_roots("nix") or [Path.cwd()]
+    roots = find_roots(Marker.GIT) or find_roots(Marker.NIX) or [Path.cwd()]
     project_dir = str(roots[0])
     session = project_session_name(args.layout, project_dir)
 

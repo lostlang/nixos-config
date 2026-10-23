@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  pythonScriptEnv,
   ...
 }:
 let
@@ -10,13 +11,11 @@ let
     runtimeInputs = with pkgs; [
       git
       nix
-      python3
+      pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-      exec ${lib.getExe pkgs.python3} ${../../../../script/fmt-staged.py} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/fmt-staged.py \
         --git-executable ${lib.getExe pkgs.git} \
         --nix-executable ${lib.getExe pkgs.nix} \
         "$@"

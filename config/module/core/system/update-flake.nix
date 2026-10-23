@@ -1,6 +1,8 @@
 {
   lib,
   pkgs,
+  pythonScriptEnv,
+  user,
   ...
 }:
 let
@@ -10,13 +12,12 @@ let
     runtimeInputs = with pkgs; [
       fzf
       nix
-      python3
+      pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      export PYTHONPATH=${../../../../script}''${PYTHONPATH:+:$PYTHONPATH}
-
-      exec ${lib.getExe pkgs.python3} ${../../../../script/update-flake.py} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/update-flake.py \
+        --config-dir ${lib.escapeShellArg "/home/${user}/.config/nixos"} \
         --nix-executable ${lib.getExe pkgs.nix} \
         --fzf-executable ${lib.getExe pkgs.fzf} \
         "$@"

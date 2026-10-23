@@ -1,9 +1,24 @@
 let
   ports = {
+    default = {
+      ssh = 22;
+      mdns = 5353;
+    };
+
     adguardhome = {
       web = 43074;
       dns = 51071;
     };
+
+    matrix = {
+      server = 30287;
+      client = 30288;
+      admin = 30289;
+    };
+
+    ollama = 11434;
+
+    openWebui = 11435;
 
     remnawave = {
       mask = {
@@ -28,23 +43,16 @@ let
       database = 5432;
     };
 
-    matrix = {
-      server = 30287;
-      client = 30288;
-      admin = 30289;
-    };
-
-    vaultwarden = 43774;
-
-    ollama = 11434;
-    openWebui = 11435;
-
-    syncthing.gui = 8384;
-
     sunshine = {
       start = 47984;
       count = 27;
     };
+
+    syncthing.gui = 8384;
+
+    vaultwarden = 43774;
+
+    zerotierone = 9993;
   };
 
   flatten =

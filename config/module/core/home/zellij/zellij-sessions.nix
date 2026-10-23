@@ -1,22 +1,29 @@
 {
+  config,
   lib,
   pkgs,
   pythonScriptEnv,
-  zellij ? pkgs.zellij,
+  ...
 }:
-pkgs.writeShellApplication {
-  name = "zs";
+let
+  zellij = config.programs.zellij.package;
+  zs = pkgs.writeShellApplication {
+    name = "zs";
 
-  runtimeInputs = [
-    zellij
-    pkgs.fzf
-    pythonScriptEnv
-  ];
+    runtimeInputs = [
+      zellij
+      pkgs.fzf
+      pythonScriptEnv
+    ];
 
-  text = /* sh */ ''
-    exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/zellij-sessions.py \
-      --fzf-executable ${lib.getExe pkgs.fzf} \
-      --zellij-executable ${lib.getExe zellij} \
-      "$@"
-  '';
+    text = /* sh */ ''
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/zellij-sessions.py \
+        --fzf-executable ${lib.getExe pkgs.fzf} \
+        --zellij-executable ${lib.getExe zellij} \
+        "$@"
+    '';
+  };
+in
+{
+  home.packages = lib.mkIf config.programs.zellij.enable [ zs ];
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import argcomplete
 import os
 import shlex
 import sys
@@ -56,16 +57,18 @@ def server_without_command(args):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ssh-executable", required=True)
+    executables_parser = argparse.ArgumentParser(add_help=False)
+    executables_parser.add_argument("--ssh-executable", required=True)
+
+    parser = argparse.ArgumentParser(parents=[executables_parser])
     parser.add_argument("--session-name", required=True)
-    parser.add_argument("--ssh-args", nargs=argparse.REMAINDER, default=[])
-    parsed_args, remaining_args = parser.parse_known_args()
+    parser.add_argument("command", nargs=argparse.REMAINDER)
+    argcomplete.autocomplete(parser, always_complete_options=False)
+    args = parser.parse_args()
+    ssh_command = args.command
 
-    args = parsed_args.ssh_args + remaining_args
-
-    server = server_without_command(args)
-    session_name = shlex.quote(parsed_args.session_name)
+    server = server_without_command(ssh_command)
+    session_name = shlex.quote(args.session_name)
 
     if server is not None:
         remote_commands = []
@@ -85,11 +88,11 @@ def main():
         remote_command = " ".join(remote_commands)
 
         os.execv(
-            parsed_args.ssh_executable,
-            [parsed_args.ssh_executable, "-t", *args, remote_command],
+            args.ssh_executable,
+            [args.ssh_executable, "-t", *ssh_command, remote_command],
         )
 
-    os.execv(parsed_args.ssh_executable, [parsed_args.ssh_executable, *args])
+    os.execv(args.ssh_executable, [args.ssh_executable, *ssh_command])
 
 
 if __name__ == "__main__":

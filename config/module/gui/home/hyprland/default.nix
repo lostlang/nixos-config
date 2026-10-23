@@ -5,6 +5,8 @@
   ...
 }:
 {
+  imports = [ ./resolution_swich.nix ];
+
   stylix.targets.hyprland.enable = false;
 
   wayland.windowManager.hyprland = {
@@ -33,12 +35,9 @@
     fi
   '';
 
-  home.packages = [
-    (import ./resolution_swich.nix { inherit lib pkgs; })
-  ]
-  ++ (with pkgs; [
+  home.packages = with pkgs; [
     brightnessctl
     playerctl
     wireplumber
-  ]);
+  ];
 }

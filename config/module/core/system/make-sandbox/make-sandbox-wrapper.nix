@@ -31,14 +31,20 @@ let
     user
     "--runtime-path"
     (lib.makeBinPath runtimeInputs)
-    "--terminfo"
-    terminfo
     "--library-path"
     (lib.makeLibraryPath libInputs)
     "--pkg-config-path"
     (lib.makeSearchPath "lib/pkgconfig" libInputs)
+  ]
+  ++ lib.optionals (terminfo != null) [
+    "--terminfo"
+    terminfo
+  ]
+  ++ lib.optionals (sslCertFile != null) [
     "--ssl-cert-file"
     sslCertFile
+  ]
+  ++ lib.optionals (sslCertDir != null) [
     "--ssl-cert-dir"
     sslCertDir
   ]

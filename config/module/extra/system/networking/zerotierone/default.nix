@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  ports,
   ...
 }:
 let
@@ -15,12 +16,13 @@ in
 
   networking = lib.mkIf (interfaces != [ ]) {
     firewall = {
-      allowedUDPPorts = [ 9993 ];
+      allowedUDPPorts = [ ports.zerotierone ];
     };
   };
 
   services.zerotierone = lib.mkIf (interfaces != [ ]) {
     enable = true;
+    port = ports.zerotierone;
   };
 
   systemd.services = lib.mkIf (interfaces != [ ]) (

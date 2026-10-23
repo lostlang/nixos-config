@@ -3,7 +3,6 @@
   config,
   lib,
   pkgs,
-  pythonScriptEnv,
   zjstatus,
   ...
 }:
@@ -18,6 +17,11 @@ let
   };
 in
 {
+  imports = [
+    ./zellij-project.nix
+    ./zellij-sessions.nix
+  ];
+
   programs.zellij = {
     enable = true;
 
@@ -66,17 +70,6 @@ in
       };
     };
   };
-
-  home.packages = lib.mkIf config.programs.zellij.enable [
-    (import ./zellij-project.nix {
-      inherit lib pkgs pythonScriptEnv;
-      zellij = config.programs.zellij.package;
-    })
-    (import ./zellij-sessions.nix {
-      inherit lib pkgs pythonScriptEnv;
-      zellij = config.programs.zellij.package;
-    })
-  ];
 
   xdg.configFile."zellij/layouts/code.kdl" = lib.mkIf config.programs.zellij.enable {
     text = codeLayout;

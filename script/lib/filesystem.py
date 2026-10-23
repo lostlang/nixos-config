@@ -19,3 +19,10 @@ def restore_file(source, destination):
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(source, destination)
     destination.chmod(0o644)
+
+
+def find_named_files(directory, suffix):
+    return {
+        path.name.removesuffix(suffix): path
+        for path in sorted(directory.glob(f"*{suffix}"))
+    }

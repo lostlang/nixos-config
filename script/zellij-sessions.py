@@ -6,19 +6,23 @@ import os
 import subprocess
 import sys
 
+from lib.cli import help_requested
 from lib.fzf import select
 from lib.project_sessions import is_project_session
 
 
 def main():
-    executables_parser = argparse.ArgumentParser()
+    help_mode = help_requested()
+
+    executables_parser = argparse.ArgumentParser(add_help=False)
     required_executables = [
         executables_parser.add_argument("--fzf-executable"),
         executables_parser.add_argument("--zellij-executable"),
     ]
     args, _ = executables_parser.parse_known_args()
-    for option in required_executables:
-        option.required = True
+    if not help_mode:
+        for option in required_executables:
+            option.required = True
 
     sessions = {}
     discovery_returncode = 0
@@ -37,7 +41,7 @@ def main():
                 continue
             sessions[label] = line
 
-    parser = argparse.ArgumentParser(add_help=False, parents=[executables_parser])
+    parser = argparse.ArgumentParser(parents=[executables_parser])
     parser.add_argument("target", nargs="?", choices=list(sessions))
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()

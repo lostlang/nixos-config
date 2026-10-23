@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
 
 import argparse
+import argcomplete
 import os
 import subprocess
 import sys
 from pathlib import Path
 
-from lib.find_folders import find_roots
+from lib.find_folders import Marker, find_roots
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--git-executable", required=True)
-    parser.add_argument("--nix-executable", required=True)
+    executables_parser = argparse.ArgumentParser(add_help=False)
+    executables_parser.add_argument("--git-executable", required=True)
+    executables_parser.add_argument("--nix-executable", required=True)
+
+    parser = argparse.ArgumentParser(parents=[executables_parser])
+    argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
 
-    roots = find_roots("git") or [Path.cwd()]
+    roots = find_roots(Marker.GIT) or [Path.cwd()]
     project_root = roots[0]
 
     try:

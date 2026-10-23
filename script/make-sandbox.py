@@ -8,7 +8,7 @@ import sys
 from enum import StrEnum
 from pathlib import Path
 
-from lib.find_folders import find_roots
+from lib.find_folders import Marker, find_roots
 
 
 class EnvironmentField(StrEnum):
@@ -27,9 +27,7 @@ class EnvironmentField(StrEnum):
 
 def main():
     executables_parser = argparse.ArgumentParser(add_help=False)
-    required_executables = [executables_parser.add_argument("--bubblewrap-executable")]
-    for option in required_executables:
-        option.required = True
+    executables_parser.add_argument("--bubblewrap-executable", required=True)
 
     parser = argparse.ArgumentParser(parents=[executables_parser])
     parser.add_argument("--user", required=True)
@@ -122,7 +120,7 @@ def main():
         command += ["--ro-bind", source, target]
 
     cwd = str(Path.cwd())
-    roots = find_roots("git") or [Path.cwd()]
+    roots = find_roots(Marker.GIT) or [Path.cwd()]
     project_directory = str(roots[0])
     command += [
         "--ro-bind" if args.read_only_project else "--bind",

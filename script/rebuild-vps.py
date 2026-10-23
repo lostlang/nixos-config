@@ -4,9 +4,14 @@ import argparse
 import argcomplete
 import subprocess
 import sys
+from enum import StrEnum
 
 from lib.cli import help_requested
 from lib.fzf import select
+
+
+class Target(StrEnum):
+    ALL = "all"
 
 
 def main():
@@ -34,21 +39,21 @@ def main():
 
     parser = argparse.ArgumentParser(parents=[dependency_parser])
     parser.add_argument("--config-dir", required=True)
-    parser.add_argument("target", nargs="?", choices=["all", *args.hosts])
+    parser.add_argument("target", nargs="?", choices=[Target.ALL, *args.hosts])
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
 
     host = args.target
     if host is None:
         host = select(
-            ["all", *args.hosts],
+            [Target.ALL, *args.hosts],
             prompt="Select a VPS to update: ",
             executable=args.fzf_executable,
         )
         if host is None:
             return 0
 
-    selected_hosts = args.hosts if host == "all" else [host]
+    selected_hosts = args.hosts if host == Target.ALL else [host]
     for selected_host in selected_hosts:
         subprocess.run(
             [

@@ -2,6 +2,7 @@
   hostname,
   lib,
   pkgs,
+  pythonScriptEnv,
   user,
   ...
 }:
@@ -12,14 +13,14 @@ let
 
     runtimeInputs = with pkgs; [
       openssh
-      python3
+      pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe pkgs.python3} ${../../../../../../script/ssh-multiplex-wrapper.py} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/ssh-multiplex-wrapper.py \
         --ssh-executable ${lib.getExe pkgs.openssh} \
         --session-name ${lib.escapeShellArg session-name} \
-        --ssh-args "$@"
+        "$@"
     '';
   };
 in

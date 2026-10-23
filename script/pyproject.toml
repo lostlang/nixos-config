@@ -1,9 +1,8 @@
 [project]
 name = "nixos-scripts"
 version = "0.0.1"
-dependencies = [
-	"argcomplete"
-]
+dependencies = ["argcomplete"]
+
 
 [tool.uv]
 package = false

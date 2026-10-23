@@ -15,7 +15,7 @@ from lib.filesystem import clear_directory, restore_file
 from lib.fzf import select
 
 
-class CLEANUP_MODE(StrEnum):
+class CleanupMode(StrEnum):
     ALL = "all"
     OS = "os"
     SANDBOX = "sandbox"
@@ -97,22 +97,22 @@ def main():
         args.sudo_executable is not None
         and args.nix_collect_garbage_executable is not None
     ):
-        cleanup_functions[CLEANUP_MODE.OS] = partial(
+        cleanup_functions[CleanupMode.OS] = partial(
             clean_os, args.sudo_executable, args.nix_collect_garbage_executable
         )
-    cleanup_functions[CLEANUP_MODE.SANDBOX] = partial(
+    cleanup_functions[CleanupMode.SANDBOX] = partial(
         clear_directory, Path.home() / ".cache/sandbox"
     )
     if args.nvim:
-        cleanup_functions[CLEANUP_MODE.NVIM] = clean_nvim
+        cleanup_functions[CleanupMode.NVIM] = clean_nvim
     if args.zellij_executable:
-        cleanup_functions[CLEANUP_MODE.ZELLIJ] = partial(
+        cleanup_functions[CleanupMode.ZELLIJ] = partial(
             clean_zellij, args.zellij_executable
         )
 
     parser = argparse.ArgumentParser(parents=[dependency_parser])
     parser.add_argument(
-        "mode", nargs="?", choices=[CLEANUP_MODE.ALL, *cleanup_functions]
+        "mode", nargs="?", choices=[CleanupMode.ALL, *cleanup_functions]
     )
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
@@ -120,14 +120,14 @@ def main():
     selected = args.mode
     if selected is None:
         selected = select(
-            [CLEANUP_MODE.ALL, *cleanup_functions],
+            [CleanupMode.ALL, *cleanup_functions],
             prompt="Select what to clean: ",
             executable=args.fzf_executable,
         )
         if selected is None:
             return 0
 
-    if selected == CLEANUP_MODE.ALL:
+    if selected == CleanupMode.ALL:
         selected_cleanups = cleanup_functions.values()
     else:
         selected_cleanups = [cleanup_functions[selected]]

@@ -8,8 +8,10 @@ from pathlib import Path
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--bw-executable", required=True)
+    executables_parser = argparse.ArgumentParser(add_help=False)
+    executables_parser.add_argument("--bw-executable", required=True)
+
+    parser = argparse.ArgumentParser(parents=[executables_parser])
     parser.add_argument("--session-file", required=True, type=Path)
     parser.add_argument("--command", nargs=argparse.REMAINDER, default=[])
     args, remaining_args = parser.parse_known_args()
