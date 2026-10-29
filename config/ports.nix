@@ -16,6 +16,11 @@ let
       admin = 30289;
     };
 
+    openbao = {
+      api = 34796;
+      cluster = 34797;
+    };
+
     remnawave = {
       mask = {
         backend = 20267;

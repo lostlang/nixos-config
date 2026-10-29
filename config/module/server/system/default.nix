@@ -2,6 +2,7 @@
   imports = [
     ./adguardhome
     ./matrix
+    ./openbao
     ./remnawave
     ./vaultwarden
 

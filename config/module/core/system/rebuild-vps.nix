@@ -1,14 +1,12 @@
 {
-  config,
   lib,
   pkgs,
   pythonScriptEnv,
   user,
+  vpsHostnames,
   ...
 }:
 let
-  hosts = config.myConfig.ssh.vpsHosts;
-
   rebuild-vps = pkgs.writeShellApplication {
     name = "rebuild-vps";
 
@@ -29,7 +27,7 @@ let
             lib.concatMap (host: [
               "--host"
               host
-            ]) hosts
+            ]) vpsHostnames
           )
         } \
         "$@"
@@ -37,5 +35,5 @@ let
   };
 in
 {
-  environment.systemPackages = lib.mkIf (hosts != [ ]) [ rebuild-vps ];
+  environment.systemPackages = lib.mkIf (vpsHostnames != [ ]) [ rebuild-vps ];
 }

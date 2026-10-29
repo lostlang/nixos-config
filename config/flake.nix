@@ -138,6 +138,9 @@
           "${host.hostname}" = nixpkgs.lib.nixosSystem {
             inherit system;
             specialArgs = {
+              vpsHostnames = builtins.map (host: host.hostname) (
+                builtins.filter (host: nixpkgs.lib.hasPrefix "vps" host.hostname) hosts
+              );
               inherit (host)
                 extraLocalModules
                 hostname

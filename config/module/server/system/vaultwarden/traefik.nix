@@ -18,7 +18,9 @@ lib.mkIf config.services.vaultwarden.enable {
         http:
           routers:
             vaultwarden:
-              rule: "Host(`${config.sops.placeholder."domain.vaultwarden"}`)"
+              rule: >-
+                Host(`${config.sops.placeholder."domain.vaultwarden"}`) &&
+                !(Path(`/admin`) || PathPrefix(`/admin/`))
               entryPoints:
                 - websecure
               service: vaultwarden

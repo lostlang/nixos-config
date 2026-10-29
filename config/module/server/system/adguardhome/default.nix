@@ -11,11 +11,11 @@
   services.adguardhome = {
     enable = lib.mkDefault false;
 
-    host = "127.0.0.1";
-    port = ports.adguardhome.web;
-
     settings = {
-      http.doh.insecure_enabled = true;
+      http = {
+        address = "127.0.0.1:${toString ports.adguardhome.web}";
+        doh.insecure_enabled = true;
+      };
 
       dns = {
         bind_hosts = [ "127.0.0.1" ];

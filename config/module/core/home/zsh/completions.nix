@@ -12,6 +12,7 @@
       update-flake \
       make-sandbox \
       rebuild-vps \
+      openbao-bootstrap \
       system-clean \
       zp \
       zs \

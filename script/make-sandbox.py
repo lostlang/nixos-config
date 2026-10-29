@@ -44,9 +44,15 @@ def main():
     parser.add_argument("--show-git", action="store_true")
     parser.add_argument("--host-env-passthrough", action="append", default=[])
     parser.add_argument("--directory", type=Path, action="append", default=[])
-    parser.add_argument("--bind", nargs=2, action="append", default=[])
-    parser.add_argument("--ro-bind", nargs=2, action="append", default=[])
-    parser.add_argument("--setenv", nargs=2, action="append", default=[])
+    parser.add_argument(
+        "--bind", nargs=2, action="append", default=[], metavar=("SOURCE", "DEST")
+    )
+    parser.add_argument(
+        "--ro-bind", nargs=2, action="append", default=[], metavar=("SOURCE", "DEST")
+    )
+    parser.add_argument(
+        "--setenv", nargs=2, action="append", default=[], metavar=("NAME", "VALUE")
+    )
     parser.add_argument("command", nargs=argparse.REMAINDER)
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()

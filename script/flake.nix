@@ -74,10 +74,22 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               uv
+              direnv
+              secretspec
               python3
             ];
+
+            SECRETSPEC_PROFILE = "vps72c411b0";
+            SECRETSPEC_PROVIDER = "bao-approle";
+
             UV_PYTHON = "${pkgs.python3}/bin/python";
             UV_PYTHON_DOWNLOADS = "never";
+
+            shellHook = /* sh */ ''
+              eval "$(${lib.getExe pkgs.direnv} allow)"
+              eval "$(${lib.getExe pkgs.direnv} hook bash)"
+              alias run='secretspec run -- uv run'
+            '';
           };
         }
       );
