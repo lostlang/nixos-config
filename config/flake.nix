@@ -132,15 +132,16 @@
         let
           system = host.system or "x86_64-linux";
           pythonScriptEnv = inputs.scripts.packages.${system}.python-env;
+          vpsHostnames = map (host: host.hostname) (
+            builtins.filter (host: nixpkgs.lib.hasPrefix "vps" host.hostname) hosts
+          );
         in
         configs
         // {
           "${host.hostname}" = nixpkgs.lib.nixosSystem {
             inherit system;
             specialArgs = {
-              vpsHostnames = builtins.map (host: host.hostname) (
-                builtins.filter (host: nixpkgs.lib.hasPrefix "vps" host.hostname) hosts
-              );
+              inherit vpsHostnames;
               inherit (host)
                 extraLocalModules
                 hostname
@@ -173,6 +174,7 @@
                   useUserPackages = true;
                   backupFileExtension = "backup";
                   extraSpecialArgs = {
+                    inherit vpsHostnames;
                     inherit (host)
                       extraLocalModules
                       hostname

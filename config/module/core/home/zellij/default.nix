@@ -31,6 +31,7 @@ in
 
       pane_frames = false;
       session_serialization = false;
+      on_force_close = "detach";
 
       theme = themeName;
       themes = {

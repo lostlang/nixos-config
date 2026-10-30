@@ -1,4 +1,5 @@
 {
+  hostname,
   lib,
   pkgs,
   pythonScriptEnv,
@@ -35,5 +36,7 @@ let
   };
 in
 {
-  environment.systemPackages = lib.mkIf (vpsHostnames != [ ]) [ rebuild-vps ];
+  environment.systemPackages = lib.mkIf (!(lib.elem hostname vpsHostnames)) [
+    rebuild-vps
+  ];
 }

@@ -2,6 +2,7 @@
 
 import argparse
 import argcomplete
+import ipaddress
 import subprocess
 import sys
 from enum import StrEnum
@@ -41,6 +42,7 @@ def main():
 
     parser = argparse.ArgumentParser(parents=[dependency_parser])
     parser.add_argument("--config-dir", required=True)
+    parser.add_argument("--ip", type=ipaddress.ip_address)
     parser.add_argument("target", nargs="?", choices=[Target.ALL, *args.hosts])
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
@@ -57,6 +59,9 @@ def main():
 
     selected_hosts = args.hosts if target == Target.ALL else [target]
     for selected_host in selected_hosts:
+        target_host = selected_host
+        if args.ip is not None:
+            target_host = str(args.ip)
         subprocess.run(
             [
                 args.nixos_rebuild_executable,
@@ -64,7 +69,7 @@ def main():
                 "--flake",
                 f"{args.config_dir}#{selected_host}",
                 "--target-host",
-                selected_host,
+                target_host,
                 "--use-substitutes",
                 "--elevate=sudo",
             ],

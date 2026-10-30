@@ -60,12 +60,10 @@ let
 
     runtimeInputs = [
       pythonScriptEnv
-      config.services.openbao.package
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao-bootstrap.py \
-        --bao-executable ${lib.getExe' config.services.openbao.package "bao"} \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/bootstrap.py \
         --address http://127.0.0.1:${toString ports.openbao.api} \
         ${lib.escapeShellArgs engineArgs} \
         ${lib.escapeShellArgs policyArgs} \

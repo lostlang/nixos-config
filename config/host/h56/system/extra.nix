@@ -13,10 +13,6 @@
   ];
 
   services = {
-    cloudflare = {
-      enable = true;
-      tunnels = [ "test" ];
-    };
     zerotierone = {
       enable = true;
       interfaces = [ "game" ];

@@ -13,6 +13,8 @@
       make-sandbox \
       rebuild-vps \
       openbao-bootstrap \
+      openbao-client-login \
+      openbao-get-ssh-hosts \
       system-clean \
       zp \
       zs \

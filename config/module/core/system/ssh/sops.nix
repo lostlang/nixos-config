@@ -5,8 +5,8 @@
   ...
 }:
 let
-  inherit (config.myConfig.ssh) hosts identities vpsHosts;
-  allHosts = lib.unique (identities ++ hosts ++ vpsHosts);
+  inherit (config.myConfig.ssh) hosts identities;
+  allHosts = lib.unique (identities ++ hosts);
 
   secretNames = map (name: "host.${name}") allHosts;
 
@@ -14,7 +14,6 @@ let
     Host ${name}
       HostName ${config.sops.placeholder."host.${name}"}
     ${lib.optionalString (builtins.elem name identities) "  IdentityFile /home/${user}/.ssh/${name}_ed25519"}
-    ${lib.optionalString (builtins.elem name vpsHosts) "  User ${user}"}
   '') allHosts;
 in
 {

@@ -1,7 +1,15 @@
 [project]
 name = "nixos-scripts"
 version = "0.0.1"
-dependencies = ["argcomplete"]
+dependencies = [
+  "argcomplete",
+  "cryptography",
+  "httpx",
+  "hvac",
+  "pydantic",
+  "remnawave",
+  "requests",
+]
 
 
 [tool.uv]

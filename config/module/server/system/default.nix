@@ -1,4 +1,8 @@
 {
+  lib,
+  ...
+}:
+{
   imports = [
     ./adguardhome
     ./matrix
@@ -9,6 +13,8 @@
     ./weekly-reboot.nix
     ./traefik.nix
   ];
+
+  programs.openbao-client.enable = lib.mkDefault true;
 
   nix.gc = {
     automatic = true;

@@ -4,8 +4,8 @@
   ...
 }:
 let
-  inherit (osConfig.myConfig.ssh) hosts identities vpsHosts;
-  allHosts = lib.unique (identities ++ hosts ++ vpsHosts);
+  inherit (osConfig.myConfig.ssh) hosts identities;
+  allHosts = lib.unique (identities ++ hosts);
   hostsPath = osConfig.sops.templates."ssh/hosts.conf".path;
 in
 {

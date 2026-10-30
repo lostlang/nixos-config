@@ -13,10 +13,5 @@
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
-
-    vpsHosts = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-    };
   };
 }
