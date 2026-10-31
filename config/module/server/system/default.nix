@@ -10,15 +10,11 @@
     ./remnawave
     ./vaultwarden
 
-    ./weekly-reboot.nix
+    ./docker.nix
+    ./nix.nix
     ./traefik.nix
+    ./weekly-reboot.nix
   ];
 
   programs.openbao-client.enable = lib.mkDefault true;
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
 }

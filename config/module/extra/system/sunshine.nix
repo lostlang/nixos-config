@@ -11,7 +11,7 @@
     capSysAdmin = true;
 
     settings = {
-      capture = "kms";
+      capture = "wlr";
       port = ports.sunshine.start + 5;
     };
   };

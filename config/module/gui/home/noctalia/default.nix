@@ -56,7 +56,6 @@
         screenshot = {
           directory = "${config.home.homeDirectory}/Pictures/Screenshots";
           filename_pattern = "%Y/%m/screenshot_%Y%m%d_%H%M%S";
-          # NOTE: don't work with config/module/gui/home/hyprland/config.lua:24-27
           show_cursor = false;
         };
 

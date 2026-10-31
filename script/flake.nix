@@ -30,7 +30,9 @@
             name = baseNameOf path;
           in
           !(builtins.elem name [
+            ".direnv"
             ".env"
+            ".envrc"
             ".venv"
             "__pycache__"
             ".git"

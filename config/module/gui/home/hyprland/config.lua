@@ -21,10 +21,6 @@ hl.config({
 		kb_layout = "us, ru",
 		kb_options = "grp:win_space_toggle",
 	},
-	-- HACK: check this in new versions
-	cursor = {
-		no_hardware_cursors = 1,
-	},
 	misc = {
 		disable_hyprland_logo = true,
 		force_default_wallpaper = -1,

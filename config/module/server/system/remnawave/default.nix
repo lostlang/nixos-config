@@ -18,13 +18,6 @@
         soft = 1048576;
         hard = 1048576;
       };
-      logging = {
-        driver = "json-file";
-        options = {
-          max-size = "5m";
-          max-file = "2";
-        };
-      };
     };
   };
 

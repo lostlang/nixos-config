@@ -10,6 +10,7 @@
     ./docker.nix
     ./env-init.nix
     ./fmt-staged.nix
+    ./journald.nix
     ./localization.nix
     ./networking.nix
     ./nix.nix
