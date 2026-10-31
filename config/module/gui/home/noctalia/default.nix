@@ -101,6 +101,15 @@
         };
       };
 
+      widget = {
+        bluetooth.actions.right = "panel-toggle control-center bluetooth";
+        network = {
+          show_label = false;
+          actions.right = "panel-toggle control-center network";
+        };
+        volume.actions.right = "media toggle";
+      };
+
       bar = {
         order = [
           "default"
@@ -116,13 +125,13 @@
           ];
           center = [ ];
           end = [
-            "media"
             "volume"
             "brightness"
             "tray"
             "bluetooth"
             "network"
             "weather"
+            "battery"
           ];
         };
 
