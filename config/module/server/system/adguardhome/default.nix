@@ -6,8 +6,10 @@
 }:
 {
   imports = [
-    ./traefik.nix
+    ./openbao.nix
   ];
+
+  services.traefik.enable = lib.mkIf config.services.adguardhome.enable true;
 
   services.adguardhome = lib.mkIf config.services.adguardhome.enable {
     settings = {
