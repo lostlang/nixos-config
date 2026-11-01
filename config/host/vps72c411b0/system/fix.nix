@@ -13,7 +13,7 @@
   # systemd-networkd so GatewayOnLink makes the off-subnet default route valid.
   #
   # The public IP is a sops secret keyed by hostname (vps.${hostname}.ip),
-  # declared in module/core/system/networking/vps.nix. The .network unit is
+  # declared in module/core/system/secret/vps.nix. The .network unit is
   # rendered from a sops template into /run/systemd/network (tmpfs) at
   # activation, so the store only ever holds a placeholder token.
   networking = {
@@ -30,7 +30,7 @@
   sops.templates."10-ens3.network" = {
     path = "/run/systemd/network/10-ens3.network";
     mode = "0644";
-    content = ''
+    content = /* ini */ ''
       [Match]
       Name=ens3
 

@@ -29,7 +29,7 @@ let
     profile:
     lib.nameValuePair "bitwarden.${profile}.env" {
       owner = user;
-      content = ''
+      content = /* ini */ ''
         BW_SERVER_URL=${config.sops.placeholder.${secretName profile "serverUrl"}}
         BW_CLIENTID=${config.sops.placeholder.${secretName profile "clientId"}}
         BW_CLIENTSECRET=${config.sops.placeholder.${secretName profile "clientSecret"}}
@@ -39,6 +39,7 @@ let
 in
 {
   options.myConfig.bitwardenCli.profiles = lib.mkOption {
+    description = "Bitwarden CLI profile names whose credentials and environment files are loaded from SOPS.";
     default = [ ];
     type = lib.types.listOf lib.types.str;
   };

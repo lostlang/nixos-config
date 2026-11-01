@@ -9,12 +9,8 @@ let
   webService = import ../../../web-service.nix { inherit lib pkgs; };
 in
 {
-  options.services.matrix.admin = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
-  };
+  options.services.matrix.admin.enable =
+    lib.mkEnableOption "Synapse Admin web interface for the Matrix server";
 
   config = lib.mkIf (config.services.matrix-tuwunel.enable && config.services.matrix.admin.enable) (
     lib.mkMerge [

@@ -138,12 +138,15 @@ in
   imports = [
     ./bootstrap
 
-    ./options.nix
     ./sops.nix
     ./traefik.nix
   ];
 
-  systemd.services.remnawave-panel = lib.mkIf config.services.remnawave-panel.enable {
+  options.services.remnawave-panel.enable = lib.mkEnableOption "Remnawave panel containers";
+
+  config.systemd.services.remnawave-panel = lib.mkIf config.services.remnawave-panel.enable {
+    description = "Remnawave panel containers";
+
     wantedBy = [ "multi-user.target" ];
     requires = [ "docker.service" ];
     after = [

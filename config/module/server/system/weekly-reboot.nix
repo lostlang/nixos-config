@@ -5,7 +5,8 @@
 }:
 {
   systemd.services.weekly-reboot = {
-    enable = true;
+    description = "Weekly system reboot";
+
     startAt = "Tue *-*-* 04:00:00";
 
     serviceConfig = {

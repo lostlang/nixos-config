@@ -13,6 +13,7 @@ in
   ];
 
   options.services.zerotierone.interfaces = lib.mkOption {
+    description = "Logical ZeroTier interface names used to load interface IDs and allowed ports from SOPS.";
     type = lib.types.listOf lib.types.str;
     default = [ ];
   };

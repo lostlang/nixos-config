@@ -18,7 +18,7 @@ lib.mkIf cfg.enable {
 
     templates."tuwunel.env" = {
       restartUnits = [ "tuwunel.service" ];
-      content = ''
+      content = /* ini */ ''
         TUWUNEL_SERVER_NAME=${config.sops.placeholder."domain.matrix.server"}
         TUWUNEL_WELL_KNOWN__CLIENT=https://${config.sops.placeholder."domain.matrix.server"}
         TUWUNEL_WELL_KNOWN__SERVER=${config.sops.placeholder."domain.matrix.server"}:443

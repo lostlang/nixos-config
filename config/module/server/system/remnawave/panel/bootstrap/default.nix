@@ -26,14 +26,35 @@ let
 in
 {
   imports = [
-    ./options.nix
     ./sops.nix
   ];
+
+  options.services.remnawave-panel = {
+    bootstrap.enable = lib.mkEnableOption "automatic Remnawave node bootstrap";
+
+    nodes = {
+      basic = lib.mkOption {
+        description = "Node names to register in Remnawave panel without port hopping.";
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        apply = lib.unique;
+      };
+
+      hopping = lib.mkOption {
+        description = "Node names to register in Remnawave panel with port hopping.";
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        apply = lib.unique;
+      };
+    };
+  };
 
   config = lib.mkIf (panelCfg.enable && panelCfg.bootstrap.enable && nodes != [ ]) {
     environment.systemPackages = [ bootstrap ];
 
     systemd.services.remnawave-node-bootstrap = {
+      description = "Bootstrap Remnawave nodes in panel";
+
       wantedBy = [ "multi-user.target" ];
       requires = [ "remnawave-panel.service" ];
       after = [

@@ -33,9 +33,10 @@
             ".direnv"
             ".env"
             ".envrc"
+            ".git"
+
             ".venv"
             "__pycache__"
-            ".git"
           ])
           && !(lib.hasPrefix ".env." name)
           && !(lib.hasSuffix ".pyc" name)

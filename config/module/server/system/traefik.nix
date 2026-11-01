@@ -42,14 +42,16 @@
     after = lib.optional config.sops.useSystemdActivation "sops-install-secrets.service";
     requires = lib.optional config.sops.useSystemdActivation "sops-install-secrets.service";
     serviceConfig.ExecStartPre = lib.mkBefore [
-      "+${pkgs.writeShellScript "traefik-cleanup-dynamic" ''
-        set -eu
-        dynamicDir=${lib.escapeShellArg "${config.services.traefik.dataDir}/dynamic"}
-        if [ -d "$dynamicDir" ]; then
-          ${pkgs.findutils}/bin/find -P "$dynamicDir" -maxdepth 1 \
-            -type l -xtype l -print -delete
-        fi
-      ''}"
+      "+${
+        pkgs.writeShellScript "traefik-cleanup-dynamic" /* sh */ ''
+          set -eu
+          dynamicDir=${lib.escapeShellArg "${config.services.traefik.dataDir}/dynamic"}
+          if [ -d "$dynamicDir" ]; then
+            ${pkgs.findutils}/bin/find -P "$dynamicDir" -maxdepth 1 \
+              -type l -xtype l -print -delete
+          fi
+        ''
+      }"
     ];
   };
 

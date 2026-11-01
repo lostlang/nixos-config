@@ -8,7 +8,7 @@ lib.mkIf config.services.vaultwarden.enable {
     secrets."vaultwarden.admin-token" = { };
 
     templates."vaultwarden.env" = {
-      content = ''
+      content = /* ini */ ''
         ADMIN_TOKEN=${config.sops.placeholder."vaultwarden.admin-token"}
       '';
     };

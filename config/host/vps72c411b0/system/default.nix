@@ -14,7 +14,6 @@
     ./extra.nix
     ./fix.nix
     ./hardware-configuration.nix
-    ./options.nix
   ];
 
   boot.loader.grub = {

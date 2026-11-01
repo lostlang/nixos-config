@@ -10,7 +10,7 @@ let
 
   secretNames = map (name: "host.${name}") allHosts;
 
-  hostsContent = lib.concatMapStringsSep "\n" (name: ''
+  hostsContent = lib.concatMapStringsSep "\n" (name: /* sshconfig */ ''
     Host ${name}
       HostName ${config.sops.placeholder."host.${name}"}
     ${lib.optionalString (builtins.elem name identities) "  IdentityFile /home/${user}/.ssh/${name}_ed25519"}

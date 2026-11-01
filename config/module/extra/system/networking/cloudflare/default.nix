@@ -15,6 +15,7 @@ in
   options.services.cloudflare = {
     enable = lib.mkEnableOption "Cloudflare token-based tunnels";
     tunnels = lib.mkOption {
+      description = "Cloudflare tunnel names to run using their corresponding SOPS token secrets.";
       type = lib.types.listOf lib.types.str;
       default = [ ];
     };
@@ -26,6 +27,8 @@ in
         name = "cloudflared-tunnel-${name}";
 
         value = {
+          description = "Cloudflare tunnel ${name}";
+
           wantedBy = [ "multi-user.target" ];
           wants = [ "network-online.target" ];
           after = [ "network-online.target" ];

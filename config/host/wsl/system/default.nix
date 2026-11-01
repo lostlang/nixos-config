@@ -8,8 +8,15 @@
   imports = [
     ./extra.nix
     ./fix.nix
-    ./options.nix
   ];
+
+  myConfig = {
+    ssh = {
+      hosts = [
+        "h56"
+      ];
+    };
+  };
 
   wsl = {
     enable = true;

@@ -8,8 +8,15 @@
     ./extra.nix
     ./fix.nix
     ./hardware-configuration.nix
-    ./options.nix
   ];
+
+  myConfig = {
+    ssh = {
+      identities = [
+        "work"
+      ];
+    };
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

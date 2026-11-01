@@ -7,7 +7,7 @@ lib.mkIf config.services.openbao.enable {
   sops.secrets."openbao.unseal-key" = { };
 
   sops.templates."openbao.env" = {
-    content = ''
+    content = /* ini */ ''
       BAO_STATIC_UNSEAL_KEY=${config.sops.placeholder."openbao.unseal-key"}
       BAO_API_ADDR=https://${config.sops.placeholder."domain.openbao"}
     '';

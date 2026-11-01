@@ -1,6 +1,5 @@
 {
   imports = [
-    ./options.nix
     ./sops.nix
     ./bitwarden.nix
 

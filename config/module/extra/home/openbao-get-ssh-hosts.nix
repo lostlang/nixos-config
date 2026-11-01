@@ -11,7 +11,7 @@
 let
   sshTemplate = pkgs.writeText "openbao-ssh-hosts.template" (
     lib.concatStringsSep "\n" (
-      lib.imap0 (index: host: ''
+      lib.imap0 (index: host: /* sshconfig */ ''
         Host ${host}
           HostName ''${address_${toString index}}
           User ${user}

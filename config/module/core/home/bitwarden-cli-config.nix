@@ -37,7 +37,7 @@ in
 {
   config = {
     home.packages = profileWrappers;
-    programs.zsh.initContent = ''
+    programs.zsh.initContent = /* sh */ ''
       eval "$(${bw} completion --shell zsh)"
       (( $+functions[compdef] )) && compdef _bw ${completionCommands}
     '';

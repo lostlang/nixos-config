@@ -12,7 +12,7 @@ let
   prepareRoot = pkgs.writeShellScript "${name}-prepare-root" /* sh */ ''
     set -eu
     ${lib.getExe' pkgs.coreutils "cp"} -RL --no-preserve=mode ${package}/. "$RUNTIME_DIRECTORY/"
-    ${lib.optionalString (configFile != null) ''
+    ${lib.optionalString (configFile != null) /* sh */ ''
       ${lib.getExe' pkgs.coreutils "cp"} --remove-destination ${lib.escapeShellArg configFile} "$RUNTIME_DIRECTORY/config.json"
     ''}
   '';

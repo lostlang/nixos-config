@@ -24,7 +24,7 @@
     templates."remnawave-node.env" = {
       mode = "0400";
       restartUnits = [ "remnawave-node.service" ];
-      content = ''
+      content = /* ini */ ''
         NODE_PORT=${toString ports.remnawave.node.port}
         SECRET_KEY=${config.sops.placeholder."remnawave.node.secret-key"}
       '';

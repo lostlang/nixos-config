@@ -15,7 +15,7 @@
     templates."remnawave-panel.env" = {
       mode = "0400";
       restartUnits = [ "remnawave-panel.service" ];
-      content = ''
+      content = /* ini */ ''
         APP_PORT=${toString ports.remnawave.panel.port}
         METRICS_PORT=${toString ports.remnawave.panel.metrics}
         METRICS_USER=admin
@@ -42,7 +42,7 @@
     templates."remnawave-subscription.env" = {
       mode = "0400";
       restartUnits = [ "remnawave-panel.service" ];
-      content = ''
+      content = /* ini */ ''
         APP_PORT=${toString ports.remnawave.panel.subscription}
         REMNAWAVE_PANEL_URL=http://remnawave:${toString ports.remnawave.panel.port}
         REMNAWAVE_API_TOKEN=${config.sops.placeholder."remnawave.api-token"}

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  ports,
   remnawaveContainerCommon,
   ...
 }:
@@ -28,12 +29,25 @@ in
     ./firewall.nix
     ./hopping.nix
     ./masking
-    ./options.nix
     ./sops.nix
   ];
 
-  systemd.services = lib.mkIf config.services.remnawave-node.enable {
+  options.services.remnawave-node = {
+    enable = lib.mkEnableOption "the Remnawave node container";
+
+    hopping.enable = lib.mkEnableOption "Remnawave node port hopping";
+
+    hopping.availableNodeCount = lib.mkOption {
+      description = "Number of consecutive TCP ports to open from the start of the Remnawave port hopping range.";
+      type = lib.types.ints.between 1 ports.remnawave.node.hopping.count;
+      default = 1;
+    };
+  };
+
+  config.systemd.services = lib.mkIf config.services.remnawave-node.enable {
     remnawave-node = {
+      description = "Remnawave node container";
+
       wantedBy = [ "multi-user.target" ];
       requires = [
         "docker.service"

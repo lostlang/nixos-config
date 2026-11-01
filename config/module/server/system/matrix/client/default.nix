@@ -13,12 +13,8 @@ in
     ./traefik.nix
   ];
 
-  options.services.matrix.client = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
-  };
+  options.services.matrix.client.enable =
+    lib.mkEnableOption "Element web client for the Matrix server";
 
   config = lib.mkIf (config.services.matrix-tuwunel.enable && config.services.matrix.client.enable) (
     lib.mkMerge [
