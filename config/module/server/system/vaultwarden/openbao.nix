@@ -8,7 +8,9 @@
   ...
 }:
 let
-  environmentFile = "/run/vaultwarden-secrets/vaultwarden.env";
+  runtimeDirectory = "/run/vaultwarden-secrets";
+
+  environmentFile = "${runtimeDirectory}/vaultwarden.env";
   environmentTemplate = pkgs.writeText "vaultwarden.env.template" /* ini */ ''
     ADMIN_TOKEN=$admin_token
   '';
@@ -60,11 +62,11 @@ let
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString traefikTemplate)} \
-        --output-file /run/vaultwarden-secrets/traefik.yaml \
+        --output-file ${lib.escapeShellArg "${runtimeDirectory}/traefik.yaml"} \
         --secret domain shared/domain vaultwarden
 
       install -d -m 0755 ${lib.escapeShellArg "${config.services.traefik.dataDir}/dynamic"}
-      install -m 0400 -o traefik /run/vaultwarden-secrets/traefik.yaml ${lib.escapeShellArg "${traefikFile}.tmp"}
+      install -m 0400 -o traefik ${lib.escapeShellArg "${runtimeDirectory}/traefik.yaml"} ${lib.escapeShellArg "${traefikFile}.tmp"}
       mv -T ${lib.escapeShellArg "${traefikFile}.tmp"} ${lib.escapeShellArg traefikFile}
     '';
   };

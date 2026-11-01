@@ -14,6 +14,7 @@ let
       rebuild-vps \
       openbao-bootstrap \
       vaultwarden-bootstrap \
+      tuwunel-bootstrap \
       openbao-client-login \
       openbao-get-ssh-hosts \
       system-clean \

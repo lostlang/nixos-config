@@ -5,9 +5,7 @@
   ...
 }:
 {
-  services.traefik = {
-    enable = lib.mkDefault false;
-
+  services.traefik = lib.mkIf config.services.traefik.enable {
     staticConfigOptions = {
       providers.file = {
         directory = "${config.services.traefik.dataDir}/dynamic";
@@ -55,7 +53,7 @@
     ];
   };
 
-  networking.firewall.allowedTCPPorts = [
+  networking.firewall.allowedTCPPorts = lib.mkIf config.services.traefik.enable [
     80
     443
     853

@@ -1,7 +1,0 @@
-{
-  imports = [
-    ./client
-    ./admin
-    ./server
-  ];
-}

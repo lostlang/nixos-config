@@ -16,9 +16,7 @@
     sessionVariables.BAO_ADDR = "http://127.0.0.1:${toString ports.openbao.api}";
   };
 
-  services.openbao = {
-    enable = lib.mkDefault false;
-
+  services.openbao = lib.mkIf config.services.openbao.enable {
     settings = {
       ui = true;
 

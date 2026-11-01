@@ -5,7 +5,7 @@
 {
   imports = [
     ./adguardhome
-    ./matrix
+    ./tuwunel
     ./openbao
     ./remnawave
     ./vaultwarden

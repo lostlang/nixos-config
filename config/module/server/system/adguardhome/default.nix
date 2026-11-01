@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   ports,
   ...
@@ -8,9 +9,7 @@
     ./traefik.nix
   ];
 
-  services.adguardhome = {
-    enable = lib.mkDefault false;
-
+  services.adguardhome = lib.mkIf config.services.adguardhome.enable {
     settings = {
       http = {
         address = "127.0.0.1:${toString ports.adguardhome.web}";
