@@ -38,7 +38,7 @@ in
   config = {
     home.packages = profileWrappers;
     programs.zsh.initContent = /* sh */ ''
-      eval "$(${bw} completion --shell zsh)"
+      source ${pkgs.bitwarden-cli}/share/zsh/site-functions/_bw
       (( $+functions[compdef] )) && compdef _bw ${completionCommands}
     '';
   };

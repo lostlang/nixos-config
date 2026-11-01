@@ -2,9 +2,9 @@
   pkgs,
   ...
 }:
-{
-  programs.zsh.initContent = /* sh */ ''
-    eval "$(${pkgs.python3Packages.argcomplete}/bin/register-python-argcomplete --shell zsh \
+let
+  completions = pkgs.runCommand "python-argcomplete.zsh" { } /* sh */ ''
+    ${pkgs.python3Packages.argcomplete}/bin/register-python-argcomplete --shell zsh \
       env-init \
       fmt-staged \
       hypr-resolution-switch \
@@ -19,6 +19,11 @@
       system-clean \
       zp \
       zs \
-    )"
+    > "$out"
+  '';
+in
+{
+  programs.zsh.initContent = /* sh */ ''
+    source ${completions}
   '';
 }
