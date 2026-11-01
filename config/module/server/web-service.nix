@@ -38,8 +38,6 @@ in
         "--cache-control-headers=false"
       ];
       DynamicUser = true;
-      NoNewPrivileges = true;
-      ProtectSystem = "strict";
       ProtectHome = true;
       PrivateTmp = true;
       Restart = "on-failure";

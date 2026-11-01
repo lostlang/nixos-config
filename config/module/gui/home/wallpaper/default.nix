@@ -43,7 +43,7 @@ let
       /* sh */ ''
         export HOME="$TMPDIR/home"
         mkdir -p "$HOME"
-        ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/nix-wallpapers.py \
+        ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "nix-wallpapers.py"} \
           --librewolf-executable ${lib.getExe pkgs.librewolf} \
           --render-html ${lib.escapeShellArg "${wallpaper}/index.html"} \
           ${lib.escapeShellArgs resolutionArgs} \

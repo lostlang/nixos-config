@@ -22,25 +22,14 @@
       eachSystem = lib.genAttrs (import systems);
       workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
       overlay = workspace.mkPyprojectOverlay { sourcePreference = "wheel"; };
-      scriptSource = lib.cleanSourceWith {
-        src = ./.;
+      librarySource = lib.cleanSourceWith {
+        src = ./lib;
         filter =
-          path: _:
-          let
-            name = baseNameOf path;
-          in
-          !(builtins.elem name [
-            ".direnv"
-            ".env"
-            ".envrc"
-            ".git"
-
-            ".venv"
-            "__pycache__"
-          ])
-          && !(lib.hasPrefix ".env." name)
-          && !(lib.hasSuffix ".pyc" name)
-          && !(lib.hasSuffix ".pyo" name);
+          path: type:
+          lib.cleanSourceFilter path type
+          && baseNameOf path != "__pycache__"
+          && !(lib.hasSuffix ".pyc" (baseNameOf path))
+          && !(lib.hasSuffix ".pyo" (baseNameOf path));
       };
     in
     {
@@ -57,9 +46,16 @@
             (pythonSet.mkVirtualEnv "nixos-scripts-env" workspace.deps.default).overrideAttrs
               (old: {
                 postInstall = (old.postInstall or "") + /* sh */ ''
-                  printf '%s\n' '${scriptSource}' > "$out/${pkgs.python3.sitePackages}/scripts.pth"
-                  ln -s ${scriptSource} "$out/scripts"
+                  ln -s ${librarySource} "$out/${pkgs.python3.sitePackages}/lib"
                 '';
+                passthru = (old.passthru or { }) // {
+                  script =
+                    name:
+                    builtins.path {
+                      path = ./. + "/${name}";
+                      name = baseNameOf name;
+                    };
+                };
               });
         in
         {

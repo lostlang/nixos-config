@@ -56,16 +56,28 @@ def provision(args, client):
         initial_secrets = json.loads(Path(filename).read_text())
         for path, data in initial_secrets.items():
             metadata = client.read(f"{mount}/metadata/{path}")
-            if metadata is not None and not args.force:
-                continue
-
             version = 0
             if metadata is not None:
                 version = metadata[Field.DATA]["current_version"]
+                if not args.force:
+                    current = client.read(f"{mount}/data/{path}")
+                    existing = current[Field.DATA][Field.DATA]
+                    missing = {}
+                    for key, value in data.items():
+                        if key not in existing:
+                            missing[key] = generate_random_values(value)
+                    if not missing:
+                        continue
+                    data = {**existing, **missing}
+                else:
+                    data = generate_random_values(data)
+            else:
+                data = generate_random_values(data)
+
             client.secrets.kv.v2.create_or_update_secret(
                 mount_point=mount,
                 path=path,
-                secret=generate_random_values(data),
+                secret=data,
                 cas=version,
             )
 
@@ -101,7 +113,6 @@ def provision(args, client):
                 "role_id": role["role_id"],
                 "secret_id": secret["secret_id"],
             }
-            print(json.dumps({"role": username, **credentials}), flush=True)
             client.secrets.kv.v2.create_or_update_secret(
                 mount_point="secret",
                 path=f"user/{username}",
@@ -122,7 +133,6 @@ def provision(args, client):
                 "username": username,
                 Field.PASSWORD: payload[Field.PASSWORD],
             }
-            print(json.dumps(credentials), flush=True)
             client.secrets.kv.v2.create_or_update_secret(
                 mount_point="secret",
                 path=f"user/{username}",

@@ -55,7 +55,7 @@ let
     ];
 
     text = /* sh */ ''
-      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
+      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/render-template.py"} \
         --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
@@ -64,7 +64,7 @@ let
         --secret domain shared/domain matrix \
         --secret registration_token ${lib.escapeShellArg "server/${hostname}"} tuwunel_registration_token
 
-      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
+      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/render-template.py"} \
         --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \

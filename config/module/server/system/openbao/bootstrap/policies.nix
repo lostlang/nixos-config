@@ -36,6 +36,7 @@ in
         }
       ) { } accessibleMounts
     );
+
   commonPolicy = policyFile "common-vault" (
     lib.foldl' (
       paths: mount:

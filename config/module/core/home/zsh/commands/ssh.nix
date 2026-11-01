@@ -17,7 +17,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/ssh-multiplex-wrapper.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "ssh-multiplex-wrapper.py"} \
         --ssh-executable ${lib.getExe pkgs.openssh} \
         --session-name ${lib.escapeShellArg session-name} \
         "$@"

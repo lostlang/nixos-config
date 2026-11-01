@@ -13,7 +13,7 @@ pkgs.writeShellApplication {
   ];
 
   text = /* sh */ ''
-    exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/make-sandbox.py \
+    exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "make-sandbox.py"} \
       --bubblewrap-executable ${lib.getExe pkgs.bubblewrap} \
       --default-sandbox-directory ${lib.escapeShellArg "${config.xdg.cacheHome}/sandbox"} \
       --terminfo ${lib.escapeShellArg "${pkgs.ncurses}/share/terminfo"} \

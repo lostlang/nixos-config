@@ -58,7 +58,7 @@ let
     ];
 
     text = /* sh */ ''
-      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
+      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/render-template.py"} \
         --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
@@ -67,7 +67,7 @@ let
         --secret secret_key shared/remnawave secret_key
 
       ${lib.optionalString (!config.services.remnawave-panel.enable) /* sh */ ''
-        ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
+        ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/render-template.py"} \
           --address ${addressArgument} \
           --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
           --mount config \
@@ -78,13 +78,13 @@ let
         ${lib.getExe pkgs.nftables} --file ${lib.escapeShellArg "${runtimeDirectory}/firewall.nft"}
       ''}
 
-      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
+      ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/render-template.py"} \
         --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString traefikTemplate)} \
         --output-file ${lib.escapeShellArg "${runtimeDirectory}/traefik.yaml"} \
-        --secret domain ${lib.escapeShellArg "server/${hostname}"} remnawave_node_domain
+        --secret domain shared/remnawave ${lib.escapeShellArg "remnawave_node_domain_${hostname}"}
 
       install -d -m 0755 ${lib.escapeShellArg "${config.services.traefik.dataDir}/dynamic"}
       install -m 0400 -o traefik ${lib.escapeShellArg "${runtimeDirectory}/traefik.yaml"} ${lib.escapeShellArg "${traefikFile}.tmp"}

@@ -16,7 +16,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/env-init.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "env-init.py"} \
         --env-dir ${lib.escapeShellArg "/home/${user}/.config/nixos/env"} \
         --git-executable ${lib.getExe pkgs.git} \
         --fzf-executable ${lib.getExe pkgs.fzf} \

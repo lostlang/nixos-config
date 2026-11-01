@@ -8,12 +8,12 @@
 }:
 let
   bootstrap = pkgs.writeShellApplication {
-    name = "vaultwarden-bootstrap";
+    name = "bootstrap-vaultwarden";
 
     runtimeInputs = [ pythonScriptEnv ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/generate-secret.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/generate-secret.py"} \
         --secret secret ${lib.escapeShellArg "vaultwarden/${hostname}"} admin_token \
         --hash-secret config ${lib.escapeShellArg "server/${hostname}"} vaultwarden_admin_token \
         "$@"

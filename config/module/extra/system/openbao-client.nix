@@ -2,11 +2,21 @@
   config,
   lib,
   pkgs,
+  ports,
   pythonScriptEnv,
   user,
   ...
 }:
 let
+  addressArgument = import ../../server/openbao-address-argument.nix {
+    inherit
+      config
+      lib
+      pkgs
+      ports
+      ;
+  };
+
   openbaoClientLogin = pkgs.writeShellApplication {
     name = "openbao-client-login";
 
@@ -16,12 +26,11 @@ let
     ];
 
     text = /* sh */ ''
-      domain="$(cat ${lib.escapeShellArg config.sops.secrets."openbao.domain".path})"
       role_id="$(cat ${lib.escapeShellArg config.sops.secrets."openbao.role-id".path})"
       secret_id="$(cat ${lib.escapeShellArg config.sops.secrets."openbao.secret-id".path})"
 
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/client-login.py \
-        --address "https://$domain" \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/client-login.py"} \
+        --address ${addressArgument} \
         --role-id "$role_id" \
         --secret-id "$secret_id" \
         --output-file /run/openbao-client/token \

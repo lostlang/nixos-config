@@ -8,8 +8,8 @@
   ...
 }:
 let
-  panelEnvFile = config.sops.templates."remnawave-panel.env".path;
-  subscriptionEnvFile = config.sops.templates."remnawave-subscription.env".path;
+  panelEnvFile = "/run/remnawave-panel-secrets/panel.env";
+  subscriptionEnvFile = "/run/remnawave-panel-secrets/subscription.env";
 
   composeFile = pkgs.writeText "remnawave-panel-compose.json" (
     builtins.toJSON {
@@ -48,10 +48,15 @@ let
           shm_size = "512mb";
           env_file = [ panelEnvFile ];
           volumes = [ "remnawave-db-data:/var/lib/postgresql" ];
+          command = [
+            "postgres"
+            "-p"
+            (toString ports.remnawave.database)
+          ];
           healthcheck = {
             test = [
               "CMD-SHELL"
-              "pg_isready -U $\${POSTGRES_USER} -d $\${POSTGRES_DB}"
+              "pg_isready -p ${toString ports.remnawave.database} -U $\${POSTGRES_USER} -d $\${POSTGRES_DB}"
             ];
             interval = "3s";
             timeout = "10s";
@@ -136,31 +141,37 @@ let
 in
 {
   imports = [
-    ./bootstrap
-
-    ./sops.nix
-    ./traefik.nix
+    ./bootstrap.nix
+    ./openbao.nix
   ];
 
   options.services.remnawave-panel.enable = lib.mkEnableOption "Remnawave panel containers";
 
+  config.services.traefik.enable = lib.mkIf config.services.remnawave-panel.enable true;
+
   config.systemd.services.remnawave-panel = lib.mkIf config.services.remnawave-panel.enable {
     description = "Remnawave panel containers";
 
+    partOf = [ "remnawave-panel-secrets.service" ];
     wantedBy = [ "multi-user.target" ];
-    requires = [ "docker.service" ];
+    requires = [
+      "docker.service"
+      "remnawave-panel-secrets.service"
+    ];
     after = [
       "docker.service"
       "network-online.target"
+      "remnawave-panel-secrets.service"
     ];
     wants = [ "network-online.target" ];
     restartTriggers = [ composeFile ];
 
     serviceConfig = {
-      Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = "${lib.getExe pkgs.docker-compose} --project-name remnawave-panel -f ${composeFile} up --detach --remove-orphans --wait --pull always";
       ExecStop = "${lib.getExe pkgs.docker-compose} --project-name remnawave-panel -f ${composeFile} down";
+      Restart = "on-failure";
+      RestartSec = "30s";
       TimeoutStartSec = 600;
       TimeoutStopSec = 60;
     };

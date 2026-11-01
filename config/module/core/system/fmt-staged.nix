@@ -15,7 +15,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/fmt-staged.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "fmt-staged.py"} \
         --git-executable ${lib.getExe pkgs.git} \
         --nix-executable ${lib.getExe pkgs.nix} \
         "$@"

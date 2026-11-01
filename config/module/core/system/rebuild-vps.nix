@@ -19,7 +19,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/rebuild-vps.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "rebuild-vps.py"} \
         --fzf-executable ${lib.getExe pkgs.fzf} \
         --nixos-rebuild-executable ${lib.getExe pkgs.nixos-rebuild} \
         --config-dir ${lib.escapeShellArg "/home/${user}/.config/nixos/config"} \

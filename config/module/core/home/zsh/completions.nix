@@ -11,18 +11,19 @@ let
   );
   completions = pkgs.runCommand "python-argcomplete.zsh" { } /* sh */ ''
     ${pkgs.python3Packages.argcomplete}/bin/register-python-argcomplete --shell zsh \
+      bootstrap-openbao \
+      bootstrap-remnawave \
+      bootstrap-vaultwarden \
       env-init \
       fmt-staged \
       hypr-resolution-switch \
-      minecraft-data-copy \
-      update-flake \
       make-sandbox \
-      rebuild-vps \
-      openbao-bootstrap \
-      vaultwarden-bootstrap \
+      minecraft-data-copy \
       openbao-client-login \
       openbao-get-ssh-hosts \
+      rebuild-vps \
       system-clean \
+      update-flake \
       zp \
       zs \
     > "$out"

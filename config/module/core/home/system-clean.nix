@@ -18,7 +18,7 @@ let
     ++ lib.optional config.programs.zellij.enable config.programs.zellij.package;
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/system-clean.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "system-clean.py"} \
         --fzf-executable ${lib.getExe pkgs.fzf} \
         --sudo-executable ${lib.escapeShellArg "${osConfig.security.wrapperDir}/sudo"} \
         --nix-collect-garbage-executable ${lib.getExe' pkgs.nix "nix-collect-garbage"} \

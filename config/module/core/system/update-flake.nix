@@ -16,7 +16,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/update-flake.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "update-flake.py"} \
         --config-dir ${lib.escapeShellArg "/home/${user}/.config/nixos"} \
         --nix-executable ${lib.getExe pkgs.nix} \
         --fzf-executable ${lib.getExe pkgs.fzf} \

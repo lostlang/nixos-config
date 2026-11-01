@@ -7,8 +7,7 @@ dependencies = [
   "cryptography",
   "httpx",
   "hvac",
-  "pydantic",
-  "remnawave",
+  "remnawave-api",
   "requests",
 ]
 

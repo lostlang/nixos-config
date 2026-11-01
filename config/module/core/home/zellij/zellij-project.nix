@@ -16,7 +16,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/zellij-project.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "zellij-project.py"} \
         --zellij-executable ${lib.getExe zellij} \
         --config-dir ${lib.escapeShellArg "${config.xdg.configHome}/zellij"} \
         --layout code \

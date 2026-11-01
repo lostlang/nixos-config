@@ -70,7 +70,6 @@ in
       restartTriggers = [ composeFile ];
 
       serviceConfig = {
-        Type = "oneshot";
         RemainAfterExit = true;
         ExecStart = "${lib.getExe pkgs.docker-compose} --project-name remnawave-node -f ${composeFile} up --detach --remove-orphans --pull always";
         ExecStop = "${lib.getExe pkgs.docker-compose} --project-name remnawave-node -f ${composeFile} down";

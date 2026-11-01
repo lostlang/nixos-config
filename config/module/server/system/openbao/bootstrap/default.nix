@@ -56,14 +56,14 @@ let
   ]) vpsHostnames;
 
   bootstrap = pkgs.writeShellApplication {
-    name = "openbao-bootstrap";
+    name = "bootstrap-openbao";
 
     runtimeInputs = [
       pythonScriptEnv
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/bootstrap.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/bootstrap.py"} \
         --address http://127.0.0.1:${toString ports.openbao.api} \
         ${lib.escapeShellArgs engineArgs} \
         ${lib.escapeShellArgs policyArgs} \

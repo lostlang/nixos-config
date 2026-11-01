@@ -27,7 +27,7 @@ let
     ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "openbao/render-template.py"} \
         --address "https://$(${lib.getExe' pkgs.coreutils "cat"} ${
           lib.escapeShellArg osConfig.sops.secrets."openbao.domain".path
         })" \
@@ -64,7 +64,6 @@ in
       };
 
       Service = {
-        Type = "oneshot";
         ExecStartPre = "${lib.getExe' pkgs.systemd "systemctl"} --system is-active --quiet openbao-client-login.service";
         ExecStart = lib.getExe openbaoSshHosts;
         RemainAfterExit = true;

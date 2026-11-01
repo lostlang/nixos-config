@@ -24,7 +24,7 @@ let
 
       text = /* sh */ ''
         export BITWARDENCLI_APPDATA_DIR=${lib.escapeShellArg (profileDirectory name)}
-        exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/bitwarden-cli-wrapper.py \
+        exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "bitwarden-cli-wrapper.py"} \
           --bw-executable ${lib.escapeShellArg bw} \
           --session-file "$XDG_RUNTIME_DIR/${profileSessionPath name}" \
           --command "$@"

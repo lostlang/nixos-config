@@ -12,7 +12,7 @@ let
     runtimeInputs = [ pythonScriptEnv ];
 
     text = /* sh */ ''
-      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/minecraft-server-data-copy.py "$@"
+      exec ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv.script "minecraft-server-data-copy.py"} "$@"
     '';
   };
 in
