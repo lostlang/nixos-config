@@ -8,6 +8,15 @@
   ...
 }:
 let
+  addressArgument = import ../../openbao-address-argument.nix {
+    inherit
+      config
+      lib
+      pkgs
+      ports
+      ;
+  };
+
   runtimeDirectory = "/run/vaultwarden-secrets";
 
   environmentFile = "${runtimeDirectory}/vaultwarden.env";
@@ -46,9 +55,7 @@ let
 
     text = /* sh */ ''
       ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
-        --address "https://$(${lib.getExe' pkgs.coreutils "cat"} ${
-          lib.escapeShellArg config.sops.secrets."openbao.domain".path
-        })" \
+        --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString environmentTemplate)} \
@@ -56,9 +63,7 @@ let
         --secret admin_token ${lib.escapeShellArg "server/${hostname}"} vaultwarden_admin_token
 
       ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
-        --address "https://$(${lib.getExe' pkgs.coreutils "cat"} ${
-          lib.escapeShellArg config.sops.secrets."openbao.domain".path
-        })" \
+        --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString traefikTemplate)} \
@@ -81,15 +86,17 @@ lib.mkIf config.services.vaultwarden.enable {
     requires = [ "openbao-client-login.service" ];
     after = [ "openbao-client-login.service" ];
     before = [ "vaultwarden.service" ];
-    wants = [ "vaultwarden.service" ];
     unitConfig.StartLimitIntervalSec = 0;
 
     serviceConfig = {
       Type = "oneshot";
+      TimeoutStartSec = "2min";
       ExecStart = lib.getExe fetchSecrets;
+      ExecStartPost = "${lib.getExe' pkgs.systemd "systemctl"} --no-block start vaultwarden.service";
       RemainAfterExit = true;
       RuntimeDirectory = "vaultwarden-secrets";
       RuntimeDirectoryMode = "0700";
+      RuntimeDirectoryPreserve = "restart";
       Restart = "on-failure";
       RestartSec = "30s";
     };

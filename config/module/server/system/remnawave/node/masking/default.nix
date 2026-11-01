@@ -9,10 +9,6 @@ let
   webService = import ../../../../web-service.nix { inherit lib pkgs; };
 in
 {
-  imports = [
-    ./sops.nix
-  ];
-
   config = lib.mkIf config.services.remnawave-node.enable (
     lib.mkMerge [
       (webService {

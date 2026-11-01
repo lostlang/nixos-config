@@ -7,6 +7,15 @@
   ...
 }:
 let
+  addressArgument = import ../../openbao-address-argument.nix {
+    inherit
+      config
+      lib
+      pkgs
+      ports
+      ;
+  };
+
   runtimeDirectory = "/run/adguardhome-secrets";
 
   traefikFile = "${config.services.traefik.dataDir}/dynamic/adguardhome.yaml";
@@ -54,9 +63,7 @@ let
 
     text = /* sh */ ''
       ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
-        --address "https://$(${lib.getExe' pkgs.coreutils "cat"} ${
-          lib.escapeShellArg config.sops.secrets."openbao.domain".path
-        })" \
+        --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString traefikTemplate)} \
@@ -80,10 +87,12 @@ lib.mkIf config.services.adguardhome.enable {
 
     serviceConfig = {
       Type = "oneshot";
+      TimeoutStartSec = "2min";
       ExecStart = lib.getExe fetchSecrets;
       RemainAfterExit = true;
       RuntimeDirectory = "adguardhome-secrets";
       RuntimeDirectoryMode = "0700";
+      RuntimeDirectoryPreserve = "restart";
       Restart = "on-failure";
       RestartSec = "30s";
     };

@@ -60,6 +60,12 @@ def main():
                 continue
             values[name] = str(value)
     except (ConnectionError, Timeout, VaultDown):
+        if not args.output_file.is_file():
+            print(
+                "OpenBao is unavailable; no existing output file is available.",
+                file=sys.stderr,
+            )
+            return 1
         print(
             "OpenBao is unavailable; keeping the existing output file.", file=sys.stderr
         )

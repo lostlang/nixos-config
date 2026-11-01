@@ -7,7 +7,7 @@
   ...
 }:
 let
-  nodeEnvFile = config.sops.templates."remnawave-node.env".path;
+  nodeEnvFile = "/run/remnawave-node-secrets/node.env";
 
   composeFile = pkgs.writeText "remnawave-node-compose.json" (
     builtins.toJSON {
@@ -29,11 +29,11 @@ in
     ./firewall.nix
     ./hopping.nix
     ./masking
-    ./sops.nix
+    ./openbao.nix
   ];
 
   options.services.remnawave-node = {
-    enable = lib.mkEnableOption "the Remnawave node container";
+    enable = lib.mkEnableOption "Remnawave node container";
 
     hopping.enable = lib.mkEnableOption "Remnawave node port hopping";
 
@@ -48,16 +48,19 @@ in
     remnawave-node = {
       description = "Remnawave node container";
 
+      partOf = [ "remnawave-node-secrets.service" ];
       wantedBy = [ "multi-user.target" ];
       requires = [
         "docker.service"
         "nftables.service"
+        "remnawave-node-secrets.service"
         "traefik.service"
       ];
       after = [
         "docker.service"
         "network-online.target"
         "nftables.service"
+        "remnawave-node-secrets.service"
         "traefik.service"
       ];
       wants = [

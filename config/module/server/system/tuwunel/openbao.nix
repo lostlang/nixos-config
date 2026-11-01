@@ -8,6 +8,15 @@
   ...
 }:
 let
+  addressArgument = import ../../openbao-address-argument.nix {
+    inherit
+      config
+      lib
+      pkgs
+      ports
+      ;
+  };
+
   runtimeDirectory = "/run/tuwunel-secrets";
 
   environmentFile = "${runtimeDirectory}/tuwunel.env";
@@ -47,9 +56,7 @@ let
 
     text = /* sh */ ''
       ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
-        --address "https://$(${lib.getExe' pkgs.coreutils "cat"} ${
-          lib.escapeShellArg config.sops.secrets."openbao.domain".path
-        })" \
+        --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString environmentTemplate)} \
@@ -58,9 +65,7 @@ let
         --secret registration_token ${lib.escapeShellArg "server/${hostname}"} tuwunel_registration_token
 
       ${lib.getExe' pythonScriptEnv "python"} ${pythonScriptEnv}/scripts/openbao/render-template.py \
-        --address "https://$(${lib.getExe' pkgs.coreutils "cat"} ${
-          lib.escapeShellArg config.sops.secrets."openbao.domain".path
-        })" \
+        --address ${addressArgument} \
         --token "$(${lib.getExe' pkgs.coreutils "cat"} /run/openbao-client/token)" \
         --mount config \
         --template-file ${lib.escapeShellArg (toString traefikTemplate)} \
@@ -83,15 +88,17 @@ lib.mkIf config.services.matrix-tuwunel.enable {
     requires = [ "openbao-client-login.service" ];
     after = [ "openbao-client-login.service" ];
     before = [ "tuwunel.service" ];
-    wants = [ "tuwunel.service" ];
     unitConfig.StartLimitIntervalSec = 0;
 
     serviceConfig = {
       Type = "oneshot";
+      TimeoutStartSec = "2min";
       ExecStart = lib.getExe fetchSecrets;
+      ExecStartPost = "${lib.getExe' pkgs.systemd "systemctl"} --no-block start tuwunel.service";
       RemainAfterExit = true;
       RuntimeDirectory = "tuwunel-secrets";
       RuntimeDirectoryMode = "0700";
+      RuntimeDirectoryPreserve = "restart";
       Restart = "on-failure";
       RestartSec = "30s";
     };
