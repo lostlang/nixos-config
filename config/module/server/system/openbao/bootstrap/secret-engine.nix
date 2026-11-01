@@ -22,7 +22,7 @@
         server_ip = "";
         remnawave_node_domain = "";
         tuwunel_registration_token.random.length = 64;
-        vaultwarden_admin_token.random.length = 64;
+        vaultwarden_admin_token = "";
       };
     }) vpsHostnames
   );

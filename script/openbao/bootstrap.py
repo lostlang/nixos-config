@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
 import argparse
-import base64
 import json
 import os
 import secrets
-import string
 import sys
 from enum import StrEnum
 from pathlib import Path
 
 import argcomplete
 import hvac
+
+from lib.random_values import RandomFormat, generate_random_value
 
 
 class Field(StrEnum):
@@ -39,17 +39,9 @@ def generate_random_values(value):
         return result
 
     config = value[Field.RANDOM]
-    length = config["length"]
-    random_format = config.get("format", "ascii")
-    if random_format == "hex":
-        return secrets.token_hex(length)
-    if random_format == "base64":
-        return base64.b64encode(secrets.token_bytes(length)).decode("ascii")
-    random_string = secrets.choice(string.ascii_letters)
-    for _ in range(length - 1):
-        random_string += secrets.choice(string.ascii_letters + string.digits)
+    random_format = RandomFormat(config.get("format", RandomFormat.ASCII))
 
-    return random_string
+    return generate_random_value(config["length"], random_format)
 
 
 def provision(args, client):

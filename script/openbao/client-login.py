@@ -30,7 +30,7 @@ def main():
     if not args.secret_id:
         parser.error("provide --secret-id or BAO_SECRET_ID")
 
-    client = hvac.Client(url=args.address.strip(), timeout=5)
+    client = hvac.Client(url=args.address.strip())
     try:
         result = client.auth.approle.login(
             role_id=args.role_id.strip(),

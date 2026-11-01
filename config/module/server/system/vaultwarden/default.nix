@@ -1,13 +1,16 @@
 {
+  config,
   lib,
   ports,
   ...
 }:
 {
   imports = [
-    ./sops.nix
-    ./traefik.nix
+    ./bootstrap.nix
+    ./openbao.nix
   ];
+
+  services.traefik.enable = lib.mkIf config.services.vaultwarden.enable true;
 
   services.vaultwarden = {
     enable = lib.mkDefault false;

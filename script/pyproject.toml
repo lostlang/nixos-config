@@ -3,6 +3,7 @@ name = "nixos-scripts"
 version = "0.0.1"
 dependencies = [
   "argcomplete",
+  "argon2-cffi",
   "cryptography",
   "httpx",
   "hvac",
