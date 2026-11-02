@@ -1,5 +1,6 @@
 {
   colorScheme,
+  config,
   lib,
   pkgs,
   ...
@@ -11,6 +12,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+
     configType = "lua";
     xwayland.enable = true;
 
@@ -28,10 +30,11 @@
 
   xdg.configFile."hypr/resolution".source = ./resolution;
 
-  home.activation.hyprSymlink = lib.hm.dag.entryAfter [ "writeBoundary" ] /* sh */ ''
-    if [ ! -e "$HOME/.config/hypr/active-profile.lua" ]; then
-      ln -sf "$HOME/.config/hypr/resolution/default.lua" \
-        "$HOME/.config/hypr/active-profile.lua"
+  home.activation.hyprSymlink = lib.hm.dag.entryAfter [ "linkGeneration" ] /* sh */ ''
+    if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/hypr/active-profile.lua"} ]; then
+      run ${lib.getExe' pkgs.coreutils "ln"} -sf \
+        ${lib.escapeShellArg "${config.xdg.configHome}/hypr/resolution/default.lua"} \
+        ${lib.escapeShellArg "${config.xdg.configHome}/hypr/active-profile.lua"}
     fi
   '';
 

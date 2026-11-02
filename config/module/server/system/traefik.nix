@@ -26,7 +26,7 @@
       };
 
       certificatesResolvers.letsencrypt.acme = {
-        storage = "/var/lib/traefik/acme.json";
+        storage = "${config.services.traefik.dataDir}/acme.json";
         httpChallenge.entryPoint = "web";
       };
     };

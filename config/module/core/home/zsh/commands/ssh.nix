@@ -37,7 +37,5 @@ in
         command ${lib.getExe pkgs.openssh} "$@"
       fi
     }
-
-    (( $+functions[compdef] )) && compdef _ssh ssh
   '';
 }

@@ -25,11 +25,13 @@ in
         }
       }
     ''}
-    tab name="lazygit" {
-      pane {
-        command "lazygit"
+    ${lib.optionalString config.programs.lazygit.enable ''
+      tab name="lazygit" {
+        pane {
+          command "lazygit"
+        }
       }
-    }
+    ''}
     tab name="terminal" {
       pane
     }

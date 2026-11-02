@@ -129,7 +129,7 @@
                     --directory "$go_cache" \
                     --bind "$go_path" /go \
                     --bind "$go_cache" /gocache \
-                    --command ${sandboxShell}
+                    -- ${sandboxShell}
                 '';
             };
         in

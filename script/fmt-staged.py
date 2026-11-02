@@ -23,7 +23,7 @@ def main():
     project_root = roots[0]
 
     try:
-        staged_files = subprocess.run(
+        staged_paths = subprocess.run(
             [
                 args.git_executable,
                 "diff",
@@ -41,7 +41,10 @@ def main():
         print("run this command from inside a Git repository", file=sys.stderr)
         return 1
 
-    staged_files = [os.fsdecode(path) for path in staged_files if path]
+    staged_files = []
+    for path in staged_paths:
+        if path:
+            staged_files.append(os.fsdecode(path))
 
     if not staged_files:
         return 0

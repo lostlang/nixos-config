@@ -22,7 +22,8 @@ def restore_file(source, destination):
 
 
 def find_named_files(directory, suffix):
-    return {
-        path.name.removesuffix(suffix): path
-        for path in sorted(directory.glob(f"*{suffix}"))
-    }
+    named_files = {}
+    for path in sorted(directory.glob(f"*{suffix}")):
+        named_files[path.name.removesuffix(suffix)] = path
+
+    return named_files

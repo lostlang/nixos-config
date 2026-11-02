@@ -126,8 +126,11 @@ def main():
     cwd = str(Path.cwd())
     roots = find_roots(Marker.GIT) or [Path.cwd()]
     project_directory = str(roots[0])
+    project_bind = "--bind"
+    if args.read_only_project:
+        project_bind = "--ro-bind"
     command += [
-        "--ro-bind" if args.read_only_project else "--bind",
+        project_bind,
         project_directory,
         project_directory,
         "--chdir",

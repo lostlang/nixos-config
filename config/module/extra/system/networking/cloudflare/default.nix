@@ -42,6 +42,7 @@ in
               "--token-file"
               config.sops.secrets."cloudflare.tunnel.${name}".path
             ];
+            Restart = "on-failure";
           };
         };
       }) tunnels

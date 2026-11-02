@@ -9,8 +9,6 @@
 let
   profiles = osConfig.myConfig.bitwardenCli.profiles;
   bw = lib.getExe pkgs.bitwarden-cli;
-  completionCommands = lib.escapeShellArgs ([ "bw" ] ++ map (name: "bw-${name}") profiles);
-
   profileDirectory = name: "${config.xdg.configHome}/bw/${name}";
   profileSessionPath = name: "bw-${name}/session";
 
@@ -37,9 +35,5 @@ in
 {
   config = {
     home.packages = profileWrappers;
-    programs.zsh.initContent = /* sh */ ''
-      source ${pkgs.bitwarden-cli}/share/zsh/site-functions/_bw
-      (( $+functions[compdef] )) && compdef _bw ${completionCommands}
-    '';
   };
 }

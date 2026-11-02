@@ -12,7 +12,6 @@ let
 
     runtimeInputs = with pkgs; [
       coreutils
-      openbao
       pythonScriptEnv
     ];
 
@@ -35,10 +34,13 @@ in
   options.programs.openbao-client.enable = lib.mkEnableOption "OpenBao client";
 
   config = lib.mkIf config.programs.openbao-client.enable {
+    environment.systemPackages = [ openbaoClientLogin ];
+
     sops.secrets = {
       "openbao.domain" = {
         key = "domain.openbao";
         owner = user;
+        restartUnits = [ "openbao-client-login.service" ];
       };
     }
     //
@@ -49,6 +51,7 @@ in
         ]
         (_: {
           owner = user;
+          restartUnits = [ "openbao-client-login.service" ];
         });
 
     systemd.services.openbao-client-login = {

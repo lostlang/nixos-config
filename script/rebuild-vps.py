@@ -57,7 +57,9 @@ def main():
         if target is None:
             return 0
 
-    selected_hosts = args.hosts if target == Target.ALL else [target]
+    selected_hosts = [target]
+    if target == Target.ALL:
+        selected_hosts = args.hosts
     for selected_host in selected_hosts:
         target_host = selected_host
         if args.ip is not None:

@@ -74,6 +74,8 @@ in
         RemainAfterExit = true;
         ExecStart = "${lib.getExe pkgs.docker-compose} --project-name remnawave-node -f ${composeFile} up --detach --remove-orphans --pull always";
         ExecStop = "${lib.getExe pkgs.docker-compose} --project-name remnawave-node -f ${composeFile} down";
+        Restart = "on-failure";
+        RestartSec = "30s";
         TimeoutStartSec = 600;
         TimeoutStopSec = 60;
       };
