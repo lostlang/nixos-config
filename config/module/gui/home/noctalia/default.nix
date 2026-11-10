@@ -7,6 +7,7 @@
 }:
 {
   imports = [
+    ./hidden-apps.nix
     ./timezones.nix
     ./shelf.nix
   ];

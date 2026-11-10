@@ -21,5 +21,6 @@
       };
     };
     vaultwarden.enable = true;
+    weekly-reboot.schedule = "Mon *-*-* 04:00:00";
   };
 }

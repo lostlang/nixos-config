@@ -7,7 +7,6 @@
     imv
     obs-studio
     obsidian
-    qalculate-gtk
     telegram-desktop
     thunar
     udiskie

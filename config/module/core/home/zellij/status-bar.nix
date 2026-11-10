@@ -23,7 +23,7 @@ let
 in
 ''
   pane size=1 {
-    plugin location="file:${zjstatus}/bin/zjstatus.wasm" {
+    plugin location="file:${zjstatus}" {
       format_left   "${style.section1} {mode} ${style.separator1} ${style.section2} {command_git_branch} ${style.separator2} "
       format_center "{tabs}"
       format_right  "${style.separator3} ${style.section3} {session} "

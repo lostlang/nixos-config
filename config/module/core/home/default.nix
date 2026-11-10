@@ -14,9 +14,11 @@
     ./zellij
     ./zsh
 
+    ./bash.nix
     ./env.nix
     ./git.nix
     ./ssh.nix
+    ./starship.nix
     ./system-clean.nix
   ]
   ++ map (name: ../../${name}/home) extraLocalModules;

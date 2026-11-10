@@ -3,13 +3,12 @@
   config,
   lib,
   pkgs,
-  zjstatus,
   ...
 }:
 let
   themeName = colorScheme.default.name;
   theme = import ./theme.nix { inherit colorScheme; };
-  zjstatusPackage = zjstatus.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  zjstatusPackage = pkgs.zellijPlugins.zjstatus;
 
   codeLayout = import ./layout/code.nix {
     inherit colorScheme config lib;
@@ -30,6 +29,7 @@ in
       show_startup_tips = false;
 
       pane_frames = false;
+      default_mode = "locked";
       session_serialization = false;
       on_force_close = "detach";
 
@@ -42,14 +42,6 @@ in
         "session-manager location=\"zellij:session-manager\"" = {
           multi_screen = true;
         };
-        "autolock location=\"https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm\"" =
-          {
-            is_enabled = true;
-            lock_regex = "(vim|nvim|fzf|tmux|ssh)";
-          };
-      };
-      load_plugins = {
-        autolock = { };
       };
 
       keybinds = {
@@ -77,14 +69,10 @@ in
   };
   xdg.configFile."zellij/permissions.kdl" = lib.mkIf config.programs.zellij.enable {
     text = ''
-      "${zjstatusPackage}/bin/zjstatus.wasm" {
+      "${zjstatusPackage}" {
         ReadApplicationState
         ChangeApplicationState
         RunCommands
-      }
-      "https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
-        ReadApplicationState
-        ChangeApplicationState
       }
     '';
   };
