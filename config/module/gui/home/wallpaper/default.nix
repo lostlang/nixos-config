@@ -48,6 +48,7 @@ let
           --render-html ${lib.escapeShellArg "${wallpaper}/index.html"} \
           ${lib.escapeShellArgs resolutionArgs} \
           --count 10 \
+          --no-logo \
           --render-scale 2 \
           --output "$out"
       '';

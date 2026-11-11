@@ -19,6 +19,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--render-scale", type=float, default=1)
     parser.add_argument("--seed", type=int)
+    parser.add_argument("--no-logo", action="store_true")
     argcomplete.autocomplete(parser, always_complete_options=False)
     args = parser.parse_args()
 
@@ -55,7 +56,7 @@ def main():
                     f"{render_width},{render_height}",
                     "--screenshot",
                     str(path),
-                    f"{url}?seed={seed}&export=1",
+                    f"{url}?seed={seed}&export=1" + ("&logo=0" if args.no_logo else ""),
                 ],
                 check=True,
                 text=True,

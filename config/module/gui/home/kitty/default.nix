@@ -23,6 +23,7 @@ in
       bold_italic_font = ''family="${config.stylix.fonts.monospace.name}" style="ExtraBold Italic"'';
       font_size = 14.0;
 
+      background_opacity = 0.8;
       include = "${themeName}.conf";
     };
   };
